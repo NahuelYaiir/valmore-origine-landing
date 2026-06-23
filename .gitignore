@@ -1,0 +1,10 @@
+.DS_Store
+
+# Python helpers
+__pycache__/
+*.pyc
+
+# Generated export copies if recreated locally
+botella-final-v2.png
+botella-final-v3.png
+botella-final-v4.png
