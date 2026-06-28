@@ -68,7 +68,7 @@
     border-radius: 8px;
     background:
       linear-gradient(90deg, rgba(4, 18, 13, 0.9), rgba(13, 34, 22, 0.74)),
-      url("../public/images/fondo de Menu.png");
+      url("./public/images/fondo de Menu.png");
     background-size: cover;
     background-position: center;
     box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
@@ -1761,7 +1761,7 @@
     border-radius: 12px;
     background:
       linear-gradient(145deg, rgba(245, 240, 232, 0.06), rgba(2, 14, 10, 0.52)),
-      url("../public/images/fondo de Menu.png");
+      url("./public/images/fondo de Menu.png");
     background-size: cover;
     background-position: center;
     box-shadow: 0 34px 90px rgba(0, 0, 0, 0.42);
@@ -2323,7 +2323,7 @@
         </div>
         <div class="asset-card video" id="statementAsset">
           <div class="asset-content">
-            <img class="statement-portrait" id="statementPortrait" src="../public/images/caso-001/personajes/martin-avatar-base.png" alt="Retrato del sospechoso seleccionado">
+            <img class="statement-portrait" id="statementPortrait" src="./public/images/caso-001/personajes/martin-avatar-base.png" alt="Retrato del sospechoso seleccionado">
             <span class="asset-label">Video IA placeholder</span>
             <p class="asset-description" id="statementAssetText"></p>
             <div class="sound-note"><span class="speaker">♪</span><span>Sonido sugerido: sala baja, respiración cercana, una copa moviéndose apenas sobre la mesa.</span></div>
@@ -2473,8 +2473,8 @@ const suspects = [
     id: "martin",
     name: "Martín",
     initial: "M",
-    image: "../public/images/caso-001/personajes/martin-avatar-base.png",
-    video: "../public/videos/caso-001/martin-declaracion-001.mp4",
+    image: "./public/images/caso-001/personajes/martin-avatar-base.png",
+    video: "./public/videos/caso-001/martin-declaracion-001.mp4",
     role: "El novio",
     quote: "Yo quería que esta noche terminara de una vez... digo, que terminara bien.",
     context: "Martín dice que preparó la propuesta perfecta y que alguien arruinó el momento robando el anillo.",
@@ -2484,8 +2484,8 @@ const suspects = [
     id: "sofia",
     name: "Sofía",
     initial: "S",
-    image: "../public/images/caso-001/personajes/sofia-avatar-base.png",
-    video: "../public/videos/caso-001/sofia-declaracion-001.mp4",
+    image: "./public/images/caso-001/personajes/sofia-avatar-base.png",
+    video: "./public/videos/caso-001/sofia-declaracion-001.mp4",
     role: "La mejor amiga",
     quote: "Hay cosas que una amiga ve antes que todos.",
     context: "Sofía asegura que solo quiso calmar a la novia y que nunca se acercó a la caja.",
@@ -2495,8 +2495,8 @@ const suspects = [
     id: "lucas",
     name: "Lucas",
     initial: "L",
-    image: "../public/images/caso-001/personajes/lucas-avatar-base.png",
-    video: "../public/videos/caso-001/lucas-declaracion-001.mp4",
+    image: "./public/images/caso-001/personajes/lucas-avatar-base.png",
+    video: "./public/videos/caso-001/lucas-declaracion-001.mp4",
     role: "El hermano",
     quote: "A veces mi hermano arma problemas para no enfrentar otros.",
     context: "Lucas dice que Martín estaba nervioso, aunque insiste en que el anillo existía.",
@@ -2506,8 +2506,8 @@ const suspects = [
     id: "camila",
     name: "Camila",
     initial: "C",
-    image: "../public/images/caso-001/personajes/camila-avatar-base.png",
-    video: "../public/videos/caso-001/camila-declaracion-001.mp4",
+    image: "./public/images/caso-001/personajes/camila-avatar-base.png",
+    video: "./public/videos/caso-001/camila-declaracion-001.mp4",
     role: "La moza",
     quote: "Yo solo guardé lo que me pidieron guardar.",
     context: "Camila conoce el protocolo del restaurante y sabe más de la caja fuerte de lo que parece.",
@@ -2781,7 +2781,7 @@ function hydrateIntroMedia() {
 
   if (media) {
     media.innerHTML = `
-      <video class="case-video intro-video" src="../public/videos/caso-001/intro-restaurante-anillo-001.mp4" autoplay muted loop playsinline controls></video>
+      <video class="case-video intro-video" src="./public/videos/caso-001/intro-restaurante-anillo-001.mp4" autoplay muted loop playsinline controls></video>
       <div class="intro-artifacts" aria-label="Objetos clave de la escena">
         <span class="artifact-chip"><span class="artifact-icon">◇</span><span class="artifact-copy">Caja vacía sobre la mesa</span></span>
         <span class="artifact-chip"><span class="artifact-icon">◌</span><span class="artifact-copy">Cuatro versiones distintas</span></span>
@@ -2789,7 +2789,7 @@ function hydrateIntroMedia() {
       </div>
       <span class="asset-label">Narración de apertura</span>
       <p class="asset-description">Restaurante elegante de noche, lluvia contra ventanales, copas servidas y una caja de anillo sobre mantel blanco.</p>
-      <audio class="case-audio" src="../public/audio/caso-001/intro-narracion-archivo-valmore-001-v2.mp3" controls preload="metadata"></audio>
+      <audio class="case-audio" src="./public/audio/caso-001/intro-narracion-archivo-valmore-001-v2.mp3" controls preload="metadata"></audio>
       <p class="media-note">Reproducí la narración antes de comenzar la investigación.</p>
     `;
   }
@@ -2808,7 +2808,7 @@ function hydrateIntroMedia() {
       <div class="intro-audio-strip">
         <div class="intro-audio-block">
           <span class="asset-label">Audio narrativo</span>
-          <audio class="case-audio" src="../public/audio/caso-001/intro-narracion-archivo-valmore-001-v2.mp3" controls preload="metadata"></audio>
+          <audio class="case-audio" src="./public/audio/caso-001/intro-narracion-archivo-valmore-001-v2.mp3" controls preload="metadata"></audio>
         </div>
       </div>
     `;
@@ -2816,7 +2816,7 @@ function hydrateIntroMedia() {
 
   if (media) {
     media.innerHTML = `
-      <video class="case-video intro-video" src="../public/videos/caso-001/intro-restaurante-anillo-001.mp4" autoplay muted loop playsinline controls></video>
+      <video class="case-video intro-video" src="./public/videos/caso-001/intro-restaurante-anillo-001.mp4" autoplay muted loop playsinline controls></video>
       <div class="intro-artifacts" aria-label="Objetos clave de la escena">
         <span class="artifact-chip"><span class="artifact-icon">&#9671;</span><span class="artifact-copy">Caja vac\u00eda sobre la mesa</span></span>
         <span class="artifact-chip"><span class="artifact-icon">&#9675;</span><span class="artifact-copy">Cuatro versiones distintas</span></span>
@@ -2867,7 +2867,7 @@ function hydrateEvidenceMedia() {
   if (evidence1) {
     evidence1.innerHTML = `
       <div class="evidence-photo-wrap">
-        <img class="evidence-image" src="../public/images/caso-001/evidencias/selfie-evidencia-001.png" alt="Selfie encontrada durante la cena" onerror="this.closest('.evidence-photo-wrap').innerHTML='<div class=&quot;pending-evidence&quot;>Pendiente: selfie-evidencia-001.png</div>'">
+        <img class="evidence-image" src="./public/images/caso-001/evidencias/selfie-evidencia-001.png" alt="Selfie encontrada durante la cena" onerror="this.closest('.evidence-photo-wrap').innerHTML='<div class=&quot;pending-evidence&quot;>Pendiente: selfie-evidencia-001.png</div>'">
       </div>
       <span class="asset-label">Selfie encontrada</span>
       <p class="asset-description">La foto parece espont\u00e1nea, pero funciona como una trampa visual: acerca a Sof\u00eda, esconde un brillo y obliga a volver a escuchar a Mart\u00edn.</p>
@@ -2903,7 +2903,7 @@ function hydrateEvidenceMedia() {
     evidence2.innerHTML = `
       <span class="security-tape">\u25CF C\u00e1mara 01 - Restaurante / mesa principal</span>
       <div class="evidence-video-wrap">
-        <video class="case-video evidence-video" src="../public/videos/caso-001/camara-01-restaurante-evidencia-001.mp4" controls playsinline preload="metadata"></video>
+        <video class="case-video evidence-video" src="./public/videos/caso-001/camara-01-restaurante-evidencia-001.mp4" controls playsinline preload="metadata"></video>
       </div>
       <span class="asset-label">Cámara 01 - Restaurante</span>
       <p class="asset-description">La c\u00e1mara no muestra el robo. Muestra una interrupci\u00f3n: por un segundo la mesa queda tapada, y cuando vuelve la imagen la caja ya no est\u00e1 igual.</p>
@@ -2914,7 +2914,7 @@ function hydrateEvidenceMedia() {
   const evidence3 = document.querySelector('[data-screen="evidence3"] .asset-content');
   if (evidence3) {
     evidence3.innerHTML = `
-      <img class="evidence-image" src="../public/images/caso-001/evidencias/whatsapp-audio-cortado-evidencia-001.png" alt="Captura de WhatsApp con audio interrumpido">
+      <img class="evidence-image" src="./public/images/caso-001/evidencias/whatsapp-audio-cortado-evidencia-001.png" alt="Captura de WhatsApp con audio interrumpido">
       <span class="asset-label">WhatsApp encontrado</span>
       <p class="asset-description">Un audio de ocho segundos corta justo cuando la frase empieza a explicar demasiado. No sabemos quién lo envió, pero alguien no quería que esa noche siguiera.</p>
       <div class="sound-note"><span class="speaker">♪</span><span>Frase clave: “No puedo hacerlo esta noche... si se enteran, se termina todo.”</span></div>
@@ -2949,7 +2949,7 @@ function hydrateEvidenceMedia() {
     evidence3.innerHTML = `
       <div class="whatsapp-evidence">
         <div class="whatsapp-frame">
-          <img class="evidence-image" src="../public/images/caso-001/evidencias/whatsapp-audio-cortado-evidencia-001.png" alt="Captura vertical de WhatsApp con un audio interrumpido">
+          <img class="evidence-image" src="./public/images/caso-001/evidencias/whatsapp-audio-cortado-evidencia-001.png" alt="Captura vertical de WhatsApp con un audio interrumpido">
         </div>
         <div class="whatsapp-summary">
           <span class="asset-label">Chat recuperado</span>
@@ -2964,7 +2964,7 @@ function hydrateEvidenceMedia() {
   const finalMedia = document.querySelector('[data-screen="final"] .asset-content');
   if (finalMedia) {
     finalMedia.innerHTML = `
-      <video class="case-video evidence-video" src="../public/videos/caso-001/archivo-valmore-001-extra-202606271315.mp4" controls playsinline preload="metadata"></video>
+      <video class="case-video evidence-video" src="./public/videos/caso-001/archivo-valmore-001-extra-202606271315.mp4" controls playsinline preload="metadata"></video>
       <span class="asset-label">Revelación visual</span>
       <p class="asset-description">Usé el video extra como cierre visual provisorio. Si este archivo no corresponde al final, lo cambiamos por la foto final cuando la subas.</p>
       <div class="sound-note"><span class="speaker">♪</span><span>La escena final tiene que sentirse como una verdad que aparece cuando la cena ya terminó.</span></div>
@@ -2988,7 +2988,7 @@ function hydrateEndingScreens() {
           </div>
         </div>
         <aside class="theory-panel" aria-label="Ronda de teor\u00edas">
-          <div class="sealed-evidence"><img src="../public/images/caso-001/evidencias/resolucion-caja-fuerte-001.jpeg" alt="Evidencia final desenfocada y sellada hasta el veredicto"></div>
+          <div class="sealed-evidence"><img src="./public/images/caso-001/evidencias/resolucion-caja-fuerte-001.jpeg" alt="Evidencia final desenfocada y sellada hasta el veredicto"></div>
           <div class="theory-clock" id="theoryClock"><span id="theorySeconds">60</span></div>
           <p class="theory-prompt"><strong>Una persona por vez.</strong> Digan un nombre, una pista y el motivo de la mentira. No vale cambiar de teor\u00eda hasta escuchar a todos.</p>
           <div class="theory-actions">
@@ -3035,7 +3035,7 @@ function hydrateEndingScreens() {
         </div>
         <div class="asset-card final-visual-card">
           <div class="asset-content">
-            <img class="final-image" src="../public/images/caso-001/evidencias/resolucion-caja-fuerte-001.jpeg" alt="Caja fuerte abierta con el anillo a salvo junto a una copa y una botella Valmor\u00e8">
+            <img class="final-image" src="./public/images/caso-001/evidencias/resolucion-caja-fuerte-001.jpeg" alt="Caja fuerte abierta con el anillo a salvo junto a una copa y una botella Valmor\u00e8">
             <div class="final-caption"><span class="asset-label">La evidencia que faltaba</span><p class="asset-description">La caja fuerte no estaba vac\u00eda. El anillo nunca estuvo en peligro; la relaci\u00f3n, s\u00ed.</p></div>
           </div>
         </div>
