@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruleta Valmorè - Qué comemos hoy</title>
+<style>
+  * { box-sizing: border-box; }
+
+  :root {
+    --green: #07130d;
+    --green-soft: #142819;
+    --gold: #c9a84c;
+    --gold-light: #e8c96e;
+    --cream: #f5f0e8;
+    --wine: #7b1f25;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 14px;
+    overflow-x: hidden;
+    background:
+      radial-gradient(circle at 50% 8%, rgba(201,168,76,0.15), transparent 28%),
+      radial-gradient(circle at 88% 72%, rgba(123,31,37,0.18), transparent 28%),
+      linear-gradient(135deg, rgba(6,16,11,0.92) 0%, rgba(20,40,25,0.86) 50%, rgba(5,8,5,0.94) 100%),
+      url("../public/images/fondo de Menu.png");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--cream);
+    font-family: Georgia, "Times New Roman", serif;
+  }
+
+  a { color: inherit; }
+
+  .page {
+    width: min(100%, 1180px);
+    margin: 0 auto;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: clamp(10px, 2vw, 22px);
+  }
+
+  .back,
+  .progress-pill {
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 2.4px;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .progress-pill {
+    padding: 8px 12px;
+    border: 1px solid rgba(201,168,76,0.26);
+    border-radius: 999px;
+    background: rgba(8,20,13,0.56);
+  }
+
+  .hero {
+    max-width: 860px;
+    margin: 0 auto 14px;
+    text-align: center;
+  }
+
+  .eyebrow {
+    display: block;
+    margin-bottom: 9px;
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0 auto 12px;
+    font-size: clamp(34px, 4vw, 54px);
+    font-weight: 400;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  .mobile-title {
+    display: none;
+  }
+
+  .intro {
+    max-width: 720px;
+    margin: 0 auto;
+    color: rgba(245,240,232,0.76);
+    font-size: clamp(16px, 1.45vw, 19px);
+    font-style: italic;
+    line-height: 1.42;
+    text-wrap: balance;
+  }
+
+  .how-it-works {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    max-width: 620px;
+    margin: 12px auto 0;
+  }
+
+  .step {
+    padding: 8px;
+    border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 12px;
+    background: rgba(8,20,13,0.5);
+    color: rgba(245,240,232,0.76);
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .step strong {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--gold);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .game-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(18px, 3vw, 34px);
+    align-items: center;
+    margin-top: clamp(12px, 2vw, 24px);
+  }
+
+  .roulette-column,
+  .panel {
+    min-width: 0;
+  }
+
+  .roulette-column {
+    display: grid;
+    justify-items: center;
+    gap: 16px;
+  }
+
+  .wheel-wrap {
+    position: relative;
+    width: min(78vw, 40vh, 410px);
+    aspect-ratio: 1;
+  }
+
+  .wheel-wrap::before {
+    content: "";
+    position: absolute;
+    inset: -12px;
+    border: 1px solid rgba(201,168,76,0.24);
+    border-radius: 50%;
+    box-shadow: 0 0 80px rgba(201,168,76,0.12);
+  }
+
+  .pointer {
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    z-index: 4;
+    width: 0;
+    height: 0;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top: 30px solid var(--gold-light);
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.45));
+    transform: translateX(-50%);
+  }
+
+  .wheel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border: 7px solid rgba(201,168,76,0.84);
+    border-radius: 50%;
+    background: conic-gradient(
+      #c9a84c 0% 20%,
+      #18331f 20% 40%,
+      #efe7d8 40% 60%,
+      #7b1f25 60% 80%,
+      #24462c 80% 100%
+    );
+    box-shadow: inset 0 0 48px rgba(0,0,0,0.45), 0 24px 80px rgba(0,0,0,0.48);
+    transition-property: transform;
+    transition-timing-function: cubic-bezier(0.14, 0.72, 0.12, 1);
+  }
+
+  .wheel-number {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 14%;
+    color: rgba(245,240,232,0.92);
+    font-size: clamp(18px, 3.6vw, 38px);
+    font-weight: 700;
+    text-shadow: 0 3px 12px rgba(0,0,0,0.45);
+    pointer-events: none;
+  }
+
+  .wheel-number span {
+    display: grid;
+    place-items: center;
+    width: 1.6em;
+    height: 1.6em;
+    border: 1px solid rgba(245,240,232,0.25);
+    border-radius: 50%;
+    background: rgba(0,0,0,0.22);
+    transform: rotate(var(--counter-rotation, 0deg));
+  }
+
+  .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 31%;
+    height: 31%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(201,168,76,0.46);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(16,33,22,0.96), rgba(8,18,12,0.98));
+    color: var(--gold);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+  }
+
+  .center strong {
+    display: none;
+  }
+
+  .center small {
+    display: none;
+  }
+
+  .center-logo {
+    width: 78%;
+    height: 78%;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.38));
+  }
+
+  .spin-zone {
+    width: min(100%, 420px);
+    display: grid;
+    gap: 8px;
+  }
+
+  button,
+  .primary-action {
+    min-height: 46px;
+    padding: 0 28px;
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 12px;
+    letter-spacing: 2.7px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.25s ease, opacity 0.25s ease, background 0.25s ease;
+  }
+
+  .spin,
+  .primary-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gold);
+    color: #10170f;
+    text-decoration: none;
+  }
+
+  button:hover,
+  .primary-action:hover { transform: translateY(-2px); }
+  button:disabled { cursor: wait; opacity: 0.64; }
+
+  .spin-help {
+    margin: 0;
+    color: rgba(245,240,232,0.56);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .options-toggle {
+    min-height: 36px;
+    border-color: rgba(201,168,76,0.34);
+    background: rgba(8,20,13,0.55);
+    color: var(--gold);
+    font-size: 10px;
+  }
+
+  .panel {
+    width: min(100%, 760px);
+    margin: 0 auto;
+    padding: clamp(18px, 3vw, 30px);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 20px;
+    background: rgba(8,20,13,0.66);
+    box-shadow: 0 20px 70px rgba(0,0,0,0.22);
+    backdrop-filter: blur(12px);
+    display: none;
+  }
+
+  .panel.visible {
+    display: block;
+  }
+
+  .panel h2 {
+    margin: 0 0 8px;
+    color: var(--gold);
+    font-size: 22px;
+    font-weight: 400;
+  }
+
+  .panel p {
+    margin: 0 0 16px;
+    color: rgba(245,240,232,0.66);
+    line-height: 1.55;
+  }
+
+  .option-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .option {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 11px;
+    border: 1px solid rgba(201,168,76,0.14);
+    border-radius: 13px;
+    background: rgba(245,240,232,0.045);
+    text-align: left;
+    transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+  }
+
+  .option.selected {
+    border-color: rgba(232,201,110,0.75);
+    background: rgba(201,168,76,0.14);
+    transform: translateY(-1px);
+  }
+
+  .option-index {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: #10170f;
+    font-weight: 700;
+  }
+
+  .option-name {
+    display: block;
+    color: rgba(245,240,232,0.92);
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .option-time {
+    display: block;
+    margin-top: 3px;
+    color: rgba(245,240,232,0.52);
+    font-size: 13px;
+  }
+
+  .hint {
+    max-width: 560px;
+    margin: 0;
+    color: rgba(245,240,232,0.62);
+    line-height: 1.6;
+  }
+
+  .result-area {
+    width: 100%;
+    grid-column: 1 / -1;
+  }
+
+  .card,
+  .detail {
+    width: min(100%, 900px);
+    margin: 10px auto 0;
+    padding: clamp(22px, 4vw, 42px);
+    border: 1px solid rgba(201,168,76,0.22);
+    border-radius: 18px;
+    background: rgba(8,20,13,0.78);
+    box-shadow: 0 20px 70px rgba(0,0,0,0.32);
+    backdrop-filter: blur(12px);
+    text-align: center;
+  }
+
+  .card.revealed {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card.revealed::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    pointer-events: none;
+    border: 1px solid rgba(232,201,110,0.2);
+    border-radius: 14px;
+  }
+
+  .card.revealed::after {
+    content: "";
+    position: absolute;
+    right: -70px;
+    top: -70px;
+    width: 180px;
+    height: 180px;
+    border: 1px solid rgba(232,201,110,0.25);
+    border-radius: 50%;
+    animation: revealPulse 2.8s ease-in-out infinite;
+  }
+
+  .recipe-hero {
+    width: min(100%, 620px);
+    aspect-ratio: 16 / 7;
+    margin: 0 0 22px;
+    margin-inline: auto;
+    overflow: hidden;
+    border: 1px solid rgba(201,168,76,0.28);
+    border-radius: 16px;
+    background: rgba(245,240,232,0.045);
+    box-shadow: 0 18px 48px rgba(0,0,0,0.22);
+  }
+
+  .recipe-hero img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .reward-copy {
+    display: inline-block;
+    margin: 0 0 12px;
+    color: var(--gold-light);
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .choice-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 14px;
+    padding: 8px 13px;
+    border: 1px solid rgba(201,168,76,0.34);
+    border-radius: 999px;
+    background: rgba(201,168,76,0.12);
+    color: rgba(245,240,232,0.82);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .table-mission {
+    max-width: 640px;
+    margin: 0 auto 24px;
+    padding: 16px 18px;
+    border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(8,20,13,0.42));
+    color: rgba(245,240,232,0.78);
+    font-size: 17px;
+    line-height: 1.45;
+  }
+
+  .table-mission strong {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--gold-light);
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+  }
+
+  .card h2,
+  .detail h2 {
+    margin: 0 0 12px;
+    font-size: clamp(30px, 4vw, 52px);
+    font-weight: 400;
+  }
+
+  .card p,
+  .detail p {
+    max-width: 650px;
+    margin: 0 auto 24px;
+    color: rgba(245,240,232,0.72);
+    font-size: 19px;
+    line-height: 1.5;
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 0 0 26px;
+  }
+
+  .meta div {
+    min-height: 96px;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 6px;
+    padding: 15px 10px;
+    border-top: 1px solid rgba(201,168,76,0.22);
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+    background: rgba(245,240,232,0.035);
+  }
+
+  .meta-icon {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(201,168,76,0.34);
+    border-radius: 50%;
+    color: var(--gold);
+  }
+
+  .meta-icon svg {
+    width: 19px;
+    height: 19px;
+    display: block;
+  }
+
+  dt {
+    margin-bottom: 6px;
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+    color: rgba(245,240,232,0.84);
+    font-size: 18px;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .ghost-action {
+    background: transparent;
+    color: var(--gold);
+  }
+
+  .detail {
+    display: none;
+    text-align: left;
+  }
+
+  .detail.visible { display: block; }
+
+  .detail h3 {
+    margin: 28px 0 12px;
+    color: var(--gold);
+    font-size: 23px;
+    font-weight: 400;
+  }
+
+  @keyframes revealPulse {
+    0%, 100% { transform: scale(1); opacity: 0.75; }
+    50% { transform: scale(1.08); opacity: 0.28; }
+  }
+
+  .detail ul,
+  .detail ol {
+    color: rgba(245,240,232,0.78);
+    font-size: 18px;
+    line-height: 1.75;
+  }
+
+  @media (max-width: 860px) {
+    body {
+      padding: 14px 14px 24px;
+    }
+
+    .topbar {
+      margin-bottom: 16px;
+    }
+
+    .progress-pill {
+      display: none;
+    }
+
+    .hero {
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(32px, 10vw, 46px);
+    }
+
+    .desktop-title {
+      display: none;
+    }
+
+    .mobile-title {
+      display: inline;
+    }
+
+    .intro {
+      font-size: 16px;
+    }
+
+    .how-it-works {
+      grid-template-columns: 1fr;
+      margin-top: 14px;
+    }
+
+    .step {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 10px;
+    }
+
+    .step strong {
+      margin: 0;
+    }
+
+    .game-layout {
+      grid-template-columns: 1fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .wheel-wrap {
+      width: min(82vw, 315px);
+    }
+
+    .wheel-wrap::before {
+      inset: -6px;
+    }
+
+    .roulette-column {
+      order: 1;
+    }
+
+    .spin-zone {
+      order: -1;
+    }
+
+    .spin {
+      min-height: 56px;
+      font-size: 13px;
+    }
+
+    .options-toggle {
+      min-height: 42px;
+      font-size: 11px;
+    }
+
+    .spin-help {
+      font-size: 13px;
+    }
+
+    .result-area {
+      order: 3;
+    }
+
+    .option-list {
+      grid-template-columns: 1fr;
+      gap: 7px;
+    }
+
+    .option {
+      padding: 9px;
+    }
+
+    .meta {
+      grid-template-columns: 1fr;
+    }
+
+    button,
+    .primary-action {
+      width: 100%;
+    }
+
+    .actions {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 1500px) {
+    .page {
+      width: min(100%, 1380px);
+    }
+
+    .wheel-wrap {
+      width: min(54vw, 50vh, 620px);
+    }
+  }
+</style>
+<script>(function(){try{var t=localStorage.getItem("valmore-theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches)t="light";if(t==="light")document.documentElement.classList.add("theme-light-boot");document.documentElement.dataset.theme=t||"dark";}catch(e){}})();</script>
+<script>(function(){try{var saved=localStorage.getItem("valmore-language");var nav=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone||"").toLowerCase();var localEs=tz.indexOf("buenos_aires")>=0||tz.indexOf("argentina")>=0;var lang=saved||(localEs?"es":nav.indexOf("zh")===0?"zh":nav.indexOf("en")===0?"en":"es");document.documentElement.dataset.language=lang;document.documentElement.lang=lang==="zh"?"zh-CN":lang;if(lang!=="es")document.documentElement.classList.add("i18n-pending");}catch(e){}})();</script>
+<link rel="stylesheet" href="./styles/theme.css">
+</head>
+<body>
+<script>(function(){try{var t=localStorage.getItem("valmore-theme")||document.documentElement.dataset.theme;if(t==="light")document.body.classList.add("theme-light");}catch(e){}})();</script>
+  <div class="page">
+    <header class="topbar topbar-single">
+      <a class="back" href="./index.html">Volver al inicio</a>
+    </header>
+
+    <section class="hero">
+      <span class="eyebrow">Ruleta Valmorè</span>
+      <h1><span class="desktop-title">¿Qué experiencia cocinamos esta noche?</span><span class="mobile-title">¿Qué cocinamos hoy?</span></h1>
+      <p class="intro">Girás, descubrís una receta y la acompañás con una copa de Valmorè.</p>
+      <div class="how-it-works" aria-label="Cómo funciona">
+        <div class="step"><strong>1</strong> Mirá las opciones</div>
+        <div class="step"><strong>2</strong> Girá la ruleta</div>
+        <div class="step"><strong>3</strong> Abrí la receta</div>
+      </div>
+    </section>
+
+    <main class="game-layout">
+      <section class="roulette-column" aria-label="Ruleta gastronómica Valmorè">
+        <div class="wheel-wrap">
+          <div class="pointer" aria-hidden="true"></div>
+          <div class="wheel" id="wheel">
+            <div class="wheel-number" style="transform: rotate(36deg)"><span>1</span></div>
+            <div class="wheel-number" style="transform: rotate(108deg)"><span>2</span></div>
+            <div class="wheel-number" style="transform: rotate(180deg)"><span>3</span></div>
+            <div class="wheel-number" style="transform: rotate(252deg)"><span>4</span></div>
+            <div class="wheel-number" style="transform: rotate(324deg)"><span>5</span></div>
+            <div class="center">
+              <img class="center-logo" src="../public/images/Logo Valmorè.png" alt="Valmorè">
+            </div>
+          </div>
+        </div>
+
+        <div class="spin-zone">
+          <button class="spin" id="spinButton" type="button">Girar ahora</button>
+          <button class="options-toggle" id="optionsToggle" type="button" aria-expanded="false" aria-controls="optionsPanel">Ver opciones</button>
+          <p class="spin-help">Tocá una vez. La ruleta elige por vos y te muestra la receta.</p>
+        </div>
+      </section>
+
+      <aside class="panel" id="optionsPanel" aria-label="Opciones de la ruleta">
+        <h2>Opciones posibles</h2>
+        <p>Si preferís mantener la sorpresa, podés dejar esta lista cerrada.</p>
+        <div class="option-list" id="optionList"></div>
+      </aside>
+
+      <section class="result-area">
+        <section id="result"><p class="hint">Todavía no giraste. Cuando salga una opción, vas a ver el plato recomendado acá.</p></section>
+        <section class="detail" id="detail"></section>
+      </section>
+    </main>
+  </div>
+
+<script>
+const recipes = [
+  { name: "Salmón con puré rústico", slug: "salmon-pure-rustico", image: "../public/images/recipes/salmon-pure-rustico.jpg", mission: "Cada persona cuenta una buena noticia de la semana antes del primer brindis.", description: "Una cena elegante, simple y lista en menos de 40 minutos.", time: "40 minutos", difficulty: "Fácil", ingredients: ["2 filetes de salmón", "4 papas medianas", "1 cucharada de manteca", "Aceite de oliva", "Ralladura de limón", "Sal, pimienta y hierbas frescas"], steps: ["Herví las papas con sal hasta que estén tiernas.", "Pisalas de forma rústica con manteca, aceite de oliva y pimienta.", "Sellá el salmón en sartén caliente, primero del lado de la piel.", "Terminá con ralladura de limón y hierbas frescas.", "Serví el salmón sobre el puré y acompañá con una copa de Malbec."] },
+  { name: "Brie fundido con pan tostado", slug: "brie-fundido-pan-tostado", image: "../public/images/recipes/brie-fundido-pan-tostado.jpg", mission: "Modo picada: alguien propone una pregunta inesperada y nadie puede responder con una sola palabra.", description: "El clásico que parece sofisticado y se prepara en minutos.", time: "15 minutos", difficulty: "Muy fácil", ingredients: ["1 queso brie pequeño", "Pan de campo o baguette", "Miel", "Nueces tostadas", "Romero fresco", "Pimienta negra"], steps: ["Colocá el brie en una fuente chica apta para horno.", "Sumá miel, nueces, romero y pimienta.", "Horneá hasta que el centro esté cremoso.", "Tostá el pan en rodajas finas.", "Serví caliente para compartir al centro de la mesa."] },
+  { name: "Pastas con camarones", slug: "pastas-con-camarones", image: "../public/images/recipes/pastas-con-camarones.jpg", mission: "Elegí una canción para cocinar. Si la mesa aprueba, se convierte en himno de la noche.", description: "Una combinación perfecta entre cocina italiana y sabores del mar.", time: "30 minutos", difficulty: "Media", ingredients: ["250 g de pasta larga", "300 g de camarones limpios", "2 dientes de ajo", "Tomates cherry", "Aceite de oliva", "Perejil fresco", "Sal y pimienta"], steps: ["Cociná la pasta al dente y reservá un poco de agua de cocción.", "Salteá ajo en aceite de oliva sin quemarlo.", "Sumá los camarones y cociná apenas hasta que cambien de color.", "Agregá tomates cherry y la pasta.", "Terminá con perejil, pimienta y un toque del agua reservada."] },
+  { name: "Carne al vino con papines", slug: "carne-al-vino-papines", image: "../public/images/recipes/carne-al-vino-papines.jpg", mission: "Cena larga: cada copa habilita una historia que nadie de la mesa conozca todavía.", description: "Una experiencia cálida para una noche larga de conversación.", time: "60 minutos", difficulty: "Alta", ingredients: ["600 g de carne para cocción lenta", "1 copa de Malbec", "Papines", "Cebolla", "Zanahoria", "Caldo", "Laurel, sal y pimienta"], steps: ["Sellá la carne en una olla pesada hasta dorar.", "Agregá cebolla y zanahoria picadas.", "Desglasá con vino y dejá evaporar el alcohol.", "Sumá caldo, laurel y cociná lento hasta tiernizar.", "Horneá o herví los papines y serví con la salsa reducida."] },
+  { name: "Risotto de hongos", slug: "risotto-de-hongos", image: "../public/images/recipes/risotto-de-hongos.jpg", mission: "Ronda cremosa: cada persona nombra una idea que quiere cocinar este año, literal o simbólicamente.", description: "Cremoso, elegante y sorprendentemente fácil de preparar.", time: "45 minutos", difficulty: "Media", ingredients: ["300 g de arroz carnaroli o arborio", "Hongos frescos", "Cebolla", "Caldo caliente", "Manteca", "Queso parmesano", "Pimienta negra"], steps: ["Salteá los hongos y reservalos.", "Transparentá cebolla picada con un poco de manteca.", "Agregá el arroz y nacaralo durante un minuto.", "Incorporá caldo caliente de a poco, revolviendo.", "Terminá con hongos, manteca, parmesano y pimienta."] }
+];
+
+const wheel = document.getElementById("wheel");
+const button = document.getElementById("spinButton");
+const optionsToggle = document.getElementById("optionsToggle");
+const optionsPanel = document.getElementById("optionsPanel");
+const result = document.getElementById("result");
+const detail = document.getElementById("detail");
+const optionList = document.getElementById("optionList");
+let rotation = 0;
+let spinning = false;
+
+function translateDynamic(element) {
+  if (window.ValmoreI18n && typeof window.ValmoreI18n.translateElement === "function") {
+    window.ValmoreI18n.translateElement(element);
+  }
+}
+
+function setSpinText(text) {
+  button.textContent = text;
+  translateDynamic(button);
+}
+
+function renderOptions(selectedSlug) {
+  optionList.innerHTML = recipes.map((recipe, index) => `
+    <div class="option ${selectedSlug === recipe.slug ? "selected" : ""}" data-slug="${recipe.slug}">
+      <span class="option-index">${index + 1}</span>
+      <span>
+        <span class="option-name">${recipe.name}</span>
+        <span class="option-time">${recipe.time} · ${recipe.difficulty}</span>
+      </span>
+    </div>
+  `).join("");
+  translateDynamic(optionList);
+}
+
+function list(items, ordered) {
+  const tag = ordered ? "ol" : "ul";
+  return `<${tag}>${items.map((item) => `<li>${item}</li>`).join("")}</${tag}>`;
+}
+
+const icons = {
+  clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v5l3 2"/></svg>',
+  chef: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11.5c-2.2-.7-3-2.2-2.5-3.8.5-1.8 2.7-2.6 4.3-1.5C9.5 4.3 11 3.4 12.8 3.7c1.7.2 2.9 1.4 3.2 3 1.9-.3 3.5.9 3.7 2.6.2 1.8-1.1 3.1-2.9 3.7"/><path d="M7 11.5h10l-.8 7.5H7.8L7 11.5Z"/><path d="M9.5 15h5"/></svg>',
+  sparkle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.1L19 10l-5.2 1.9L12 17l-1.8-5.1L5 10l5.2-1.9L12 3Z"/><path d="M18 15l.8 2.2L21 18l-2.2.8L18 21l-.8-2.2L15 18l2.2-.8L18 15Z"/></svg>',
+  wine: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8v5a4 4 0 0 1-8 0V3Z"/><path d="M12 12v7"/><path d="M9 21h6"/></svg>'
+};
+
+function difficultyIcon(difficulty) {
+  if (difficulty === "Alta") return icons.chef;
+  if (difficulty === "Muy fácil" || difficulty === "Fácil") return icons.sparkle;
+  return icons.chef;
+}
+
+function recipeMeta(recipe) {
+  return `
+    <dl class="meta">
+      <div><span class="meta-icon">${icons.clock}</span><dt>Tiempo</dt><dd>${recipe.time}</dd></div>
+      <div><span class="meta-icon">${difficultyIcon(recipe.difficulty)}</span><dt>Dificultad</dt><dd>${recipe.difficulty}</dd></div>
+      <div><span class="meta-icon">${icons.wine}</span><dt>Maridaje</dt><dd>Valmorè Origine Malbec 2023</dd></div>
+    </dl>
+  `;
+}
+
+function showDetail(recipe) {
+  detail.classList.add("visible");
+  detail.innerHTML = `
+    <h2>${recipe.name}</h2>
+    <p>${recipe.description}</p>
+    ${recipeMeta(recipe)}
+    <div class="table-mission"><strong>Juego de mesa</strong>${recipe.mission}</div>
+    <h3>Ingredientes</h3>
+    ${list(recipe.ingredients, false)}
+    <h3>Preparación paso a paso</h3>
+    ${list(recipe.steps, true)}
+    <h3>Recomendación de maridaje</h3>
+    <p>Serví Valmorè Origine Malbec 2023 apenas refrescado. Su fruta roja y estructura acompañan la receta sin tapar la conversación.</p>
+  `;
+  translateDynamic(detail);
+  detail.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function renderResult(recipe) {
+  result.innerHTML = `
+    <article class="card revealed">
+      <figure class="recipe-hero"><img src="${recipe.image}" alt="${recipe.name}"></figure>
+      <span class="choice-badge">La ruleta eligió por vos</span>
+      <span class="eyebrow">Resultado de la noche</span>
+      <span class="reward-copy">Receta desbloqueada</span>
+      <h2>${recipe.name}</h2>
+      <p>${recipe.description}</p>
+      ${recipeMeta(recipe)}
+      <div class="table-mission"><strong>Mini misión Valmorè</strong>${recipe.mission}</div>
+      <div class="actions">
+        <button class="primary-action" type="button" id="detailButton">Ver receta completa</button>
+        <button class="ghost-action" type="button" id="againButton">Girar nuevamente</button>
+      </div>
+    </article>
+  `;
+  document.getElementById("detailButton").addEventListener("click", () => showDetail(recipe));
+  document.getElementById("againButton").addEventListener("click", spin);
+  translateDynamic(result);
+}
+
+function spin() {
+  if (spinning) return;
+  const selectedIndex = Math.floor(Math.random() * recipes.length);
+  const segmentAngle = 360 / recipes.length;
+  const targetCenter = selectedIndex * segmentAngle + segmentAngle / 2;
+  const duration = 3000 + Math.floor(Math.random() * 2000);
+  const extraSpins = 4 + Math.floor(Math.random() * 3);
+
+  spinning = true;
+  button.disabled = true;
+  setSpinText("Girando...");
+  detail.classList.remove("visible");
+  renderOptions(null);
+  result.innerHTML = `<p class="hint">La ruleta está eligiendo plato, ritmo y excusa para conversar...</p>`;
+  translateDynamic(result);
+
+  rotation += extraSpins * 360 + (360 - targetCenter);
+  wheel.style.transitionDuration = `${duration}ms`;
+  wheel.style.transform = `rotate(${rotation}deg)`;
+
+  window.setTimeout(() => {
+    const recipe = recipes[selectedIndex];
+    renderOptions(recipe.slug);
+    renderResult(recipe);
+    button.disabled = false;
+    setSpinText("Girar ahora");
+    spinning = false;
+    result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, duration);
+}
+
+renderOptions(null);
+optionsToggle.addEventListener("click", () => {
+  const isOpen = optionsPanel.classList.toggle("visible");
+  optionsToggle.setAttribute("aria-expanded", String(isOpen));
+  optionsToggle.textContent = isOpen ? "Ocultar opciones" : "Ver opciones";
+  translateDynamic(optionsToggle);
+});
+button.addEventListener("click", spin);
+</script>
+<script src="./i18n.js"></script>
+<script src="./theme.js"></script>
+</body>
+</html>

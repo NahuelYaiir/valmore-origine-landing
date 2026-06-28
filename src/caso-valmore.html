@@ -1,0 +1,3372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caso Valmorè 001 - Archivo del anillo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07160f;
+    --panel: rgba(9, 28, 18, 0.76);
+    --panel-strong: rgba(4, 17, 12, 0.92);
+    --gold: #c9a84c;
+    --gold-soft: #e8c96e;
+    --cream: #f5f0e8;
+    --muted: rgba(245, 240, 232, 0.68);
+    --line: rgba(201, 168, 76, 0.22);
+    --danger: #7f2028;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background:
+      radial-gradient(circle at 16% 12%, rgba(201, 168, 76, 0.12), transparent 28%),
+      radial-gradient(circle at 78% 16%, rgba(127, 32, 40, 0.18), transparent 26%),
+      linear-gradient(140deg, #06110c 0%, #102817 50%, #06120d 100%);
+    color: var(--cream);
+    font-family: "Lato", Arial, sans-serif;
+    font-weight: 300;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(201, 168, 76, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(201, 168, 76, 0.045) 1px, transparent 1px);
+    background-size: 120px 120px;
+    mask-image: radial-gradient(circle at center, black 0%, transparent 72%);
+  }
+
+  .case-shell {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 1440px);
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 18px clamp(16px, 3vw, 42px) 32px;
+  }
+
+  .case-nav {
+    position: relative;
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 0 clamp(18px, 3vw, 34px);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background:
+      linear-gradient(90deg, rgba(4, 18, 13, 0.9), rgba(13, 34, 22, 0.74)),
+      url("../public/images/fondo de Menu.png");
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
+  }
+
+  .brand {
+    color: var(--gold-soft);
+    text-decoration: none;
+    font-family: "Cinzel", serif;
+    font-size: clamp(22px, 2.6vw, 34px);
+    letter-spacing: clamp(6px, 1vw, 12px);
+  }
+
+  .nav-actions {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-link,
+  .case-control {
+    color: rgba(245, 240, 232, 0.82);
+    text-decoration: none;
+    font-family: "Cinzel", serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .case-control {
+    min-height: 42px;
+    min-width: 42px;
+    padding: 0 14px;
+    border-color: rgba(201, 168, 76, 0.32);
+    background: rgba(2, 14, 10, 0.38);
+  }
+
+  .case-control.is-icon {
+    width: 42px;
+    padding: 0;
+    font-size: 22px;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .case-control:disabled {
+    opacity: 0.28;
+  }
+
+  .nav-center-note {
+    display: none;
+    color: rgba(245, 240, 232, 0.54);
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .progress {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .progress-label {
+    font-family: "Cinzel", serif;
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 4px;
+    border-radius: 999px;
+    background: rgba(245, 240, 232, 0.12);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 11%;
+    background: linear-gradient(90deg, #9b7427, var(--gold-soft));
+    transition: width 0.35s ease;
+  }
+
+  .screen {
+    display: none;
+    min-height: calc(100vh - 150px);
+    align-items: center;
+    padding: clamp(28px, 5vw, 70px) 0 20px;
+  }
+
+  .screen.active {
+    display: grid;
+  }
+
+  .screen-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.78fr);
+    gap: clamp(24px, 5vw, 76px);
+    align-items: center;
+  }
+
+  .screen-centered {
+    width: min(100%, 980px);
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  [data-screen="suspects"] {
+    align-items: start;
+    padding-top: clamp(18px, 3vw, 42px);
+  }
+
+  [data-screen="suspects"] .screen-centered {
+    width: min(100%, 1180px);
+  }
+
+  [data-screen="suspects"] h2 {
+    font-size: clamp(40px, 5vw, 74px);
+  }
+
+  [data-screen="suspects"] .lead {
+    max-width: 840px;
+    margin: 18px auto 0;
+    font-size: clamp(20px, 2.4vw, 30px);
+  }
+
+  .eyebrow {
+    display: block;
+    margin-bottom: 18px;
+    color: var(--gold);
+    font-family: "Cinzel", serif;
+    font-size: 12px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+  }
+
+  h1, h2 {
+    margin: 0;
+    color: var(--cream);
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 500;
+    line-height: 0.95;
+  }
+
+  h1 {
+    font-size: clamp(54px, 9vw, 128px);
+  }
+
+  [data-screen="intro"] {
+    position: relative;
+    min-height: calc(100vh - 112px);
+    overflow: hidden;
+    padding-top: clamp(14px, 2vw, 24px);
+    align-items: start;
+  }
+
+  [data-screen="intro"]::before,
+  [data-screen="intro"]::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    border: 1px solid rgba(201, 168, 76, 0.16);
+    border-radius: 50%;
+  }
+
+  [data-screen="intro"]::before {
+    width: clamp(260px, 34vw, 520px);
+    height: clamp(260px, 34vw, 520px);
+    left: -12%;
+    top: 10%;
+  }
+
+  [data-screen="intro"]::after {
+    width: clamp(210px, 26vw, 390px);
+    height: clamp(210px, 26vw, 390px);
+    right: 6%;
+    bottom: 4%;
+    border-color: rgba(127, 32, 40, 0.2);
+  }
+
+  [data-screen="intro"] .screen-grid {
+    position: relative;
+    z-index: 1;
+    grid-template-columns: minmax(0, 0.82fr) minmax(420px, 0.78fr);
+    gap: clamp(20px, 3.2vw, 44px);
+    align-items: start;
+  }
+
+  [data-screen="intro"] h1 {
+    max-width: 620px;
+    font-size: clamp(38px, 4.9vw, 62px);
+    line-height: 0.98;
+  }
+
+  [data-screen="intro"] .lead {
+    max-width: 680px;
+    margin-top: 14px;
+    font-size: clamp(18px, 1.65vw, 22px);
+    line-height: 1.38;
+  }
+
+  [data-screen="intro"] .script-card {
+    display: block;
+    max-width: 690px;
+    margin-top: 18px;
+    padding: clamp(14px, 1.6vw, 18px);
+    background: linear-gradient(145deg, rgba(245, 240, 232, 0.06), rgba(2, 14, 10, 0.24));
+  }
+
+  [data-screen="intro"] .script-card p {
+    font-size: clamp(15px, 1.25vw, 18px);
+    line-height: 1.45;
+  }
+
+  .intro-hook-list {
+    display: grid;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .intro-hook-list li {
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 10px;
+    color: rgba(245, 240, 232, 0.84);
+    font-size: clamp(14px, 1.1vw, 16px);
+    line-height: 1.32;
+  }
+
+  .intro-audio-strip {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 14px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(201, 168, 76, 0.18);
+  }
+
+  .intro-audio-strip .asset-label {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .intro-audio-strip .case-audio {
+    margin-top: 0;
+  }
+
+  .intro-audio-block {
+    min-width: 0;
+  }
+
+  [data-screen="intro"] .script-card p {
+    font-size: clamp(16px, 1.45vw, 20px);
+    line-height: 1.55;
+  }
+
+  .intro-start-row {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    z-index: 20;
+    width: auto;
+    justify-content: center;
+    margin: 0;
+  }
+
+  .intro-start-row .primary {
+    min-width: min(100%, 260px);
+    min-height: 52px;
+    position: relative;
+    isolation: isolate;
+    box-shadow: 0 0 34px rgba(216, 180, 84, 0.22);
+  }
+
+  .intro-start-row .primary::before {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    z-index: -1;
+    border: 1px solid rgba(232, 201, 110, 0.45);
+    border-radius: 999px;
+    opacity: 0.7;
+  }
+
+  h2 {
+    font-size: clamp(42px, 6vw, 82px);
+  }
+
+  h3 {
+    margin: 0 0 12px;
+    color: var(--cream);
+    font-family: "Cormorant Garamond", serif;
+    font-size: 34px;
+    font-weight: 500;
+  }
+
+  p {
+    margin: 0;
+    color: var(--muted);
+    font-size: clamp(17px, 2vw, 23px);
+    line-height: 1.65;
+  }
+
+  .lead {
+    max-width: 760px;
+    margin-top: 28px;
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(22px, 3vw, 34px);
+    font-style: italic;
+    color: rgba(245, 240, 232, 0.78);
+  }
+
+  .script-card,
+  .asset-card,
+  .moment-card,
+  .vote-card,
+  .statement-card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: linear-gradient(145deg, rgba(245, 240, 232, 0.055), rgba(2, 14, 10, 0.36));
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.26);
+    backdrop-filter: blur(14px);
+  }
+
+  .script-card {
+    margin-top: 28px;
+    padding: clamp(20px, 3vw, 32px);
+  }
+
+  .script-card p + p {
+    margin-top: 12px;
+  }
+
+  .asset-card {
+    min-height: clamp(320px, 50vw, 560px);
+    display: grid;
+    align-content: end;
+    padding: clamp(18px, 3vw, 30px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .asset-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 66% 16%, rgba(232, 201, 110, 0.22), transparent 22%),
+      linear-gradient(145deg, rgba(15, 48, 28, 0.18), rgba(0, 0, 0, 0.54));
+  }
+
+  .asset-card.video::after,
+  .asset-card.photo::after,
+  .asset-card.audio::after,
+  .asset-card.security::after {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 76px;
+    height: 76px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(232, 201, 110, 0.36);
+    border-radius: 50%;
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+    background: rgba(3, 16, 11, 0.72);
+  }
+
+  .asset-card.video::after { content: "VIDEO"; }
+  .asset-card.photo::after { content: "FOTO"; }
+  .asset-card.audio::after { content: "AUDIO"; }
+  .asset-card.security::after { content: "CAM"; }
+
+  .asset-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .asset-label,
+  .small-label {
+    color: var(--gold);
+    font-family: "Cinzel", serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .asset-description {
+    margin-top: 12px;
+    color: rgba(245, 240, 232, 0.82);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .sound-note {
+    margin-top: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid rgba(201, 168, 76, 0.2);
+    border-radius: 8px;
+    background: rgba(2, 14, 10, 0.42);
+    color: rgba(245, 240, 232, 0.78);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .speaker {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(201, 168, 76, 0.14);
+    color: var(--gold-soft);
+  }
+
+  .actions {
+    margin-top: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  button,
+  .button {
+    min-height: 52px;
+    border: 1px solid rgba(201, 168, 76, 0.44);
+    border-radius: 999px;
+    padding: 0 24px;
+    background: rgba(245, 240, 232, 0.04);
+    color: var(--cream);
+    font-family: "Cinzel", serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+
+  button:hover,
+  .button:hover {
+    transform: translateY(-1px);
+    border-color: rgba(232, 201, 110, 0.82);
+  }
+
+  .primary {
+    background: linear-gradient(135deg, #d8b454, #b98d32);
+    color: #102016;
+    border-color: transparent;
+  }
+
+  button:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .suspect-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .suspect-card {
+    min-height: 292px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 16px;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(201, 168, 76, 0.16), transparent 28%),
+      linear-gradient(160deg, rgba(245, 240, 232, 0.07), rgba(5, 18, 12, 0.56));
+    color: var(--cream);
+    text-align: left;
+    overflow: hidden;
+  }
+
+  .suspect-card:hover {
+    background:
+      radial-gradient(circle at 18% 12%, rgba(201, 168, 76, 0.24), transparent 30%),
+      linear-gradient(160deg, rgba(201, 168, 76, 0.14), rgba(5, 18, 12, 0.62));
+  }
+
+  .suspect-card.done {
+    border-color: rgba(232, 201, 110, 0.7);
+    background:
+      radial-gradient(circle at 18% 12%, rgba(201, 168, 76, 0.24), transparent 32%),
+      linear-gradient(160deg, rgba(201, 168, 76, 0.13), rgba(5, 18, 12, 0.66));
+  }
+
+  .suspect-avatar {
+    width: 96px;
+    height: 96px;
+    display: block;
+    border-radius: 50%;
+    border: 1px solid rgba(232, 201, 110, 0.34);
+    object-fit: cover;
+    object-position: center top;
+    background: rgba(2, 14, 10, 0.42);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
+  }
+
+  .suspect-topline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+  }
+
+  .suspect-emotion {
+    width: 46px;
+    height: 46px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(232, 201, 110, 0.22);
+    border-radius: 50%;
+    background: rgba(2, 14, 10, 0.44);
+    font-size: 20px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+  }
+
+  .suspect-copy {
+    display: block;
+  }
+
+  .suspect-clue {
+    display: block;
+    margin-top: 10px;
+    color: rgba(245, 240, 232, 0.72);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .suspect-tagline {
+    display: block;
+    margin-top: 10px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(201, 168, 76, 0.2);
+    color: var(--cream);
+    font-family: "Cormorant Garamond", serif;
+    font-size: 19px;
+    font-style: italic;
+    line-height: 1.25;
+  }
+
+  .suspect-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .suspect-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 5px 8px;
+    border: 1px solid rgba(232, 201, 110, 0.22);
+    border-radius: 999px;
+    color: rgba(245, 240, 232, 0.78);
+    background: rgba(2, 14, 10, 0.26);
+    font-size: 11px;
+    line-height: 1;
+  }
+
+  .suspect-hint-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .suspect-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 9px 12px;
+    border: 1px solid rgba(201, 168, 76, 0.22);
+    border-radius: 999px;
+    background: rgba(2, 14, 10, 0.28);
+    color: rgba(245, 240, 232, 0.78);
+    font-size: 13px;
+  }
+
+  .suspect-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .statement-portrait {
+    width: min(100%, 280px);
+    aspect-ratio: 4 / 5;
+    margin-bottom: 22px;
+    border: 1px solid rgba(232, 201, 110, 0.28);
+    border-radius: 12px;
+    object-fit: cover;
+    object-position: center top;
+    box-shadow: 0 22px 58px rgba(0, 0, 0, 0.28);
+  }
+
+  .case-video {
+    width: 100%;
+    display: block;
+    margin-bottom: 22px;
+    border: 1px solid rgba(232, 201, 110, 0.28);
+    border-radius: 14px;
+    background: rgba(2, 14, 10, 0.72);
+    box-shadow: 0 22px 58px rgba(0, 0, 0, 0.28);
+  }
+
+  .evidence-image {
+    width: 100%;
+    max-height: min(62vh, 620px);
+    display: block;
+    margin-bottom: 18px;
+    border: 1px solid rgba(232, 201, 110, 0.28);
+    border-radius: 14px;
+    object-fit: contain;
+    background: rgba(2, 14, 10, 0.72);
+    box-shadow: 0 22px 58px rgba(0, 0, 0, 0.28);
+  }
+
+  .evidence-video {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .pending-evidence {
+    min-height: 280px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 18px;
+    border: 1px dashed rgba(232, 201, 110, 0.34);
+    border-radius: 14px;
+    color: rgba(245, 240, 232, 0.7);
+    font-family: "Cinzel", serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-align: center;
+    text-transform: uppercase;
+    background: rgba(2, 14, 10, 0.34);
+  }
+
+  .evidence-puzzle {
+    display: grid;
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .puzzle-piece {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 12px;
+    align-items: start;
+    padding: 13px 14px;
+    border: 1px solid rgba(201, 168, 76, 0.18);
+    border-radius: 10px;
+    background: rgba(2, 14, 10, 0.28);
+  }
+
+  .puzzle-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(232, 201, 110, 0.24);
+    border-radius: 50%;
+    background: rgba(201, 168, 76, 0.1);
+    font-size: 17px;
+  }
+
+  .puzzle-title {
+    display: block;
+    color: var(--gold);
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .puzzle-copy {
+    display: block;
+    margin-top: 5px;
+    color: rgba(245, 240, 232, 0.74);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .evidence-question {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border: 1px solid rgba(232, 201, 110, 0.26);
+    border-radius: 10px;
+    background: linear-gradient(145deg, rgba(201, 168, 76, 0.12), rgba(2, 14, 10, 0.22));
+    color: rgba(245, 240, 232, 0.84);
+    font-size: 16px;
+    line-height: 1.42;
+  }
+
+  [data-screen="evidence3"] {
+    min-height: calc(100vh - 138px);
+    padding-top: clamp(20px, 3vh, 34px);
+  }
+
+  [data-screen="evidence3"] .screen-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(330px, 0.72fr);
+    gap: clamp(24px, 4vw, 58px);
+    align-items: center;
+  }
+
+  [data-screen="evidence3"] h2 {
+    max-width: 760px;
+    font-size: clamp(46px, 5.2vw, 72px);
+    line-height: 0.94;
+  }
+
+  [data-screen="evidence3"] .lead {
+    max-width: 760px;
+    margin-top: 14px;
+    font-size: clamp(19px, 1.8vw, 26px);
+    line-height: 1.28;
+  }
+
+  [data-screen="evidence3"] .script-card {
+    margin-top: 14px;
+    padding: clamp(14px, 1.7vw, 20px);
+  }
+
+  [data-screen="evidence3"] .script-card > p {
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  [data-screen="evidence3"] .evidence-puzzle {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 9px;
+    margin-top: 14px;
+  }
+
+  [data-screen="evidence3"] .puzzle-piece {
+    grid-template-columns: 28px 1fr;
+    gap: 8px;
+    padding: 11px;
+  }
+
+  [data-screen="evidence3"] .puzzle-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  [data-screen="evidence3"] .puzzle-copy {
+    font-size: 12px;
+    line-height: 1.32;
+  }
+
+  [data-screen="evidence3"] .evidence-question {
+    margin-top: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  [data-screen="evidence3"] .asset-card {
+    min-height: 0;
+    align-content: center;
+    padding: clamp(14px, 2vw, 22px);
+  }
+
+  [data-screen="evidence3"] .asset-card.audio::after {
+    display: none;
+  }
+
+  [data-screen="evidence3"] .actions {
+    margin-top: 12px;
+  }
+
+  [data-screen="evidence3"] .primary {
+    min-height: 48px;
+  }
+
+  .whatsapp-evidence {
+    display: grid;
+    grid-template-columns: minmax(190px, 0.78fr) minmax(150px, 0.62fr);
+    gap: 16px;
+    align-items: center;
+  }
+
+  .whatsapp-frame {
+    position: relative;
+    width: min(100%, 300px);
+    margin: 0 auto;
+    padding: 7px;
+    border: 1px solid rgba(232, 201, 110, 0.34);
+    border-radius: 24px;
+    background: #06100c;
+    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.32);
+  }
+
+  .whatsapp-frame::before {
+    content: "EVIDENCIA 03 \00B7 21:45";
+    position: absolute;
+    left: 50%;
+    top: -12px;
+    z-index: 2;
+    padding: 5px 10px;
+    border: 1px solid rgba(232, 201, 110, 0.32);
+    border-radius: 999px;
+    background: #071a12;
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+    transform: translateX(-50%);
+  }
+
+  .whatsapp-frame .evidence-image {
+    width: 100%;
+    max-height: min(60vh, 540px);
+    margin: 0;
+    border: 0;
+    border-radius: 18px;
+    object-fit: contain;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .whatsapp-summary {
+    display: grid;
+    gap: 12px;
+  }
+
+  .whatsapp-summary .asset-description {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.46;
+  }
+
+  .tension-round {
+    padding: 14px;
+    border: 1px solid rgba(232, 201, 110, 0.3);
+    border-radius: 10px;
+    background: linear-gradient(145deg, rgba(126, 26, 34, 0.28), rgba(201, 168, 76, 0.08));
+  }
+
+  .tension-round strong {
+    display: block;
+    margin-bottom: 7px;
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .tension-round span {
+    color: rgba(245, 240, 232, 0.86);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .evidence-photo-wrap {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .evidence-photo-wrap::after {
+    content: "MIRA EL FONDO";
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    padding: 8px 11px;
+    border: 1px solid rgba(232, 201, 110, 0.32);
+    border-radius: 999px;
+    background: rgba(2, 14, 10, 0.72);
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 9px;
+    letter-spacing: 1.7px;
+    text-transform: uppercase;
+  }
+
+  .evidence-video-wrap {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .evidence-video-wrap::after {
+    content: "Segundo 06";
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    padding: 8px 11px;
+    border: 1px solid rgba(232, 201, 110, 0.32);
+    border-radius: 999px;
+    background: rgba(2, 14, 10, 0.76);
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 9px;
+    letter-spacing: 1.7px;
+    text-transform: uppercase;
+  }
+
+  .security-tape {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 8px 11px;
+    border: 1px solid rgba(232, 201, 110, 0.2);
+    border-radius: 999px;
+    background: rgba(2, 14, 10, 0.36);
+    color: rgba(245, 240, 232, 0.78);
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+  }
+
+  .intro-video {
+    aspect-ratio: 16 / 9;
+    min-height: clamp(250px, 31vw, 430px);
+    object-fit: cover;
+  }
+
+  [data-screen="intro"] .asset-card.video {
+    min-height: auto;
+    align-content: stretch;
+    padding: clamp(12px, 1.6vw, 18px);
+  }
+
+  [data-screen="intro"] .asset-card.video::after {
+    width: 58px;
+    height: 58px;
+    font-size: 9px;
+  }
+
+  [data-screen="intro"] .asset-card.video .asset-content {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+  }
+
+  [data-screen="intro"] .intro-video {
+    height: clamp(250px, 42vh, 420px);
+    margin-bottom: 0;
+  }
+
+  .intro-artifacts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .artifact-chip {
+    min-height: 62px;
+    display: grid;
+    align-content: center;
+    gap: 6px;
+    padding: 10px;
+    border: 1px solid rgba(201, 168, 76, 0.22);
+    border-radius: 10px;
+    background: rgba(2, 14, 10, 0.34);
+  }
+
+  .artifact-icon {
+    color: var(--gold-soft);
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .artifact-copy {
+    color: rgba(245, 240, 232, 0.76);
+    font-family: "Cinzel", serif;
+    font-size: 9px;
+    letter-spacing: 1.6px;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .statement-video {
+    aspect-ratio: 4 / 5;
+    max-height: min(52vh, 500px);
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .case-audio {
+    width: 100%;
+    margin-top: 16px;
+    accent-color: var(--gold);
+  }
+
+  .media-note {
+    margin-top: 12px;
+    color: rgba(245, 240, 232, 0.72);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .memory-aid {
+    display: none;
+    margin-top: 14px;
+    border-top: 1px solid rgba(201, 168, 76, 0.18);
+    padding-top: 12px;
+  }
+
+  .memory-aid summary {
+    color: var(--gold);
+    cursor: pointer;
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .memory-aid p {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .memory-aid .case-audio {
+    margin-top: 10px;
+  }
+
+  .suspect-name {
+    margin-top: 0;
+    display: block;
+    font-family: "Cormorant Garamond", serif;
+    font-size: 30px;
+    color: var(--cream);
+  }
+
+  .suspect-role,
+  .suspect-status {
+    display: block;
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .suspect-status {
+    align-self: flex-start;
+    margin-top: 0;
+    padding: 7px 10px;
+    border: 1px solid rgba(201, 168, 76, 0.28);
+    border-radius: 999px;
+    background: rgba(2, 14, 10, 0.34);
+    color: var(--gold);
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .statement-card {
+    padding: clamp(18px, 2.4vw, 28px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  [data-screen="statement"] {
+    align-items: start;
+    padding-top: clamp(18px, 3vw, 42px);
+  }
+
+  [data-screen="statement"] .screen-grid {
+    grid-template-columns: minmax(0, 0.82fr) minmax(360px, 0.78fr);
+    gap: clamp(18px, 3vw, 44px);
+    align-items: start;
+  }
+
+  [data-screen="statement"] h2 {
+    font-size: clamp(44px, 5.2vw, 76px);
+  }
+
+  [data-screen="statement"] .asset-card {
+    min-height: auto;
+    align-content: stretch;
+    padding: clamp(14px, 2vw, 20px);
+  }
+
+  [data-screen="statement"] .asset-card::after {
+    width: 58px;
+    height: 58px;
+    font-size: 9px;
+  }
+
+  [data-screen="statement"] .asset-content {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+  }
+
+  .statement-card::before {
+    content: "";
+    position: absolute;
+    width: 190px;
+    height: 190px;
+    right: -86px;
+    top: -96px;
+    border: 1px solid rgba(201, 168, 76, 0.18);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .statement-quote {
+    margin-top: 12px;
+    color: rgba(245, 240, 232, 0.86);
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(28px, 3.4vw, 46px);
+    font-style: italic;
+    line-height: 1.02;
+  }
+
+  .statement-context {
+    margin-top: 12px;
+    color: rgba(245, 240, 232, 0.74);
+    font-size: clamp(15px, 1.25vw, 18px);
+    line-height: 1.48;
+  }
+
+  .statement-clue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .statement-clue {
+    min-height: 86px;
+    padding: 12px;
+    border: 1px solid rgba(201, 168, 76, 0.18);
+    border-radius: 10px;
+    background: rgba(2, 14, 10, 0.28);
+  }
+
+  .statement-clue-icon {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .statement-clue-title {
+    display: block;
+    color: var(--gold);
+    font-family: "Cinzel", serif;
+    font-size: 9px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+  }
+
+  .statement-clue-copy {
+    display: block;
+    margin-top: 6px;
+    color: rgba(245, 240, 232, 0.74);
+    font-size: 13px;
+    line-height: 1.32;
+  }
+
+  .statement-question {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border: 1px solid rgba(232, 201, 110, 0.24);
+    border-radius: 10px;
+    background: rgba(201, 168, 76, 0.09);
+    color: rgba(245, 240, 232, 0.82);
+    font-size: 15px;
+    line-height: 1.38;
+  }
+
+  .statement-question strong {
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .moment-card {
+    margin-top: 16px;
+    padding: 16px;
+    border-color: rgba(232, 201, 110, 0.32);
+    background: rgba(201, 168, 76, 0.1);
+  }
+
+  .moment-card strong {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .moment-card p {
+    font-size: clamp(15px, 1.25vw, 18px);
+    line-height: 1.42;
+  }
+
+  .evidence-list {
+    display: grid;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .evidence-chip {
+    padding: 14px 16px;
+    border: 1px solid rgba(201, 168, 76, 0.18);
+    border-radius: 8px;
+    color: rgba(245, 240, 232, 0.78);
+    background: rgba(245, 240, 232, 0.035);
+    font-size: 15px;
+  }
+
+  .vote-options {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  [data-screen="reflection"],
+  [data-screen="vote"],
+  [data-screen="final"] {
+    min-height: calc(100vh - 138px);
+    padding-top: clamp(22px, 3.2vh, 38px);
+  }
+
+  .ending-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 0.88fr) minmax(360px, 0.72fr);
+    gap: clamp(26px, 5vw, 72px);
+    align-items: center;
+  }
+
+  .ending-copy h2,
+  [data-screen="vote"] h2,
+  [data-screen="final"] h2 {
+    font-size: clamp(48px, 5.8vw, 82px);
+    line-height: 0.96;
+  }
+
+  .ending-copy .lead {
+    margin-top: 16px;
+    font-size: clamp(20px, 2vw, 28px);
+    line-height: 1.28;
+  }
+
+  .case-recap {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .recap-card {
+    min-height: 118px;
+    padding: 14px;
+    border: 1px solid rgba(232, 201, 110, 0.2);
+    border-radius: 10px;
+    background: rgba(2, 14, 10, 0.3);
+  }
+
+  .recap-card strong {
+    display: block;
+    margin: 7px 0 5px;
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+  }
+
+  .recap-card span:last-child {
+    color: rgba(245, 240, 232, 0.72);
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .theory-panel {
+    padding: clamp(20px, 3vw, 30px);
+    border: 1px solid rgba(232, 201, 110, 0.26);
+    border-radius: 12px;
+    background: linear-gradient(145deg, rgba(4, 22, 15, 0.88), rgba(31, 20, 13, 0.7));
+    text-align: center;
+  }
+
+  .sealed-evidence {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    margin-bottom: 18px;
+    border: 1px solid rgba(232, 201, 110, 0.26);
+    border-radius: 10px;
+    background: #07140e;
+  }
+
+  .sealed-evidence img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    filter: blur(18px) brightness(0.34) saturate(0.65);
+    transform: scale(1.1);
+  }
+
+  .sealed-evidence::after {
+    content: "EVIDENCIA SELLADA";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    background: repeating-linear-gradient(-35deg, transparent 0 22px, rgba(201, 168, 76, 0.055) 22px 24px);
+  }
+
+  .theory-clock {
+    --clock-progress: 0deg;
+    width: 112px;
+    height: 112px;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: conic-gradient(var(--gold) var(--clock-progress), rgba(245, 240, 232, 0.08) 0);
+    box-shadow: 0 0 0 8px rgba(201, 168, 76, 0.06);
+  }
+
+  .theory-clock::before {
+    content: "";
+    position: absolute;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    background: #071a12;
+  }
+
+  .theory-clock span {
+    position: relative;
+    z-index: 1;
+    color: var(--cream);
+    font-family: "Cormorant Garamond", serif;
+    font-size: 34px;
+  }
+
+  .theory-prompt {
+    margin-bottom: 16px;
+    color: rgba(245, 240, 232, 0.78);
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .theory-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .theory-actions button {
+    min-height: 46px;
+    padding: 0 20px;
+  }
+
+  .vote-stage {
+    width: min(100%, 1120px);
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  [data-screen="vote"] {
+    padding-top: 14px;
+  }
+
+  [data-screen="vote"] h2 {
+    font-size: clamp(46px, 4.8vw, 66px);
+  }
+
+  [data-screen="vote"] .lead {
+    font-size: clamp(19px, 1.8vw, 25px);
+    line-height: 1.22;
+  }
+
+  .vote-stage .lead {
+    max-width: 760px;
+    margin: 14px auto 0;
+  }
+
+  .vote-meter {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 9px 14px;
+    border: 1px solid rgba(232, 201, 110, 0.22);
+    border-radius: 999px;
+    color: rgba(245, 240, 232, 0.74);
+    background: rgba(2, 14, 10, 0.3);
+    font-size: 13px;
+  }
+
+  .vote-meter strong {
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 10px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+  }
+
+  .vote-card {
+    min-height: 205px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    place-items: center;
+    gap: 10px;
+    padding: 14px;
+    color: var(--cream);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+  }
+
+  .vote-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(232, 201, 110, 0.54);
+  }
+
+  .vote-card input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .vote-card .suspect-avatar {
+    width: 72px;
+    height: 72px;
+  }
+
+  .vote-card-copy {
+    display: grid;
+    gap: 4px;
+    text-align: center;
+  }
+
+  .vote-card-clue {
+    color: rgba(245, 240, 232, 0.64);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .vote-card-tag {
+    display: inline-flex;
+    padding: 6px 9px;
+    border: 1px solid rgba(232, 201, 110, 0.2);
+    border-radius: 999px;
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 8px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+
+  .vote-check {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(232, 201, 110, 0.28);
+    border-radius: 50%;
+    color: transparent;
+  }
+
+  .vote-card.selected {
+    border-color: rgba(232, 201, 110, 0.86);
+    background: rgba(201, 168, 76, 0.14);
+    transform: translateY(-5px);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.3), 0 0 28px rgba(201, 168, 76, 0.12);
+  }
+
+  .vote-card.selected .vote-check {
+    color: #071a12;
+    background: var(--gold-soft);
+  }
+
+  .verdict-lock {
+    min-height: 24px;
+    margin-top: 14px;
+    color: rgba(245, 240, 232, 0.62);
+    font-size: 13px;
+  }
+
+  [data-screen="vote"] .vote-options {
+    margin-top: 18px;
+  }
+
+  [data-screen="vote"] .actions {
+    margin-top: 10px;
+  }
+
+  [data-screen="vote"] .primary {
+    min-height: 48px;
+  }
+
+  .final-reveal {
+    display: grid;
+    gap: 18px;
+    margin-top: 26px;
+  }
+
+  .final-result {
+    margin: 16px 0 18px;
+    padding: 14px 16px;
+    border: 1px solid rgba(232, 201, 110, 0.28);
+    border-radius: 10px;
+    background: rgba(201, 168, 76, 0.1);
+  }
+
+  .final-result strong {
+    display: block;
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .final-result span {
+    display: block;
+    margin-top: 5px;
+    color: rgba(245, 240, 232, 0.8);
+  }
+
+  [data-screen="final"] .final-reveal {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  [data-screen="final"] h2 {
+    font-size: clamp(46px, 4.8vw, 66px);
+  }
+
+  [data-screen="final"] .final-line {
+    min-height: 78px;
+    padding: 10px 13px;
+    font-size: clamp(17px, 1.55vw, 22px);
+  }
+
+  [data-screen="final"] .moment-card {
+    margin-top: 10px;
+    padding: 12px 14px;
+  }
+
+  [data-screen="final"] .moment-card p {
+    font-size: 15px;
+  }
+
+  [data-screen="final"] .actions {
+    margin-top: 10px;
+  }
+
+  .final-visual-card {
+    min-height: 0;
+    padding: 14px;
+  }
+
+  .final-visual-card::after {
+    display: none;
+  }
+
+  .final-image {
+    width: 100%;
+    display: block;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border: 1px solid rgba(232, 201, 110, 0.28);
+    border-radius: 10px;
+  }
+
+  .final-caption {
+    padding: 16px 4px 2px;
+  }
+
+  .final-line {
+    padding: 18px 20px;
+    border-left: 2px solid var(--gold);
+    background: rgba(245, 240, 232, 0.04);
+    color: rgba(245, 240, 232, 0.82);
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.25;
+  }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    z-index: 30;
+    padding: 12px 18px;
+    border: 1px solid rgba(232, 201, 110, 0.34);
+    border-radius: 999px;
+    background: rgba(4, 18, 13, 0.94);
+    color: var(--gold-soft);
+    font-family: "Cinzel", serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transform: translate(-50%, 20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .toast.visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .access-gate {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: grid;
+    place-items: center;
+    padding: 22px;
+    background:
+      radial-gradient(circle at 48% 22%, rgba(201, 168, 76, 0.16), transparent 28%),
+      linear-gradient(145deg, rgba(3, 13, 9, 0.96), rgba(7, 22, 15, 0.98));
+    backdrop-filter: blur(12px);
+  }
+
+  .access-gate.hidden {
+    display: none;
+  }
+
+  .access-panel {
+    width: min(100%, 560px);
+    padding: clamp(26px, 5vw, 46px);
+    border: 1px solid rgba(201, 168, 76, 0.32);
+    border-radius: 12px;
+    background:
+      linear-gradient(145deg, rgba(245, 240, 232, 0.06), rgba(2, 14, 10, 0.52)),
+      url("../public/images/fondo de Menu.png");
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 34px 90px rgba(0, 0, 0, 0.42);
+    text-align: center;
+  }
+
+  .access-panel h2 {
+    margin-top: 12px;
+    font-size: clamp(38px, 7vw, 68px);
+  }
+
+  .access-panel p {
+    margin-top: 16px;
+    font-size: 18px;
+  }
+
+  .access-form {
+    margin-top: 28px;
+    display: grid;
+    gap: 12px;
+  }
+
+  .access-input {
+    width: 100%;
+    min-height: 56px;
+    border: 1px solid rgba(201, 168, 76, 0.36);
+    border-radius: 999px;
+    padding: 0 22px;
+    background: rgba(2, 14, 10, 0.62);
+    color: var(--cream);
+    font-family: "Cinzel", serif;
+    font-size: 16px;
+    letter-spacing: 3px;
+    text-align: center;
+    text-transform: uppercase;
+    outline: none;
+  }
+
+  .access-input:focus {
+    border-color: rgba(232, 201, 110, 0.84);
+    box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.1);
+  }
+
+  .access-error {
+    min-height: 20px;
+    color: #f0a8a8;
+    font-size: 14px;
+  }
+
+  body.theme-light .access-gate {
+    background:
+      radial-gradient(circle at 48% 22%, rgba(201, 168, 76, 0.18), transparent 28%),
+      linear-gradient(145deg, rgba(255, 250, 241, 0.96), rgba(232, 220, 200, 0.98));
+  }
+
+  body.theme-light .access-panel {
+    background: rgba(255, 250, 241, 0.92);
+  }
+
+  body.theme-light .access-input {
+    background: rgba(255, 250, 241, 0.82);
+    color: #122f20;
+  }
+
+  body.theme-light {
+    --bg: #f4efe4;
+    --panel: rgba(255, 250, 241, 0.78);
+    --panel-strong: rgba(255, 250, 241, 0.94);
+    --cream: #122f20;
+    --muted: rgba(18, 47, 32, 0.72);
+    --line: rgba(155, 116, 39, 0.24);
+    background:
+      radial-gradient(circle at 16% 12%, rgba(201, 168, 76, 0.16), transparent 28%),
+      radial-gradient(circle at 78% 16%, rgba(127, 32, 40, 0.09), transparent 26%),
+      linear-gradient(140deg, #fffaf1 0%, #f1e7d6 55%, #e9ddc9 100%) !important;
+    color: #122f20;
+  }
+
+  body.theme-light .case-nav,
+  body.theme-light .script-card,
+  body.theme-light .asset-card,
+  body.theme-light .moment-card,
+  body.theme-light .vote-card,
+  body.theme-light .statement-card,
+  body.theme-light .suspect-card {
+    background: rgba(255, 250, 241, 0.82);
+    box-shadow: 0 24px 58px rgba(18, 47, 32, 0.11);
+  }
+
+  body.theme-light .asset-card::before {
+    background:
+      radial-gradient(circle at 66% 16%, rgba(201, 168, 76, 0.18), transparent 22%),
+      linear-gradient(145deg, rgba(255, 250, 241, 0.34), rgba(18, 47, 32, 0.08));
+  }
+
+  body.theme-light .asset-description,
+  body.theme-light .statement-quote,
+  body.theme-light .final-line {
+    color: rgba(18, 47, 32, 0.82);
+  }
+
+  body.theme-light .statement-context,
+  body.theme-light .statement-clue-copy,
+  body.theme-light .statement-question,
+  body.theme-light .moment-card p,
+  body.theme-light .puzzle-copy,
+  body.theme-light .evidence-question {
+    color: rgba(18, 47, 32, 0.74);
+  }
+
+  body.theme-light .statement-clue,
+  body.theme-light .statement-question,
+  body.theme-light .puzzle-piece,
+  body.theme-light .evidence-question,
+  body.theme-light .security-tape {
+    background: rgba(255, 250, 241, 0.66);
+  }
+
+  body.theme-light .suspect-avatar,
+  body.theme-light .statement-portrait,
+  body.theme-light .evidence-image {
+    box-shadow: 0 16px 34px rgba(18, 47, 32, 0.14);
+  }
+
+  body.theme-light .sound-note,
+  body.theme-light .evidence-chip {
+    background: rgba(255, 250, 241, 0.7);
+    color: rgba(18, 47, 32, 0.76);
+  }
+
+  body.theme-light .whatsapp-frame {
+    border-color: rgba(123, 91, 25, 0.34);
+    background: #163629;
+  }
+
+  body.theme-light .whatsapp-frame::before {
+    background: #fffaf1;
+    color: #765817;
+  }
+
+  body.theme-light .tension-round {
+    border-color: rgba(123, 91, 25, 0.3);
+    background: linear-gradient(145deg, rgba(132, 43, 49, 0.12), rgba(201, 168, 76, 0.1));
+  }
+
+  body.theme-light .tension-round span {
+    color: rgba(18, 47, 32, 0.86);
+  }
+
+  body.theme-light .recap-card,
+  body.theme-light .vote-meter {
+    background: rgba(255, 250, 241, 0.72);
+  }
+
+  body.theme-light .recap-card span:last-child,
+  body.theme-light .vote-meter,
+  body.theme-light .vote-card-clue,
+  body.theme-light .verdict-lock,
+  body.theme-light .final-result span {
+    color: rgba(18, 47, 32, 0.76);
+  }
+
+  body.theme-light .theory-panel {
+    background: linear-gradient(145deg, rgba(255, 250, 241, 0.92), rgba(232, 218, 193, 0.8));
+  }
+
+  body.theme-light .theory-prompt {
+    color: rgba(18, 47, 32, 0.8);
+  }
+
+  body.theme-light .theory-clock::before {
+    background: #fffaf1;
+  }
+
+  body.theme-light .theory-clock span {
+    color: #123321;
+  }
+
+  body.theme-light .final-result {
+    background: rgba(201, 168, 76, 0.12);
+  }
+
+  body.theme-light button,
+  body.theme-light .button {
+    color: #122f20;
+  }
+
+  body.theme-light .primary {
+    color: #102016;
+  }
+
+  body.theme-light .artifact-chip,
+  body.theme-light .case-control {
+    background: rgba(255, 250, 241, 0.74);
+  }
+
+  body.theme-light .artifact-copy,
+  body.theme-light .suspect-clue,
+  body.theme-light .suspect-badge,
+  body.theme-light .suspect-hint {
+    color: rgba(18, 47, 32, 0.72);
+  }
+
+  body.theme-light .suspect-card {
+    background:
+      radial-gradient(circle at 18% 12%, rgba(201, 168, 76, 0.16), transparent 30%),
+      linear-gradient(160deg, rgba(255, 250, 241, 0.92), rgba(237, 226, 207, 0.84));
+  }
+
+  body.theme-light .suspect-card:hover,
+  body.theme-light .suspect-card.done {
+    background:
+      radial-gradient(circle at 18% 12%, rgba(201, 168, 76, 0.22), transparent 32%),
+      linear-gradient(160deg, rgba(255, 250, 241, 0.96), rgba(232, 218, 193, 0.88));
+  }
+
+  body.theme-light .suspect-emotion,
+  body.theme-light .suspect-status,
+  body.theme-light .suspect-badge,
+  body.theme-light .suspect-hint {
+    background: rgba(255, 250, 241, 0.7);
+  }
+
+  body.theme-light .intro-hook-list li {
+    color: rgba(18, 47, 32, 0.84);
+  }
+
+  body.theme-light [data-screen="intro"] .script-card {
+    background: rgba(255, 250, 241, 0.88);
+  }
+
+  body.theme-light .nav-center-note {
+    color: rgba(18, 47, 32, 0.62);
+  }
+
+  @media (max-width: 980px) {
+    .screen-grid {
+      grid-template-columns: 1fr;
+    }
+
+    [data-screen="intro"] {
+      min-height: auto;
+    }
+
+    [data-screen="intro"] .screen-grid {
+      grid-template-columns: 1fr;
+    }
+
+    [data-screen="intro"] h1 {
+      max-width: 100%;
+      font-size: clamp(44px, 12vw, 72px);
+    }
+
+    .suspect-grid,
+    .vote-options {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .asset-card {
+      min-height: 280px;
+    }
+
+    [data-screen="evidence3"] .screen-grid {
+      grid-template-columns: 1fr;
+    }
+
+    [data-screen="evidence3"] .evidence-puzzle {
+      grid-template-columns: 1fr;
+    }
+
+    .ending-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .case-recap {
+      grid-template-columns: 1fr;
+    }
+
+    [data-screen="reflection"],
+    [data-screen="vote"],
+    [data-screen="final"] {
+      min-height: auto;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .case-shell {
+      padding: 12px 12px 24px;
+    }
+
+    .case-nav {
+      min-height: 68px;
+      padding: 0 16px;
+    }
+
+    .brand {
+      font-size: 22px;
+      letter-spacing: 6px;
+    }
+
+    .nav-actions {
+      position: static;
+      transform: none;
+      gap: 8px;
+    }
+
+    .nav-center-note {
+      display: none;
+    }
+
+    .case-control:not(.is-icon) {
+      display: none;
+    }
+
+    .progress {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .progress-track {
+      width: 100%;
+      flex: none;
+    }
+
+    .screen {
+      min-height: auto;
+      padding-top: 34px;
+    }
+
+    [data-screen="evidence3"] {
+      padding-top: 26px;
+    }
+
+    [data-screen="evidence3"] h2 {
+      font-size: clamp(42px, 14vw, 62px);
+    }
+
+    .whatsapp-evidence {
+      grid-template-columns: 1fr;
+    }
+
+    .whatsapp-frame {
+      width: min(100%, 270px);
+    }
+
+    .whatsapp-frame .evidence-image {
+      max-height: 56vh;
+    }
+
+    .ending-copy h2,
+    [data-screen="vote"] h2,
+    [data-screen="final"] h2 {
+      font-size: clamp(42px, 13vw, 60px);
+    }
+
+    .vote-options {
+      grid-template-columns: 1fr;
+    }
+
+    .vote-card {
+      min-height: 0;
+      grid-template-columns: 72px 1fr auto;
+      grid-template-rows: auto;
+      justify-items: start;
+      text-align: left;
+    }
+
+    .vote-card .suspect-avatar {
+      width: 64px;
+      height: 64px;
+    }
+
+    .vote-card-copy {
+      text-align: left;
+    }
+
+    .vote-check {
+      position: static;
+    }
+
+    [data-screen="final"] .final-reveal {
+      grid-template-columns: 1fr;
+    }
+
+    [data-screen="final"] .final-line {
+      min-height: 0;
+    }
+
+    .suspect-grid,
+    .vote-options {
+      grid-template-columns: 1fr;
+    }
+
+    .suspect-card {
+      min-height: 0;
+      padding: 16px;
+    }
+
+    .suspect-topline {
+      justify-content: flex-start;
+    }
+
+    .suspect-avatar {
+      width: 74px;
+      height: 74px;
+    }
+
+    .suspect-emotion {
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+    }
+
+    .suspect-name {
+      font-size: 27px;
+    }
+
+    .suspect-tagline {
+      font-size: 18px;
+    }
+
+    .suspect-hint-row {
+      justify-content: flex-start;
+    }
+
+    .intro-artifacts {
+      grid-template-columns: 1fr;
+    }
+
+    [data-screen="intro"] .intro-video {
+      height: auto;
+      min-height: 220px;
+    }
+
+    .intro-start-row {
+      position: relative;
+      bottom: auto;
+      margin-top: 18px;
+    }
+
+    .intro-audio-strip {
+      grid-template-columns: 1fr;
+    }
+
+    .actions {
+      flex-direction: column;
+    }
+
+    [data-screen="statement"] .screen-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .statement-clue-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .statement-video {
+      max-height: 360px;
+    }
+
+    button,
+    .button {
+      width: 100%;
+    }
+
+    .case-nav button {
+      width: auto;
+    }
+  }
+</style>
+<script>(function(){try{var t=localStorage.getItem("valmore-theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches)t="light";if(t==="light")document.documentElement.classList.add("theme-light-boot");document.documentElement.dataset.theme=t||"dark";}catch(e){}})();</script>
+<script>(function(){try{var saved=localStorage.getItem("valmore-language");var nav=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone||"").toLowerCase();var localEs=tz.indexOf("buenos_aires")>=0||tz.indexOf("argentina")>=0;var lang=saved||(localEs?"es":nav.indexOf("zh")===0?"zh":nav.indexOf("en")===0?"en":"es");document.documentElement.dataset.language=lang;document.documentElement.lang=lang==="zh"?"zh-CN":lang;if(lang!=="es")document.documentElement.classList.add("i18n-pending");}catch(e){}})();</script>
+<link rel="stylesheet" href="./styles/theme.css">
+</head>
+<body>
+<script>(function(){try{var t=localStorage.getItem("valmore-theme")||document.documentElement.dataset.theme;if(t==="light")document.body.classList.add("theme-light");}catch(e){}})();</script>
+<section class="access-gate" id="accessGate" aria-label="Acceso privado al Caso Valmorè 001">
+  <div class="access-panel">
+    <span class="eyebrow">Acceso privado</span>
+    <h2>Caso Valmorè 001</h2>
+    <p>Ingresá el código de invitación para comenzar la experiencia.</p>
+    <form class="access-form" id="accessForm">
+      <input class="access-input" id="accessCode" type="password" placeholder="Código de acceso" autocomplete="off" aria-label="Código de acceso">
+      <button class="primary" type="submit">Entrar al caso</button>
+      <span class="access-error" id="accessError" aria-live="polite"></span>
+    </form>
+  </div>
+</section>
+<div class="case-shell">
+  <nav class="case-nav">
+    <a class="brand" href="./index.html">VALMORÈ</a>
+    <div class="nav-actions">
+      <a class="nav-link" href="./index.html">Inicio</a>
+      <a class="nav-link" href="./que-comemos-hoy.html">¿Qué comemos hoy?</a>
+      <a class="nav-link" href="./index.html#contacto">Contacto</a>
+    </div>
+  </nav>
+
+  <div class="progress" aria-label="Progreso del caso">
+    <span class="progress-label" id="progressLabel">Pantalla 1 de 9</span>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <main id="caseApp">
+    <section class="screen active" data-screen="intro">
+      <div class="screen-grid">
+        <div>
+          <span class="eyebrow">Archivo Valmorè 001</span>
+          <h1>El anillo que no desapareció</h1>
+          <p class="lead">Una cena perfecta. Una propuesta esperada. Una caja vacía. Todos cuentan una historia distinta, pero uno está mintiendo.</p>
+          <div class="script-card">
+            <p>Esta noche iba a ser inolvidable.</p>
+            <p>Martín había preparado una propuesta de matrimonio. Reservó el restaurante, eligió el vino y compró el anillo.</p>
+            <p>Pero cuando llegó el momento... el anillo había desaparecido.</p>
+            <p><strong>Todos cuentan una historia distinta. Pero uno está mintiendo.</strong></p>
+          </div>
+          <div class="actions">
+            <button class="primary" type="button" data-action="start">Comenzar investigación</button>
+          </div>
+        </div>
+        <div class="asset-card video">
+          <div class="asset-content">
+            <span class="asset-label">Fondo animado placeholder</span>
+            <p class="asset-description">Restaurante elegante de noche, lluvia contra ventanales, copas servidas y una caja de anillo sobre mantel blanco.</p>
+            <div class="sound-note"><span class="speaker">♪</span><span>Sonido sugerido: lluvia suave, murmullo bajo de restaurante, copa apoyándose sobre la mesa y silencio seco al revelar la desaparición.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="suspects">
+      <div class="screen-centered">
+        <span class="eyebrow">Investigación libre</span>
+        <h2>¿A quién querés escuchar primero?</h2>
+        <p class="lead">Elegí cualquier orden. Después de cada declaración, la mesa decide si le cree.</p>
+        <div class="suspect-grid" id="suspectGrid"></div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="statement">
+      <div class="screen-grid">
+        <div>
+          <span class="eyebrow" id="statementKicker">Declaración</span>
+          <h2 id="statementTitle">Martín</h2>
+          <div class="statement-card">
+            <span class="small-label" id="statementMood">Declaración bajo tensión</span>
+            <p class="statement-quote" id="statementQuote"></p>
+            <p class="statement-context" id="statementContext"></p>
+            <div class="statement-clue-grid" id="statementClues"></div>
+            <div class="statement-question" id="statementQuestion"></div>
+          </div>
+          <div class="moment-card">
+            <strong>Momento Valmorè</strong>
+            <p>¿Le creés? Tomen un sorbo y discutan durante un minuto antes de seguir.</p>
+          </div>
+          <div class="actions">
+            <button class="primary" type="button" data-action="finish-statement">Siguiente</button>
+          </div>
+        </div>
+        <div class="asset-card video" id="statementAsset">
+          <div class="asset-content">
+            <img class="statement-portrait" id="statementPortrait" src="../public/images/caso-001/personajes/martin-avatar-base.png" alt="Retrato del sospechoso seleccionado">
+            <span class="asset-label">Video IA placeholder</span>
+            <p class="asset-description" id="statementAssetText"></p>
+            <div class="sound-note"><span class="speaker">♪</span><span>Sonido sugerido: sala baja, respiración cercana, una copa moviéndose apenas sobre la mesa.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="evidence1">
+      <div class="screen-grid">
+        <div>
+          <span class="eyebrow">Primera evidencia</span>
+          <h2>La selfie</h2>
+          <p class="lead">Creíamos tener toda la historia... hasta que apareció esto.</p>
+          <div class="script-card">
+            <p>Una foto tomada durante la cena muestra a alguien en un lugar donde dijo no haber estado.</p>
+            <p><strong>¿Cambiaron de opinión?</strong></p>
+          </div>
+          <div class="actions">
+            <button class="primary" type="button" data-go="evidence2">Ver siguiente evidencia</button>
+          </div>
+        </div>
+        <div class="asset-card photo">
+          <div class="asset-content">
+            <span class="asset-label">Imagen placeholder</span>
+            <p class="asset-description">Selfie elegante y algo borrosa. En segundo plano aparece una figura que contradice su declaración.</p>
+            <div class="sound-note"><span class="speaker">♪</span><span>Sonido sugerido: notificación corta de foto revelada, golpe seco y lluvia de fondo.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="evidence2">
+      <div class="screen-grid">
+        <div>
+          <span class="eyebrow">Segunda evidencia</span>
+          <h2>La cámara</h2>
+          <p class="lead">La cámara no mostró el robo. Pero mostró algo raro.</p>
+          <div class="script-card">
+            <p>Un movimiento cerca de una zona restringida cambia el centro de sospecha.</p>
+            <p><strong>¿Eso prueba culpa o solo nervios?</strong></p>
+          </div>
+          <div class="actions">
+            <button class="primary" type="button" data-go="evidence3">Escuchar audio</button>
+          </div>
+        </div>
+        <div class="asset-card security">
+          <div class="asset-content">
+            <span class="asset-label">Cámara placeholder</span>
+            <p class="asset-description">Plano granulado de seguridad. No se ve el robo, solo una entrada o salida sospechosa cerca de la caja fuerte del restaurante.</p>
+            <div class="sound-note"><span class="speaker">♪</span><span>Sonido sugerido: zumbido de cámara, pequeño glitch y corte seco.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="evidence3">
+      <div class="screen-grid">
+        <div>
+          <span class="eyebrow">Tercera evidencia</span>
+          <h2>El audio cortado</h2>
+          <p class="lead">No alcanza para condenar a nadie. Alcanza para dudar de todos.</p>
+          <div class="script-card">
+            <p>"No puedo hacerlo esta noche... si se enteran, se termina todo."</p>
+            <p><strong>¿Quién estaba intentando evitar que pasara algo?</strong></p>
+          </div>
+          <div class="actions">
+            <button class="primary" type="button" data-go="reflection">Última reflexión</button>
+          </div>
+        </div>
+        <div class="asset-card audio">
+          <div class="asset-content">
+            <span class="asset-label">Audio placeholder</span>
+            <p class="asset-description">Interfaz de audio tipo mensaje, onda dorada sobre fondo oscuro. La frase se corta justo antes de revelar a quién pertenece.</p>
+            <div class="sound-note"><span class="speaker">♪</span><span>Sonido sugerido: audio de WhatsApp con ruido ambiente de calle y corte abrupto.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="reflection">
+      <div class="screen-centered">
+        <span class="eyebrow">Última reflexión</span>
+        <h2>Ya no quedan más pruebas.</h2>
+        <p class="lead">Solo una persona está mintiendo. Antes de votar, cada uno tiene 30 segundos para defender su teoría.</p>
+        <div class="asset-card photo" style="margin-top: 34px; min-height: 300px;">
+          <div class="asset-content">
+            <span class="asset-label">Imagen placeholder</span>
+            <p class="asset-description">Mesa vacía después de la cena: copas a medio terminar, servilletas movidas, caja del anillo cerrada y lluvia más lenta.</p>
+          </div>
+        </div>
+        <div class="actions" style="justify-content: center;">
+          <button class="primary" type="button" data-go="vote">Dar veredicto</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="vote">
+      <div class="screen-centered">
+        <span class="eyebrow">Votación final</span>
+        <h2>Elegí quién miente.</h2>
+        <p class="lead">No votes por impulso: votá por la versión que menos resiste la conversación.</p>
+        <div class="vote-options" id="voteOptions"></div>
+        <div class="actions" style="justify-content: center;">
+          <button class="primary" type="button" id="confirmVote" disabled>Confirmar veredicto</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" data-screen="final">
+      <div class="screen-grid">
+        <div>
+          <span class="eyebrow">Resolución</span>
+          <h2>El caso nunca fue sobre el anillo.</h2>
+          <div class="final-reveal">
+            <div class="final-line">No hubo robo.</div>
+            <div class="final-line">Antes de la cena, Mart\u00edn le pidi\u00f3 a Camila que guardara el anillo en la caja fuerte.</div>
+            <div class="final-line">Martín mintió. Nunca pensaba proponer matrimonio.</div>
+            <div class="final-line">Todos buscaron un ladrón. Pero el caso era descubrir quién estaba mintiendo.</div>
+          </div>
+          <div class="moment-card">
+            <strong>Momento Valmorè final</strong>
+            <p>¿Qué hubieras hecho vos si estabas en esa mesa?</p>
+          </div>
+          <div class="actions">
+            <button class="primary" type="button" data-action="restart">Volver a jugar</button>
+            <a class="button" href="./index.html#contacto">Contactanos</a>
+          </div>
+        </div>
+        <div class="asset-card video">
+          <div class="asset-content">
+            <span class="asset-label">Video final placeholder</span>
+            <p class="asset-description">Detective en restaurante casi vacío. Luz baja, caja fuerte desenfocada detrás y tono de revelación sobria.</p>
+            <div class="sound-note"><span class="speaker">♪</span><span>Sonido sugerido: restaurante apagándose, lluvia más tenue, respiración final y copa levantándose para cerrar.</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast">Primero escuchá las cuatro declaraciones.</div>
+
+<script>
+const suspects = [
+  {
+    id: "martin",
+    name: "Martín",
+    initial: "M",
+    image: "../public/images/caso-001/personajes/martin-avatar-base.png",
+    video: "../public/videos/caso-001/martin-declaracion-001.mp4",
+    role: "El novio",
+    quote: "Yo quería que esta noche terminara de una vez... digo, que terminara bien.",
+    context: "Martín dice que preparó la propuesta perfecta y que alguien arruinó el momento robando el anillo.",
+    asset: "Primer plano de Martín, traje oscuro, mirada cansada. Detrás, la mesa preparada y la caja vacía fuera de foco."
+  },
+  {
+    id: "sofia",
+    name: "Sofía",
+    initial: "S",
+    image: "../public/images/caso-001/personajes/sofia-avatar-base.png",
+    video: "../public/videos/caso-001/sofia-declaracion-001.mp4",
+    role: "La mejor amiga",
+    quote: "Hay cosas que una amiga ve antes que todos.",
+    context: "Sofía asegura que solo quiso calmar a la novia y que nunca se acercó a la caja.",
+    asset: "Sofía sentada junto a una ventana con lluvia. Sostiene una copa, pero mira hacia otro lado antes de responder."
+  },
+  {
+    id: "lucas",
+    name: "Lucas",
+    initial: "L",
+    image: "../public/images/caso-001/personajes/lucas-avatar-base.png",
+    video: "../public/videos/caso-001/lucas-declaracion-001.mp4",
+    role: "El hermano",
+    quote: "A veces mi hermano arma problemas para no enfrentar otros.",
+    context: "Lucas dice que Martín estaba nervioso, aunque insiste en que el anillo existía.",
+    asset: "Lucas de pie en un pasillo del restaurante, luz fría, gesto incómodo y manos en los bolsillos."
+  },
+  {
+    id: "camila",
+    name: "Camila",
+    initial: "C",
+    image: "../public/images/caso-001/personajes/camila-avatar-base.png",
+    video: "../public/videos/caso-001/camila-declaracion-001.mp4",
+    role: "La moza",
+    quote: "Yo solo guardé lo que me pidieron guardar.",
+    context: "Camila conoce el protocolo del restaurante y sabe más de la caja fuerte de lo que parece.",
+    asset: "Camila junto a la barra, uniforme elegante, bandeja en mano y una llave pequeña apenas visible."
+  }
+];
+
+const suspectText = {
+  martin: {
+    name: "Martín",
+    quote: "Yo quería que esta noche terminara de una vez... digo, que terminara bien.",
+    context: "Martín dice que preparó la propuesta perfecta y que alguien arruinó el momento robando el anillo.",
+    asset: "Video real de Martín en el restaurante. Se muestra nervioso, elegante y contenido, como si intentara sostener una versión demasiado ensayada."
+  },
+  sofia: {
+    name: "Sofía",
+    quote: "Hay cosas que una amiga ve antes que todos.",
+    context: "Sofía asegura que solo quiso calmar a la novia y que nunca se acercó a la caja.",
+    asset: "Pendiente de video. Sofía debería verse elegante, intensa y algo picarona, como alguien que sabe más de lo que admite."
+  },
+  lucas: {
+    name: "Lucas",
+    quote: "A veces mi hermano arma problemas para no enfrentar otros.",
+    context: "Lucas dice que Martín estaba nervioso, aunque insiste en que el anillo existía.",
+    asset: "Pendiente de video. Lucas debería verse noble, trabajador y protector, pero incómodo por tener que hablar de su hermano."
+  },
+  camila: {
+    name: "Camila",
+    quote: "Yo solo llevé el vino a la mesa... nada más.",
+    context: "Camila estuvo cerca de la mesa toda la noche. Parece amable, pero su declaración abre más dudas de las que cierra.",
+    asset: "Video real de Camila en el restaurante. Se muestra alegre y servicial, aunque ligeramente nerviosa cuando recuerda la caja."
+  }
+};
+
+suspects.forEach((suspect) => Object.assign(suspect, suspectText[suspect.id] || {}));
+
+const suspectExperience = {
+  martin: {
+    name: "Martín",
+    quote: "Yo quería que esta noche terminara de una vez... digo, que terminara bien.",
+    context: "Martín dice que preparó la propuesta perfecta y que alguien arruinó el momento robando el anillo.",
+    asset: "Video real de Martín en el restaurante. Se muestra nervioso, elegante y contenido, como si intentara sostener una versión demasiado ensayada.",
+    clue: "Demasiado preocupado por controlar la escena. Su reacción no parece la de alguien sorprendido.",
+    action: "Escuchar al novio"
+  },
+  sofia: {
+    name: "Sofía",
+    quote: "Hay cosas que una amiga ve antes que todos.",
+    context: "Sofía asegura que solo quiso calmar a la novia y que nunca se acercó a la caja.",
+    asset: "Video real de Sofía. Segura, filosa y elegante: no acusa de frente, pero deja una duda incómoda sobre Martín.",
+    clue: "Mira más de lo que dice. Parece disfrutar que la versión de Martín empiece a romperse.",
+    action: "Escuchar a Sofía"
+  },
+  lucas: {
+    name: "Lucas",
+    quote: "Su cara no era de sorpresa.",
+    context: "Lucas intenta proteger a Martín, pero reconoce que su hermano no reaccionó como una víctima.",
+    asset: "Video real de Lucas. Habla con energía contenida, como alguien que sabe algo de su hermano y no quiere decirlo completo.",
+    clue: "Quiere proteger a su hermano, pero su incomodidad deja una pista emocional fuerte.",
+    action: "Escuchar a Lucas"
+  },
+  camila: {
+    name: "Camila",
+    quote: "Yo solo llevé el vino a la mesa... nada más.",
+    context: "Camila estuvo cerca de la mesa toda la noche. Parece amable, pero su declaración abre más dudas de las que cierra.",
+    asset: "Video real de Camila en el restaurante. Se muestra alegre y servicial, aunque ligeramente nerviosa cuando recuerda la caja.",
+    clue: "Estuvo cerca de la mesa toda la noche. Amable, rápida y quizá demasiado atenta.",
+    action: "Escuchar a Camila"
+  }
+};
+
+suspects.forEach((suspect) => Object.assign(suspect, suspectExperience[suspect.id] || {}));
+
+const suspectCardExperience = {
+  martin: {
+    name: "Mart\u00edn",
+    quote: "Yo quer\u00eda que esta noche terminara de una vez... digo, que terminara bien.",
+    context: "Mart\u00edn dice que prepar\u00f3 la propuesta perfecta y que alguien arruin\u00f3 el momento robando el anillo.",
+    asset: "Video real de Mart\u00edn en el restaurante. Se muestra nervioso, elegante y contenido, como si intentara sostener una versi\u00f3n demasiado ensayada.",
+    emotion: "\uD83D\uDC8D \uD83D\uDE2C",
+    tagline: "La propuesta perfecta... o la excusa perfecta.",
+    clue: "Dice que perdi\u00f3 el anillo, pero su cara parece esconder otra decisi\u00f3n.",
+    badges: ["Mentira", "Miedo", "Promesa rota"],
+    action: "Escuchar a Mart\u00edn"
+  },
+  sofia: {
+    name: "Sof\u00eda",
+    quote: "Hay cosas que una amiga ve antes que todos.",
+    context: "Sof\u00eda asegura que solo quiso calmar a la novia y que nunca se acerc\u00f3 a la caja.",
+    asset: "Video real de Sof\u00eda. Segura, filosa y elegante: no acusa de frente, pero deja una duda inc\u00f3moda sobre Mart\u00edn.",
+    emotion: "\uD83D\uDC8B \uD83D\uDDA4",
+    tagline: "La amiga que vio demasiado.",
+    clue: "Dijo que estaba lejos de la mesa, pero siempre aparece cerca del secreto.",
+    badges: ["Celos", "Deseo", "Coartada"],
+    action: "Escuchar a Sof\u00eda"
+  },
+  lucas: {
+    name: "Lucas",
+    quote: "Su cara no era de sorpresa.",
+    context: "Lucas intenta proteger a Mart\u00edn, pero reconoce que su hermano no reaccion\u00f3 como una v\u00edctima.",
+    asset: "Video real de Lucas. Habla con energ\u00eda contenida, como alguien que sabe algo de su hermano y no quiere decirlo completo.",
+    emotion: "\uD83D\uDEE1\uFE0F \uD83D\uDC40",
+    tagline: "El hermano que protege... aunque algo no le cierre.",
+    clue: "Quiere cuidar a Mart\u00edn, pero su silencio pesa m\u00e1s que su declaraci\u00f3n.",
+    badges: ["Lealtad", "Duda", "Familia"],
+    action: "Escuchar a Lucas"
+  },
+  camila: {
+    name: "Camila",
+    quote: "Yo solo llev\u00e9 el vino a la mesa... nada m\u00e1s.",
+    context: "Camila estuvo cerca de la mesa toda la noche. Parece amable, pero su declaraci\u00f3n abre m\u00e1s dudas de las que cierra.",
+    asset: "Video real de Camila en el restaurante. Se muestra alegre y servicial, aunque ligeramente nerviosa cuando recuerda la caja.",
+    emotion: "\uD83C\uDF77 \uD83D\uDD11",
+    tagline: "La moza amable que estuvo en todos los lugares clave.",
+    clue: "Sirve la mesa, cruza justo a tiempo y sabe m\u00e1s del restaurante que cualquiera.",
+    badges: ["Oportunidad", "Llave", "Testigo"],
+    action: "Escuchar a Camila"
+  }
+};
+
+suspects.forEach((suspect) => Object.assign(suspect, suspectCardExperience[suspect.id] || {}));
+
+const statementDramaturgy = {
+  martin: {
+    kicker: "Primera declaraci\u00f3n",
+    title: "Mart\u00edn, el novio",
+    mood: "Interrogatorio: nervios, control y una frase que se le escapa",
+    quote: "Yo quer\u00eda que esta noche terminara de una vez... digo, que terminara bien.",
+    context: "Mart\u00edn habla como alguien que prepar\u00f3 cada detalle, pero no logra explicar por qu\u00e9 parece m\u00e1s preocupado por cerrar la conversaci\u00f3n que por encontrar el anillo.",
+    asset: "Observ\u00e1 la mirada, las pausas y las manos. Su versi\u00f3n suena ordenada, quiz\u00e1 demasiado ordenada.",
+    clues: [
+      { icon: "\uD83D\uDC8D", title: "La caja", copy: "Dice que estaba ah\u00ed, pero evita mirar el lugar exacto donde desapareci\u00f3." },
+      { icon: "\uD83D\uDD25", title: "La frase", copy: "Se corrige solo: primero habla de terminar, despu\u00e9s de terminar bien." },
+      { icon: "\uD83E\uDD43", title: "La mesa", copy: "Quiere que todos lo escuchen, pero no quiere demasiadas preguntas." }
+    ],
+    question: "\u00bfEs un novio destruido por el robo o alguien usando el robo para tapar otra verdad?"
+  }
+};
+
+const voteDossiers = {
+  martin: { tag: "Una frase corregida", clue: "Prepar\u00f3 cada detalle, pero parece querer terminar algo m\u00e1s que la cena." },
+  sofia: { tag: "Demasiado cerca", clue: "Neg\u00f3 acercarse a la caja, aunque la selfie cuenta una versi\u00f3n m\u00e1s inc\u00f3moda." },
+  lucas: { tag: "Lealtad bajo presi\u00f3n", clue: "Defiende a su hermano, pero admite que suele inventar problemas para evitar otros." },
+  camila: { tag: "Llaves y protocolo", clue: "Sab\u00eda d\u00f3nde se guardaban objetos valiosos y dijo haber guardado lo que le pidieron." }
+};
+
+const screenOrder = ["intro", "suspects", "statement", "evidence1", "evidence2", "evidence3", "reflection", "vote", "final"];
+const visitedStatements = new Set();
+let currentSuspect = null;
+let selectedVote = "";
+let currentScreenId = "intro";
+
+const screens = [...document.querySelectorAll(".screen")];
+const suspectGrid = document.getElementById("suspectGrid");
+const voteOptions = document.getElementById("voteOptions");
+const confirmVote = document.getElementById("confirmVote");
+const progressLabel = document.getElementById("progressLabel");
+const progressFill = document.getElementById("progressFill");
+const toast = document.getElementById("toast");
+const accessCodeHash = "b7a18c17e18067de18821c1bc1fb3d1a2426373b0ab8261e919e679f70b15f49";
+const accessGate = document.getElementById("accessGate");
+const accessForm = document.getElementById("accessForm");
+const accessInput = document.getElementById("accessCode");
+const accessError = document.getElementById("accessError");
+
+function normalizeCode(value) {
+  return String(value || "").trim().toUpperCase().replace(/\s+/g, "");
+}
+
+async function sha256(value) {
+  const data = new TextEncoder().encode(value);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  return [...new Uint8Array(hash)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+accessForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const enteredHash = await sha256(normalizeCode(accessInput.value));
+  if (enteredHash === accessCodeHash) {
+    accessGate.classList.add("hidden");
+    accessError.textContent = "";
+    accessInput.value = "";
+    return;
+  }
+  accessError.textContent = "Código incorrecto. Revisalo e intentá nuevamente.";
+  accessInput.select();
+});
+
+window.setTimeout(() => accessInput.focus(), 250);
+
+function hydrateCaseNav() {
+  const nav = document.querySelector(".case-nav");
+  if (!nav) return;
+  nav.innerHTML = `
+    <a class="brand" href="./index.html">VALMORÈ</a>
+    <span class="nav-center-note" id="navScreenHint">Archivo 001</span>
+    <div class="nav-actions">
+      <button class="case-control is-icon" type="button" data-action="prev-screen" aria-label="Volver a la pantalla anterior">‹</button>
+      <button class="case-control" type="button" data-action="replay-screen">Repetir</button>
+      <button class="case-control is-icon" type="button" data-action="next-screen" aria-label="Ir a la pantalla siguiente">›</button>
+    </div>
+  `;
+}
+
+function hydrateStaticCopy() {
+  document.title = "Caso Valmor\u00e8 001 - Archivo del anillo";
+
+  const access = document.getElementById("accessGate");
+  if (access) {
+    const title = access.querySelector("h2");
+    const copy = access.querySelector("p");
+    const input = access.querySelector("#accessCode");
+    if (title) title.textContent = "Caso Valmor\u00e8 001";
+    if (copy) copy.textContent = "Ingres\u00e1 el c\u00f3digo de invitaci\u00f3n para comenzar la experiencia.";
+    if (input) input.placeholder = "C\u00f3digo de acceso";
+  }
+
+  const suspectsScreen = document.querySelector('[data-screen="suspects"]');
+  if (suspectsScreen) {
+    const eyebrow = suspectsScreen.querySelector(".eyebrow");
+    const title = suspectsScreen.querySelector("h2");
+    const lead = suspectsScreen.querySelector(".lead");
+    if (eyebrow) eyebrow.textContent = "Ronda de sospechas";
+    if (title) title.textContent = "\u00bfA qui\u00e9n no le cre\u00e9s?";
+    if (lead) lead.textContent = "Eleg\u00ed a qui\u00e9n escuchar. Hay amor, celos, lealtad y una mentira servida sobre la mesa.";
+
+    if (lead && !suspectsScreen.querySelector(".suspect-hint-row")) {
+      const hintRow = document.createElement("div");
+      hintRow.className = "suspect-hint-row";
+      hintRow.innerHTML = `
+        <span class="suspect-hint">\uD83D\uDC8B Infidelidad posible</span>
+        <span class="suspect-hint">\uD83D\uDD25 Mentira en la mesa</span>
+        <span class="suspect-hint">\uD83C\uDF77 Una copa, cuatro versiones</span>
+      `;
+      lead.insertAdjacentElement("afterend", hintRow);
+    }
+  }
+
+  const moment = document.querySelector('[data-screen="statement"] .moment-card');
+  if (moment) {
+    const title = moment.querySelector("strong");
+    const copy = moment.querySelector("p");
+    if (title) title.textContent = "Momento Valmor\u00e8";
+    if (copy) copy.textContent = "\u00bfLe cre\u00e9s? Tomen un sorbo y discutan durante un minuto antes de seguir.";
+  }
+}
+
+function hydrateIntroMedia() {
+  const intro = document.querySelector('[data-screen="intro"]');
+  if (!intro) return;
+
+  const eyebrow = intro.querySelector(".eyebrow");
+  const title = intro.querySelector("h1");
+  const lead = intro.querySelector(".lead");
+  const card = intro.querySelector(".script-card");
+  const startButton = intro.querySelector("[data-action='start']");
+  const media = intro.querySelector(".asset-content");
+
+  if (eyebrow) eyebrow.textContent = "Archivo Valmorè 001";
+  if (title) title.textContent = "El anillo que no desapareció";
+  if (lead) lead.textContent = "Una cena perfecta. Una propuesta esperada. Una caja vacía. Todos cuentan una historia distinta, pero uno está mintiendo.";
+  if (startButton) startButton.textContent = "Comenzar investigación";
+  if (card) {
+    card.innerHTML = `
+      <p>Esta noche iba a ser inolvidable.</p>
+      <p>Martín había preparado una propuesta de matrimonio. Reservó el restaurante, eligió el vino y compró el anillo.</p>
+      <p>Pero cuando llegó el momento... el anillo había desaparecido.</p>
+      <p><strong>Todos cuentan una historia distinta. Pero uno está mintiendo.</strong></p>
+    `;
+  }
+
+  if (media) {
+    media.innerHTML = `
+      <video class="case-video intro-video" src="../public/videos/caso-001/intro-restaurante-anillo-001.mp4" autoplay muted loop playsinline controls></video>
+      <div class="intro-artifacts" aria-label="Objetos clave de la escena">
+        <span class="artifact-chip"><span class="artifact-icon">◇</span><span class="artifact-copy">Caja vacía sobre la mesa</span></span>
+        <span class="artifact-chip"><span class="artifact-icon">◌</span><span class="artifact-copy">Cuatro versiones distintas</span></span>
+        <span class="artifact-chip"><span class="artifact-icon">◐</span><span class="artifact-copy">Una mentira escondida</span></span>
+      </div>
+      <span class="asset-label">Narración de apertura</span>
+      <p class="asset-description">Restaurante elegante de noche, lluvia contra ventanales, copas servidas y una caja de anillo sobre mantel blanco.</p>
+      <audio class="case-audio" src="../public/audio/caso-001/intro-narracion-archivo-valmore-001-v2.mp3" controls preload="metadata"></audio>
+      <p class="media-note">Reproducí la narración antes de comenzar la investigación.</p>
+    `;
+  }
+
+  if (eyebrow) eyebrow.textContent = "Archivo Valmor\u00e8 001";
+  if (title) title.textContent = "El anillo que no desapareci\u00f3";
+  if (lead) lead.textContent = "Una cena perfecta. Una propuesta esperada. Una caja vac\u00eda. Todos cuentan una historia distinta, pero uno est\u00e1 mintiendo.";
+  if (startButton) startButton.textContent = "Comenzar investigaci\u00f3n";
+  if (card) {
+    card.innerHTML = `
+      <ul class="intro-hook-list">
+        <li><span>🔥</span><span>Una propuesta preparada al detalle... y una caja vac\u00eda en el peor momento.</span></li>
+        <li><span>💋</span><span>Una mesa elegante, miradas cruzadas y alguien disfrutando demasiado del silencio.</span></li>
+        <li><span>🍷</span><span>Cuatro versiones, una copa servida y una mentira que no va a aguantar la noche.</span></li>
+      </ul>
+      <div class="intro-audio-strip">
+        <div class="intro-audio-block">
+          <span class="asset-label">Audio narrativo</span>
+          <audio class="case-audio" src="../public/audio/caso-001/intro-narracion-archivo-valmore-001-v2.mp3" controls preload="metadata"></audio>
+        </div>
+      </div>
+    `;
+  }
+
+  if (media) {
+    media.innerHTML = `
+      <video class="case-video intro-video" src="../public/videos/caso-001/intro-restaurante-anillo-001.mp4" autoplay muted loop playsinline controls></video>
+      <div class="intro-artifacts" aria-label="Objetos clave de la escena">
+        <span class="artifact-chip"><span class="artifact-icon">&#9671;</span><span class="artifact-copy">Caja vac\u00eda sobre la mesa</span></span>
+        <span class="artifact-chip"><span class="artifact-icon">&#9675;</span><span class="artifact-copy">Cuatro versiones distintas</span></span>
+        <span class="artifact-chip"><span class="artifact-icon">&#9680;</span><span class="artifact-copy">Una mentira escondida</span></span>
+      </div>
+      <details class="memory-aid">
+        <summary>Ayuda de memoria</summary>
+        <p>Restaurante elegante de noche, lluvia contra ventanales, copas servidas y una caja de anillo sobre mantel blanco.</p>
+      </details>
+    `;
+  }
+
+  const actions = intro.querySelector(".actions");
+  if (actions) {
+    actions.classList.add("intro-start-row");
+    const button = actions.querySelector("[data-action='start']");
+    if (button) button.textContent = "\u00bfTe anim\u00e1s a adivinar?";
+    const audioStrip = card ? card.querySelector(".intro-audio-strip") : null;
+    if (audioStrip) audioStrip.appendChild(actions);
+  }
+}
+
+function hydrateEvidenceMedia() {
+  const evidence1Screen = document.querySelector('[data-screen="evidence1"]');
+  if (evidence1Screen) {
+    const eyebrow = evidence1Screen.querySelector(".eyebrow");
+    const title = evidence1Screen.querySelector("h2");
+    const lead = evidence1Screen.querySelector(".lead");
+    const script = evidence1Screen.querySelector(".script-card");
+    if (eyebrow) eyebrow.textContent = "Primera evidencia";
+    if (title) title.textContent = "La selfie que no cierra";
+    if (lead) lead.textContent = "Una foto casual. Una mesa elegante. Un detalle que no deber\u00eda estar ah\u00ed.";
+    if (script) {
+      script.innerHTML = `
+        <p>Alguien sac\u00f3 una selfie durante la cena. Parec\u00eda una foto m\u00e1s, hasta que la ampliamos.</p>
+        <p><strong>No busques un culpable todav\u00eda. Busc\u00e1 qu\u00e9 versi\u00f3n empieza a romperse.</strong></p>
+        <div class="evidence-puzzle">
+          <span class="puzzle-piece"><span class="puzzle-icon">\uD83D\uDC8B</span><span><span class="puzzle-title">La cercan\u00eda</span><span class="puzzle-copy">Sof\u00eda dijo que no se acerc\u00f3 a la caja. La foto cuenta otra cosa, o intenta que creamos eso.</span></span></span>
+          <span class="puzzle-piece"><span class="puzzle-icon">\uD83D\uDC8D</span><span><span class="puzzle-title">El anillo</span><span class="puzzle-copy">Hay algo parcialmente oculto. Si es el anillo, \u00bfpor qu\u00e9 nadie lo vio en la mesa?</span></span></span>
+          <span class="puzzle-piece"><span class="puzzle-icon">\uD83D\uDC40</span><span><span class="puzzle-title">La mirada</span><span class="puzzle-copy">Mart\u00edn no mira la caja: mira a alguien. Ese gesto puede ser miedo, culpa o puro teatro.</span></span></span>
+        </div>
+        <div class="evidence-question"><strong>Pregunta para la mesa:</strong> \u00bfesta selfie revela una mentira... o fue tomada justo para que sospechemos de la persona equivocada?</div>
+      `;
+    }
+  }
+
+  const evidence1 = document.querySelector('[data-screen="evidence1"] .asset-content');
+  if (evidence1) {
+    evidence1.innerHTML = `
+      <div class="evidence-photo-wrap">
+        <img class="evidence-image" src="../public/images/caso-001/evidencias/selfie-evidencia-001.png" alt="Selfie encontrada durante la cena" onerror="this.closest('.evidence-photo-wrap').innerHTML='<div class=&quot;pending-evidence&quot;>Pendiente: selfie-evidencia-001.png</div>'">
+      </div>
+      <span class="asset-label">Selfie encontrada</span>
+      <p class="asset-description">La foto parece espont\u00e1nea, pero funciona como una trampa visual: acerca a Sof\u00eda, esconde un brillo y obliga a volver a escuchar a Mart\u00edn.</p>
+      <div class="sound-note"><span class="speaker">\uD83D\uDCF8</span><span>La pista no est\u00e1 en el centro de la imagen. Est\u00e1 en lo que aparece de costado.</span></div>
+    `;
+  }
+
+  const evidence2 = document.querySelector('[data-screen="evidence2"] .asset-content');
+  const evidence2Screen = document.querySelector('[data-screen="evidence2"]');
+  if (evidence2Screen) {
+    const eyebrow = evidence2Screen.querySelector(".eyebrow");
+    const title = evidence2Screen.querySelector("h2");
+    const lead = evidence2Screen.querySelector(".lead");
+    const script = evidence2Screen.querySelector(".script-card");
+    if (eyebrow) eyebrow.textContent = "Segunda evidencia";
+    if (title) title.textContent = "La c\u00e1mara que parpadea";
+    if (lead) lead.textContent = "No vemos una mano robando. Vemos algo m\u00e1s inc\u00f3modo: el instante perfecto para mentir.";
+    if (script) {
+      script.innerHTML = `
+        <p>La c\u00e1mara de seguridad no resuelve el caso. Lo vuelve m\u00e1s peligroso.</p>
+        <p><strong>El video no muestra qui\u00e9n tom\u00f3 el anillo. Muestra cu\u00e1ndo todos pudieron dejar de decir la verdad.</strong></p>
+        <div class="evidence-puzzle">
+          <span class="puzzle-piece"><span class="puzzle-icon">\uD83D\uDCF9</span><span><span class="puzzle-title">El corte</span><span class="puzzle-copy">La mesa queda tapada apenas un segundo. Suficiente para mover una caja. Tambi\u00e9n suficiente para fabricar una sospecha.</span></span></span>
+          <span class="puzzle-piece"><span class="puzzle-icon">\uD83C\uDF77</span><span><span class="puzzle-title">El testigo</span><span class="puzzle-copy">La botella queda quieta en escena. Todo cambia alrededor, menos ella: como si hubiera visto m\u00e1s que todos.</span></span></span>
+          <span class="puzzle-piece"><span class="puzzle-icon">\uD83D\uDD75\uFE0F</span><span><span class="puzzle-title">El hueco</span><span class="puzzle-copy">Lo importante no es lo que se ve, sino lo que la c\u00e1mara no alcanza a mostrar.</span></span></span>
+        </div>
+        <div class="evidence-question"><strong>Pregunta para la mesa:</strong> si nadie aparece robando, \u00bfpor qu\u00e9 el video se siente como una acusaci\u00f3n?</div>
+      `;
+    }
+  }
+
+  if (evidence2) {
+    evidence2.innerHTML = `
+      <span class="security-tape">\u25CF C\u00e1mara 01 - Restaurante / mesa principal</span>
+      <div class="evidence-video-wrap">
+        <video class="case-video evidence-video" src="../public/videos/caso-001/camara-01-restaurante-evidencia-001.mp4" controls playsinline preload="metadata"></video>
+      </div>
+      <span class="asset-label">Cámara 01 - Restaurante</span>
+      <p class="asset-description">La c\u00e1mara no muestra el robo. Muestra una interrupci\u00f3n: por un segundo la mesa queda tapada, y cuando vuelve la imagen la caja ya no est\u00e1 igual.</p>
+      <div class="sound-note"><span class="speaker">\uD83D\uDCF9</span><span>Miralo una vez completo y despu\u00e9s repet\u00ed el corte. Esa pausa es donde la mesa empieza a desconfiar.</span></div>
+    `;
+  }
+
+  const evidence3 = document.querySelector('[data-screen="evidence3"] .asset-content');
+  if (evidence3) {
+    evidence3.innerHTML = `
+      <img class="evidence-image" src="../public/images/caso-001/evidencias/whatsapp-audio-cortado-evidencia-001.png" alt="Captura de WhatsApp con audio interrumpido">
+      <span class="asset-label">WhatsApp encontrado</span>
+      <p class="asset-description">Un audio de ocho segundos corta justo cuando la frase empieza a explicar demasiado. No sabemos quién lo envió, pero alguien no quería que esa noche siguiera.</p>
+      <div class="sound-note"><span class="speaker">♪</span><span>Frase clave: “No puedo hacerlo esta noche... si se enteran, se termina todo.”</span></div>
+    `;
+  }
+
+  const evidence3Screen = document.querySelector('[data-screen="evidence3"]');
+  if (evidence3Screen) {
+    const eyebrow = evidence3Screen.querySelector(".eyebrow");
+    const title = evidence3Screen.querySelector("h2");
+    const lead = evidence3Screen.querySelector(".lead");
+    const script = evidence3Screen.querySelector(".script-card");
+    const button = evidence3Screen.querySelector('[data-go="reflection"]');
+    if (eyebrow) eyebrow.textContent = "Tercera evidencia \u00b7 Todo puede cambiar";
+    if (title) title.textContent = "El mensaje que alguien quiso borrar";
+    if (lead) lead.textContent = "Ocho segundos. Una frase incompleta. Y demasiadas personas con algo que perder.";
+    if (button) button.textContent = "Armar la \u00faltima teor\u00eda";
+    if (script) {
+      script.innerHTML = `
+        <p>El audio no acusa a nadie. Pero la conversaci\u00f3n deja tres rastros que no estaban en ninguna declaraci\u00f3n.</p>
+        <div class="evidence-puzzle">
+          <span class="puzzle-piece"><span class="puzzle-icon">M.</span><span><span class="puzzle-title">La inicial</span><span class="puzzle-copy">Puede ser Mart\u00edn. Tambi\u00e9n puede ser el nombre guardado por quien tom\u00f3 la captura.</span></span></span>
+          <span class="puzzle-piece"><span class="puzzle-icon">21:45</span><span><span class="puzzle-title">La hora</span><span class="puzzle-copy">El mensaje llega cerca del corte de c\u00e1mara. \u00bfCoincidencia o coartada preparada?</span></span></span>
+          <span class="puzzle-piece"><span class="puzzle-icon">\u2715</span><span><span class="puzzle-title">Lo borrado</span><span class="puzzle-copy">Alguien elimin\u00f3 un mensaje despu\u00e9s del audio. La ausencia tambi\u00e9n puede ser una pista.</span></span></span>
+        </div>
+        <div class="evidence-question"><strong>La pregunta inc\u00f3moda:</strong> \u00bfhablan del anillo, de una relaci\u00f3n secreta o de una cena que nunca deb\u00eda terminar como todos cre\u00edan?</div>
+      `;
+    }
+  }
+
+  if (evidence3) {
+    evidence3.innerHTML = `
+      <div class="whatsapp-evidence">
+        <div class="whatsapp-frame">
+          <img class="evidence-image" src="../public/images/caso-001/evidencias/whatsapp-audio-cortado-evidencia-001.png" alt="Captura vertical de WhatsApp con un audio interrumpido">
+        </div>
+        <div class="whatsapp-summary">
+          <span class="asset-label">Chat recuperado</span>
+          <p class="asset-description">La frase termina justo antes de explicar qu\u00e9 se pod\u00eda terminar. La captura muestra algo m\u00e1s: alguien pregunt\u00f3, alguien borr\u00f3 y alguien decidi\u00f3 guardar la prueba.</p>
+          <div class="sound-note"><span class="speaker">\u266a</span><span>Frase clave: \u201cNo puedo hacerlo esta noche... si se enteran, se termina todo.\u201d</span></div>
+          <div class="tension-round"><strong>Ronda rel\u00e1mpago \u00b7 30 segundos</strong><span>Cada persona elige una teor\u00eda: romance secreto, propuesta cancelada o alguien cubriendo a otra persona. No vale repetir.</span></div>
+        </div>
+      </div>
+    `;
+  }
+
+  const finalMedia = document.querySelector('[data-screen="final"] .asset-content');
+  if (finalMedia) {
+    finalMedia.innerHTML = `
+      <video class="case-video evidence-video" src="../public/videos/caso-001/archivo-valmore-001-extra-202606271315.mp4" controls playsinline preload="metadata"></video>
+      <span class="asset-label">Revelación visual</span>
+      <p class="asset-description">Usé el video extra como cierre visual provisorio. Si este archivo no corresponde al final, lo cambiamos por la foto final cuando la subas.</p>
+      <div class="sound-note"><span class="speaker">♪</span><span>La escena final tiene que sentirse como una verdad que aparece cuando la cena ya terminó.</span></div>
+    `;
+  }
+}
+
+function hydrateEndingScreens() {
+  const reflection = document.querySelector('[data-screen="reflection"]');
+  if (reflection) {
+    reflection.innerHTML = `
+      <div class="ending-grid">
+        <div class="ending-copy">
+          <span class="eyebrow">\u00daltima reflexi\u00f3n</span>
+          <h2>Se acabaron las pistas. Empieza la discusi\u00f3n.</h2>
+          <p class="lead">No busquen al ladr\u00f3n. Defiendan qui\u00e9n minti\u00f3 y por qu\u00e9.</p>
+          <div class="case-recap" aria-label="Resumen de evidencias">
+            <div class="recap-card"><span>\uD83D\uDCF8</span><strong>La selfie</strong><span>Una cercan\u00eda negada y una mirada fuera de lugar.</span></div>
+            <div class="recap-card"><span>\uD83D\uDCF9</span><strong>La c\u00e1mara</strong><span>Un segundo sin imagen, pero ninguna mano robando.</span></div>
+            <div class="recap-card"><span>\u266A</span><strong>El chat</strong><span>Una frase cortada y un mensaje que alguien borr\u00f3.</span></div>
+          </div>
+        </div>
+        <aside class="theory-panel" aria-label="Ronda de teor\u00edas">
+          <div class="sealed-evidence"><img src="../public/images/caso-001/evidencias/resolucion-caja-fuerte-001.jpeg" alt="Evidencia final desenfocada y sellada hasta el veredicto"></div>
+          <div class="theory-clock" id="theoryClock"><span id="theorySeconds">60</span></div>
+          <p class="theory-prompt"><strong>Una persona por vez.</strong> Digan un nombre, una pista y el motivo de la mentira. No vale cambiar de teor\u00eda hasta escuchar a todos.</p>
+          <div class="theory-actions">
+            <button class="button" type="button" data-action="start-theory">Iniciar 60 segundos</button>
+            <button class="primary" type="button" data-go="vote">Ir al veredicto</button>
+          </div>
+        </aside>
+      </div>
+    `;
+  }
+
+  const vote = document.querySelector('[data-screen="vote"]');
+  if (vote) {
+    vote.querySelector(".screen-centered")?.classList.add("vote-stage");
+    const eyebrow = vote.querySelector(".eyebrow");
+    const title = vote.querySelector("h2");
+    const lead = vote.querySelector(".lead");
+    if (eyebrow) eyebrow.textContent = "Veredicto final \u00b7 Una sola elecci\u00f3n";
+    if (title) title.textContent = "\u00bfQui\u00e9n est\u00e1 mintiendo?";
+    if (lead) lead.textContent = "Eleg\u00ed la versi\u00f3n que menos resiste las pruebas. Despu\u00e9s de confirmar, la evidencia sellada se abre.";
+    if (!vote.querySelector(".vote-meter")) {
+      voteOptions.insertAdjacentHTML("beforebegin", '<div class="vote-meter"><strong>Tu teor\u00eda</strong><span id="voteMeterText">Todav\u00eda no elegiste a nadie</span></div>');
+      voteOptions.insertAdjacentHTML("afterend", '<div class="verdict-lock" id="verdictLock">Seleccion\u00e1 un sospechoso para habilitar el veredicto.</div>');
+    }
+    if (confirmVote) confirmVote.textContent = "Sellar mi veredicto";
+  }
+
+  const finalScreen = document.querySelector('[data-screen="final"]');
+  if (finalScreen) {
+    finalScreen.innerHTML = `
+      <div class="screen-grid">
+        <div>
+          <span class="eyebrow">Resoluci\u00f3n \u00b7 Archivo Valmor\u00e8 001</span>
+          <h2>El caso nunca fue sobre el anillo.</h2>
+          <div class="final-result" id="finalResult" aria-live="polite"></div>
+          <div class="final-reveal">
+            <div class="final-line">No hubo robo.</div>
+            <div class="final-line">El anillo siempre estuvo en la caja fuerte del restaurante.</div>
+            <div class="final-line">Mart\u00edn hab\u00eda llevado el anillo, pero esa noche ya hab\u00eda decidido no proponer matrimonio.</div>
+            <div class="final-line">Todos buscaron un ladr\u00f3n. La pregunta correcta siempre fue: \u00bfqui\u00e9n estaba mintiendo?</div>
+          </div>
+          <div class="moment-card"><strong>Momento Valmor\u00e8 final</strong><p>\u00bfCu\u00e1l fue la pista que m\u00e1s los enga\u00f1\u00f3? Brinden por la teor\u00eda m\u00e1s convincente de la mesa.</p></div>
+          <div class="actions"><button class="primary" type="button" data-action="restart">Jugar de nuevo</button><a class="button" href="./index.html#contacto">Contanos c\u00f3mo les fue</a></div>
+        </div>
+        <div class="asset-card final-visual-card">
+          <div class="asset-content">
+            <img class="final-image" src="../public/images/caso-001/evidencias/resolucion-caja-fuerte-001.jpeg" alt="Caja fuerte abierta con el anillo a salvo junto a una copa y una botella Valmor\u00e8">
+            <div class="final-caption"><span class="asset-label">La evidencia que faltaba</span><p class="asset-description">La caja fuerte no estaba vac\u00eda. El anillo nunca estuvo en peligro; la relaci\u00f3n, s\u00ed.</p></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+function renderFinalResult() {
+  const result = document.getElementById("finalResult");
+  if (!result) return;
+  const chosen = suspects.find((suspect) => suspect.id === selectedVote);
+  const hit = selectedVote === "martin";
+  result.innerHTML = hit
+    ? '<strong>\uD83C\uDFC6 La mesa acert\u00f3</strong><span>Se\u00f1alaron a Mart\u00edn. Detectaron la mentira, aunque el motivo era m\u00e1s doloroso que un robo.</span>'
+    : `<strong>\uD83C\uDFAD La mentira los desvi\u00f3</strong><span>Eligieron a ${chosen ? chosen.name : "otra persona"}, pero quien construy\u00f3 toda la historia fue Mart\u00edn.</span>`;
+}
+
+let theoryTimerId = null;
+function resetTheoryTimer() {
+  if (theoryTimerId) window.clearInterval(theoryTimerId);
+  theoryTimerId = null;
+  const secondsNode = document.getElementById("theorySeconds");
+  const clock = document.getElementById("theoryClock");
+  const trigger = document.querySelector('[data-action="start-theory"]');
+  if (secondsNode) secondsNode.textContent = "60";
+  if (clock) clock.style.setProperty("--clock-progress", "0deg");
+  if (trigger) trigger.textContent = "Iniciar 60 segundos";
+}
+
+function startTheoryTimer() {
+  const secondsNode = document.getElementById("theorySeconds");
+  const clock = document.getElementById("theoryClock");
+  const trigger = document.querySelector('[data-action="start-theory"]');
+  if (!secondsNode || !clock || theoryTimerId) return;
+  let remaining = 60;
+  if (trigger) trigger.textContent = "Teor\u00eda en curso";
+  theoryTimerId = window.setInterval(() => {
+    remaining -= 1;
+    secondsNode.textContent = String(remaining);
+    clock.style.setProperty("--clock-progress", `${(60 - remaining) * 6}deg`);
+    if (remaining <= 0) {
+      window.clearInterval(theoryTimerId);
+      theoryTimerId = null;
+      secondsNode.textContent = "\u2713";
+      if (trigger) trigger.textContent = "Tiempo cumplido";
+      showToast("Teor\u00edas cerradas. Es hora de votar.");
+    }
+  }, 1000);
+}
+
+function pauseCaseMedia() {
+  document.querySelectorAll("video, audio").forEach((media) => {
+    if (!media.paused) media.pause();
+  });
+}
+
+function screenIndex(id) {
+  if (id === "statement") return 3;
+  return Math.max(1, screenOrder.indexOf(id) + 1);
+}
+
+function updateProgress(id) {
+  const index = screenIndex(id);
+  progressLabel.textContent = `Pantalla ${index} de 9`;
+  progressFill.style.width = `${Math.max(11, (index / 9) * 100)}%`;
+  const hint = document.getElementById("navScreenHint");
+  if (hint) hint.textContent = `Pantalla ${index} / 9`;
+  updateNavControls(id);
+}
+
+function updateNavControls(id) {
+  const index = screenIndex(id);
+  const prev = document.querySelector("[data-action='prev-screen']");
+  const next = document.querySelector("[data-action='next-screen']");
+  if (prev) prev.disabled = index <= 1;
+  if (next) next.disabled = index >= 9;
+}
+
+function showScreen(id) {
+  pauseCaseMedia();
+  if (id !== "reflection" && theoryTimerId) resetTheoryTimer();
+  currentScreenId = id;
+  screens.forEach((screen) => screen.classList.toggle("active", screen.dataset.screen === id));
+  updateProgress(id);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function replayCurrentScreen() {
+  const active = document.querySelector(".screen.active");
+  if (!active) return;
+  const media = active.querySelector("video, audio");
+  if (!media) return;
+  media.currentTime = 0;
+  const playResult = media.play();
+  if (playResult && typeof playResult.catch === "function") playResult.catch(() => {});
+}
+
+function goPreviousScreen() {
+  if (currentScreenId === "statement") {
+    showScreen("suspects");
+    return;
+  }
+  const index = screenOrder.indexOf(currentScreenId);
+  if (index > 0) showScreen(screenOrder[index - 1]);
+}
+
+function goNextScreen() {
+  if (currentScreenId === "statement") {
+    finishStatement();
+    return;
+  }
+  if (currentScreenId === "suspects" && visitedStatements.size < suspects.length) {
+    showToast("Elegí un sospechoso para escuchar su declaración.");
+    return;
+  }
+  const index = screenOrder.indexOf(currentScreenId);
+  if (index >= 0 && index < screenOrder.length - 1) showScreen(screenOrder[index + 1]);
+}
+
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("visible");
+  window.setTimeout(() => toast.classList.remove("visible"), 2200);
+}
+
+function renderSuspects() {
+  suspectGrid.innerHTML = suspects.map((suspect) => {
+    const done = visitedStatements.has(suspect.id);
+    const badges = (suspect.badges || []).map((badge) => `<span class="suspect-badge">${badge}</span>`).join("");
+    return `
+      <button class="suspect-card ${done ? "done" : ""}" type="button" data-suspect="${suspect.id}">
+        <span class="suspect-status">${done ? "Escuchado" : "Pendiente"}</span>
+        <span class="suspect-topline">
+          <img class="suspect-avatar" src="${suspect.image}" alt="${suspect.name}, ${suspect.role}">
+          <span class="suspect-emotion" aria-hidden="true">${suspect.emotion || "\uD83C\uDF77"}</span>
+        </span>
+        <span class="suspect-copy">
+          <span class="suspect-name">${suspect.name}</span>
+          <span class="suspect-role">${suspect.role}</span>
+          <span class="suspect-tagline">${suspect.tagline || ""}</span>
+          <span class="suspect-clue">${suspect.clue}</span>
+          <span class="suspect-badges">${badges}</span>
+          <span class="suspect-action">${suspect.action || "Escuchar declaraci\u00f3n"} \u2192</span>
+        </span>
+      </button>
+    `;
+  }).join("");
+}
+
+function renderVote() {
+  voteOptions.innerHTML = suspects.map((suspect) => {
+    const dossier = voteDossiers[suspect.id] || {};
+    return `
+    <label class="vote-card ${selectedVote === suspect.id ? "selected" : ""}">
+      <input type="radio" name="culpable" value="${suspect.id}" ${selectedVote === suspect.id ? "checked" : ""}>
+      <span class="vote-check" aria-hidden="true">\u2713</span>
+      <img class="suspect-avatar" src="${suspect.image}" alt="${suspect.name}, ${suspect.role}">
+      <span class="vote-card-copy">
+        <span class="suspect-name">${suspect.name}</span>
+        <span class="suspect-role">${suspect.role}</span>
+        <span class="vote-card-clue">${dossier.clue || suspect.context}</span>
+      </span>
+      <span class="vote-card-tag">${dossier.tag || "Bajo sospecha"}</span>
+    </label>
+  `;
+  }).join("");
+
+  const meter = document.getElementById("voteMeterText");
+  const lock = document.getElementById("verdictLock");
+  const chosen = suspects.find((suspect) => suspect.id === selectedVote);
+  if (meter) meter.textContent = chosen ? `Se\u00f1alaste a ${chosen.name}` : "Todav\u00eda no elegiste a nadie";
+  if (lock) lock.textContent = chosen ? `Tu acusaci\u00f3n queda sobre ${chosen.name}. Confirmala cuando la mesa est\u00e9 de acuerdo.` : "Seleccion\u00e1 un sospechoso para habilitar el veredicto.";
+}
+
+function openStatement(id) {
+  const suspect = suspects.find((item) => item.id === id);
+  if (!suspect) return;
+  const statement = statementDramaturgy[suspect.id] || {};
+  const clues = statement.clues || [
+    { icon: suspect.emotion || "\uD83C\uDF77", title: "Indicio", copy: suspect.clue || "Escuch\u00e1 la versi\u00f3n y busc\u00e1 qu\u00e9 detalle no encaja." },
+    { icon: "\uD83D\uDC40", title: "Mirada", copy: "A veces el cuerpo cuenta una historia distinta a la voz." },
+    { icon: "\uD83D\uDD25", title: "Mesa", copy: "La discusi\u00f3n empieza cuando el video termina." }
+  ];
+  currentSuspect = suspect;
+  const statementAsset = document.getElementById("statementAsset");
+  if (statementAsset) {
+    const mediaMarkup = suspect.video
+      ? `<video class="case-video statement-video" src="${suspect.video}" controls autoplay playsinline preload="metadata"></video>`
+      : `<img class="statement-portrait" id="statementPortrait" src="${suspect.image}" alt="${suspect.name}, ${suspect.role}">`;
+
+    statementAsset.querySelector(".asset-content").innerHTML = `
+      ${mediaMarkup}
+      <span class="asset-label">${suspect.video ? "Declaraci\u00f3n en video" : "Video IA pendiente"}</span>
+      <p class="asset-description" id="statementAssetText">${statement.asset || suspect.asset}</p>
+      <div class="sound-note"><span class="speaker">\uD83C\uDF99</span><span>Escuch\u00e1 el tono. En esta escena no importa solo lo que dice: importa lo que intenta acomodar.</span></div>
+    `;
+  }
+  document.getElementById("statementKicker").textContent = statement.kicker || `Declaraci\u00f3n de ${suspect.name}`;
+  document.getElementById("statementTitle").textContent = statement.title || `${suspect.name}, ${suspect.role.toLowerCase()}`;
+  const moodLabel = document.getElementById("statementMood");
+  if (moodLabel) moodLabel.textContent = statement.mood || "Declaraci\u00f3n bajo sospecha";
+  document.getElementById("statementQuote").textContent = `"${statement.quote || suspect.quote}"`;
+  document.getElementById("statementContext").textContent = statement.context || suspect.context;
+  const statementClues = document.getElementById("statementClues");
+  if (statementClues) {
+    statementClues.innerHTML = clues.map((clue) => `
+      <span class="statement-clue">
+        <span class="statement-clue-icon" aria-hidden="true">${clue.icon}</span>
+        <span class="statement-clue-title">${clue.title}</span>
+        <span class="statement-clue-copy">${clue.copy}</span>
+      </span>
+    `).join("");
+  }
+  const statementQuestion = document.getElementById("statementQuestion");
+  if (statementQuestion) {
+    statementQuestion.innerHTML = `<strong>Pregunta para la mesa</strong><br>${statement.question || "\u00bfLe cre\u00e9s, o est\u00e1 construyendo una versi\u00f3n para que nadie mire donde duele?"}`;
+  }
+  const statementText = document.getElementById("statementAssetText");
+  if (statementText) statementText.textContent = statement.asset || suspect.asset;
+  const statementPortrait = document.getElementById("statementPortrait");
+  if (statementPortrait) {
+    statementPortrait.src = suspect.image;
+    statementPortrait.alt = `${suspect.name}, ${suspect.role}`;
+  }
+  showScreen("statement");
+}
+
+function finishStatement() {
+  if (!currentSuspect) return;
+  visitedStatements.add(currentSuspect.id);
+  currentSuspect = null;
+  renderSuspects();
+  if (visitedStatements.size >= suspects.length) {
+    showScreen("evidence1");
+  } else {
+    showScreen("suspects");
+  }
+}
+
+function restartCase() {
+  resetTheoryTimer();
+  visitedStatements.clear();
+  currentSuspect = null;
+  selectedVote = "";
+  confirmVote.disabled = true;
+  renderSuspects();
+  renderVote();
+  showScreen("intro");
+}
+
+document.addEventListener("click", (event) => {
+  const theoryTrigger = event.target.closest('[data-action="start-theory"]');
+  if (theoryTrigger) {
+    startTheoryTimer();
+    return;
+  }
+
+  const previousScreen = event.target.closest("[data-action='prev-screen']");
+  if (previousScreen) {
+    goPreviousScreen();
+    return;
+  }
+
+  const replayScreen = event.target.closest("[data-action='replay-screen']");
+  if (replayScreen) {
+    replayCurrentScreen();
+    return;
+  }
+
+  const nextScreen = event.target.closest("[data-action='next-screen']");
+  if (nextScreen) {
+    goNextScreen();
+    return;
+  }
+
+  const start = event.target.closest("[data-action='start']");
+  if (start) {
+    renderSuspects();
+    showScreen("suspects");
+    return;
+  }
+
+  const suspectButton = event.target.closest("[data-suspect]");
+  if (suspectButton) {
+    openStatement(suspectButton.dataset.suspect);
+    return;
+  }
+
+  const finish = event.target.closest("[data-action='finish-statement']");
+  if (finish) {
+    finishStatement();
+    return;
+  }
+
+  const next = event.target.closest("[data-go]");
+  if (next) {
+    if (next.dataset.go === "evidence2" && visitedStatements.size < suspects.length) {
+      showToast("Primero escuchá las cuatro declaraciones.");
+      return;
+    }
+    showScreen(next.dataset.go);
+    return;
+  }
+
+  const restart = event.target.closest("[data-action='restart']");
+  if (restart) restartCase();
+});
+
+voteOptions.addEventListener("change", (event) => {
+  selectedVote = event.target.value;
+  confirmVote.disabled = !selectedVote;
+  renderVote();
+});
+
+confirmVote.addEventListener("click", () => {
+  if (!selectedVote) return;
+  renderFinalResult();
+  showScreen("final");
+});
+
+hydrateCaseNav();
+hydrateStaticCopy();
+hydrateIntroMedia();
+hydrateEvidenceMedia();
+hydrateEndingScreens();
+renderSuspects();
+renderVote();
+updateProgress("intro");
+</script>
+<script src="./i18n.js"></script>
+<script src="./theme.js"></script>
+</body>
+</html>

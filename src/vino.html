@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valmoré - Detalle del vino</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --verde: #1a2e1e;
+    --verde-profundo: #0b1d13;
+    --dorado: #c9a84c;
+    --dorado-claro: #e8c96e;
+    --crema: #f5f0e8;
+    --crema-suave: #faf7f2;
+    --texto: #2a1f10;
+  }
+  body {
+    min-height: 100vh;
+    background: var(--verde);
+    color: var(--crema);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 72% 20%, rgba(201,168,76,0.1), transparent 32%),
+      radial-gradient(circle at 15% 80%, rgba(201,168,76,0.08), transparent 28%);
+  }
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    min-height: 86px;
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(6,20,14,0.96);
+    border-bottom: 1px solid rgba(201,168,76,0.16);
+    backdrop-filter: blur(10px);
+  }
+  .logo {
+    font-family: 'Cinzel', serif;
+    font-size: 30px;
+    letter-spacing: 10px;
+    color: var(--dorado);
+    text-decoration: none;
+  }
+nav a:not(.logo) {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: rgba(245,240,232,0.78);
+    text-decoration: none;
+  text-transform: uppercase;
+}
+nav:has(.logo:only-child) {
+  justify-content: flex-start;
+}
+  main {
+    position: relative;
+    z-index: 1;
+  }
+  .wine-hero {
+    min-height: calc(100vh - 86px);
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(260px, 0.65fr);
+    gap: 56px;
+    align-items: center;
+    padding: 72px 80px;
+  }
+  .kicker {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--dorado);
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(54px, 7vw, 108px);
+    line-height: 0.94;
+    font-weight: 300;
+    color: var(--crema);
+    margin-bottom: 26px;
+  }
+  .desc {
+    max-width: 640px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 25px;
+    font-style: italic;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.76);
+    margin-bottom: 36px;
+  }
+  .status {
+    display: inline-block;
+    margin-bottom: 26px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--dorado);
+    text-transform: uppercase;
+  }
+  .status:empty { display: none; }
+  .ritual {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    max-width: 760px;
+  }
+  .ritual-card {
+    border: 1px solid rgba(201,168,76,0.2);
+    background: rgba(245,240,232,0.045);
+    padding: 20px;
+    min-height: 138px;
+  }
+  .ritual-card svg {
+    width: 34px;
+    height: 34px;
+    color: var(--dorado);
+    margin-bottom: 14px;
+  }
+  .ritual-card h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: var(--dorado);
+    text-transform: uppercase;
+    margin-bottom: 9px;
+  }
+  .ritual-card p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    line-height: 1.45;
+    color: rgba(245,240,232,0.74);
+    font-style: italic;
+  }
+  .bottle-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  .bottle {
+    width: min(34vw, 330px);
+    max-height: 70vh;
+    object-fit: contain;
+    filter: drop-shadow(0 42px 80px rgba(0,0,0,0.58));
+  }
+  .weather-widget {
+    position: absolute;
+    right: max(0px, calc(50% - 245px));
+    top: 34px;
+    z-index: 3;
+    width: 154px;
+    min-height: 112px;
+    padding: 16px 16px 14px;
+    border: 1px solid rgba(201,168,76,0.24);
+    border-radius: 8px;
+    background: rgba(6,20,14,0.58);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+  }
+  .weather-widget::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 76% 20%, rgba(201,168,76,0.16), transparent 52%);
+    pointer-events: none;
+  }
+  .weather-clouds {
+    position: absolute;
+    right: -20px;
+    top: 2px;
+    width: 94px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+  .weather-widget.is-cloudy .weather-clouds { opacity: 0.75; }
+  .weather-top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .weather-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    color: var(--dorado);
+  }
+  .weather-icon svg { width: 30px; height: 30px; }
+  .weather-temp {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 29px;
+    line-height: 1;
+    color: var(--crema);
+  }
+  .weather-label,
+  .weather-place {
+    position: relative;
+    z-index: 1;
+    display: block;
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+  }
+  .weather-label {
+    margin-top: 12px;
+    font-size: 8px;
+    letter-spacing: 2.2px;
+    color: rgba(201,168,76,0.82);
+  }
+  .weather-place {
+    margin-top: 6px;
+    font-size: 8px;
+    letter-spacing: 1.6px;
+    color: rgba(245,240,232,0.58);
+  }
+  .section {
+    padding: 90px 80px;
+  }
+  .light {
+    background: var(--crema-suave);
+    color: var(--texto);
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 5vw, 68px);
+    font-weight: 300;
+    color: inherit;
+    margin-bottom: 44px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(26,46,30,0.12);
+  }
+  .item {
+    position: relative;
+    overflow: hidden;
+    background: var(--crema-suave);
+    padding: 34px 28px;
+  }
+  .item::after {
+    content: attr(data-icon);
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(201,168,76,0.22);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.13), rgba(201,168,76,0.04) 62%, transparent 68%);
+    color: var(--dorado);
+    font-size: 19px;
+    line-height: 1;
+  }
+  .label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--dorado);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .value {
+    position: relative;
+    z-index: 1;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    color: var(--verde);
+  }
+  .cata-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .cata-card {
+    border: 1px solid rgba(201,168,76,0.18);
+    padding: 32px;
+    background: rgba(9,26,17,0.28);
+  }
+  .cata-card p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    line-height: 1.65;
+    color: rgba(245,240,232,0.78);
+  }
+  .actions {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 34px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 28px;
+    border: 1px solid var(--dorado);
+    color: var(--verde);
+    background: var(--dorado);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .btn.secondary {
+    color: var(--dorado);
+    background: transparent;
+  }
+  @media (max-width: 900px) {
+    nav { padding: 22px 28px; align-items: flex-start; gap: 14px; flex-direction: column; }
+    .wine-hero { grid-template-columns: 1fr; padding: 52px 30px; text-align: center; }
+    .desc { margin-left: auto; margin-right: auto; }
+    .ritual, .grid, .cata-grid { grid-template-columns: 1fr; }
+    .section { padding: 60px 30px; }
+    .bottle { width: min(68vw, 260px); max-height: 420px; }
+    .weather-widget {
+      right: 8px;
+      top: 12px;
+      width: 132px;
+      min-height: 96px;
+      padding: 13px;
+    }
+    .weather-temp { font-size: 24px; }
+    .weather-icon { width: 28px; height: 28px; }
+    .weather-icon svg { width: 25px; height: 25px; }
+    .actions { justify-content: center; }
+  }
+</style>
+<script>(function(){try{var t=localStorage.getItem("valmore-theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches)t="light";if(t==="light")document.documentElement.classList.add("theme-light-boot");document.documentElement.dataset.theme=t||"dark";}catch(e){}})();</script>
+<script>(function(){try{var saved=localStorage.getItem("valmore-language");var nav=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone||"").toLowerCase();var localEs=tz.indexOf("buenos_aires")>=0||tz.indexOf("argentina")>=0;var lang=saved||(localEs?"es":nav.indexOf("zh")===0?"zh":nav.indexOf("en")===0?"en":"es");document.documentElement.dataset.language=lang;document.documentElement.lang=lang==="zh"?"zh-CN":lang;if(lang!=="es")document.documentElement.classList.add("i18n-pending");}catch(e){}})();</script>
+<link rel="stylesheet" href="./styles/theme.css">
+</head>
+<body>
+<script>(function(){try{var t=localStorage.getItem("valmore-theme")||document.documentElement.dataset.theme;if(t==="light")document.body.classList.add("theme-light");}catch(e){}})();</script>
+<nav>
+  <a class="logo" href="./index.html">VALMORÉ</a>
+</nav>
+
+<main>
+  <section class="wine-hero">
+    <div>
+      <p class="kicker" id="wineMeta"></p>
+      <h1 id="wineTitle"></h1>
+      <span class="status" id="wineStatus"></span>
+      <p class="desc" id="wineDesc"></p>
+      <div class="ritual" aria-label="Resumen de experiencia del vino">
+        <article class="ritual-card">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M15 6h18l-3 18a6 6 0 0 1-12 0L15 6Z"/>
+            <path d="M24 30v10"/>
+            <path d="M17 42h14"/>
+          </svg>
+          <h3>Momento</h3>
+          <p id="wineMoment"></p>
+        </article>
+        <article class="ritual-card">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 26c8-15 22-15 30 0"/>
+            <path d="M12 32c7 8 17 8 24 0"/>
+            <path d="M24 15v18"/>
+            <path d="M18 23h12"/>
+          </svg>
+          <h3>Personalidad</h3>
+          <p id="winePersonality"></p>
+        </article>
+        <article class="ritual-card">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="24" cy="24" r="15"/>
+            <path d="M24 9v30"/>
+            <path d="M9 24h30"/>
+            <path d="M14 14l20 20"/>
+          </svg>
+          <h3>Ideal para</h3>
+          <p id="wineBestFor"></p>
+        </article>
+      </div>
+      <div class="actions">
+        <a class="btn" href="./index.html#contacto">Contactanos</a>
+      </div>
+    </div>
+    <div class="bottle-wrap">
+      <img class="bottle" src="../public/images/Origine-carousel.png" alt="Botella Valmoré" id="wineImage">
+      <div class="weather-widget" id="wineWeather" aria-live="polite">
+        <img class="weather-clouds" src="../public/images/weather-clouds.gif" alt="">
+        <div class="weather-top">
+          <span class="weather-icon" id="wineWeatherIcon" aria-hidden="true"></span>
+          <span class="weather-temp" id="wineWeatherTemp">--°</span>
+        </div>
+        <span class="weather-label" id="wineWeatherLabel">Clima de origen</span>
+        <span class="weather-place" id="wineWeatherPlace">Valle de Uco</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section light">
+    <h2 class="section-title">Ficha técnica</h2>
+    <div class="grid">
+      <div class="item" data-icon="🍇"><div class="label">Varietal</div><div class="value" id="wineVarietal"></div></div>
+      <div class="item" data-icon="✦"><div class="label">Cosecha</div><div class="value" id="wineCosecha"></div></div>
+      <div class="item" data-icon="⌂"><div class="label">Origen</div><div class="value" id="wineOrigen"></div></div>
+      <div class="item" data-icon="%"><div class="label">Alcohol</div><div class="value" id="wineAlcohol"></div></div>
+      <div class="item" data-icon="◌"><div class="label">Crianza</div><div class="value" id="wineCrianza"></div></div>
+      <div class="item" data-icon="◆"><div class="label">Producción</div><div class="value" id="wineProduccion"></div></div>
+      <div class="item" data-icon="❄"><div class="label">Servicio</div><div class="value" id="wineServicio"></div></div>
+      <div class="item" data-icon="◡"><div class="label">Maridaje</div><div class="value" id="wineMaridaje"></div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Notas de cata</h2>
+    <div class="cata-grid">
+      <div class="cata-card"><div class="label">Vista</div><p id="wineVista"></p></div>
+      <div class="cata-card"><div class="label">Nariz</div><p id="wineNariz"></p></div>
+      <div class="cata-card"><div class="label">Boca</div><p id="wineBoca"></p></div>
+    </div>
+  </section>
+</main>
+
+<script>
+  const wines = [
+    {
+      title: 'Origine Malbec',
+      meta: 'Valle de Uco · Mendoza · 2023',
+      status: '',
+      desc: 'Fruta roja viva, taninos sedosos y un paso breve por roble francés para una copa elegante y precisa.',
+      image: '../public/images/Origine-carousel.png',
+      weatherPlace: 'Valle de Uco',
+      weatherLat: -33.58,
+      weatherLon: -69.02,
+      moment: 'Cena íntima, primera copa y una conversación que pide bajar el ritmo.',
+      personality: 'Elegante, fresco y directo: acompaña sin imponerse.',
+      bestFor: 'Parejas, sobremesas tranquilas y experiencias en casa.',
+      varietal: 'Malbec 100%',
+      cosecha: '2023',
+      origen: 'Valle de Uco',
+      alcohol: '14.1%',
+      crianza: 'Roble francés',
+      produccion: 'Limitada',
+      servicio: '14°C - 16°C',
+      maridaje: 'Carnes, pastas y quesos semiduros',
+      vista: 'Color violáceo intenso con destellos rojos brillantes.',
+      nariz: 'Ciruelas frescas, violetas y un sutil toque de roble.',
+      boca: 'Taninos suaves, volumen elegante y persistencia fresca.'
+    },
+    {
+      title: 'Alliance Malbec Dulce',
+      meta: 'Mendoza · Malbec dulce',
+      status: 'No disponible',
+      desc: 'Fruta roja madura, textura amable y final suave. Una etiqueta pensada para sobremesas, postres simples y charlas que se alargan.',
+      image: '../public/images/ALLIANCE-carousel.png',
+      weatherPlace: 'Mendoza',
+      weatherLat: -32.89,
+      weatherLon: -68.85,
+      moment: 'Final de cena, algo dulce en la mesa y nadie apurado por irse.',
+      personality: 'Amable, goloso y cercano, con una dulzura medida.',
+      bestFor: 'Postres, quesos suaves, encuentros distendidos y primeras catas.',
+      varietal: 'Malbec dulce',
+      cosecha: 'Próximamente',
+      origen: 'Mendoza',
+      alcohol: '13.5%',
+      crianza: 'Perfil joven',
+      produccion: 'Edición proyectada',
+      servicio: '10°C - 12°C',
+      maridaje: 'Chocolate, frutos rojos, quesos cremosos y pan tostado',
+      vista: 'Rojo rubí brillante con reflejos violáceos.',
+      nariz: 'Fruta roja madura, mermelada suave y una nota floral delicada.',
+      boca: 'Dulce equilibrado, paso redondo y final amable.'
+    },
+    {
+      title: 'AEVUM Cabernet Sauvignon',
+      meta: 'Mendoza · Cabernet Sauvignon',
+      status: 'No disponible',
+      desc: 'Un Cabernet de carácter profundo, taninos presentes y notas especiadas. Pensado para cenas largas, carnes y conversaciones con tiempo.',
+      image: '../public/images/AEVUM-carousel.png',
+      weatherPlace: 'Mendoza',
+      weatherLat: -32.89,
+      weatherLon: -68.85,
+      moment: 'Mesa de noche larga, plato principal y temas que merecen otra copa.',
+      personality: 'Serio, estructurado y persistente, con energía de guarda.',
+      bestFor: 'Carnes, quesos estacionados, equipos chicos y cenas con carácter.',
+      varietal: 'Cabernet Sauvignon',
+      cosecha: 'Próximamente',
+      origen: 'Mendoza',
+      alcohol: '14.3%',
+      crianza: 'Selección especial',
+      produccion: 'Partida limitada',
+      servicio: '16°C - 18°C',
+      maridaje: 'Carnes grilladas, cordero, quesos duros y hongos',
+      vista: 'Rojo profundo con núcleo oscuro y reflejos granate.',
+      nariz: 'Cassis, pimienta negra, cuero fino y un fondo de especias dulces.',
+      boca: 'Taninos firmes, centro amplio y final largo.'
+    }
+ 
+  ];
+
+  const params = new URLSearchParams(window.location.search);
+  const index = Math.min(Math.max(Number(params.get('vino') || 0), 0), wines.length - 1);
+  const wine = wines[index];
+
+  const weatherIcons = {
+    sun: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="24" cy="24" r="8" fill="currentColor" opacity="0.22"/><circle cx="24" cy="24" r="8"/><path d="M24 4v6M24 38v6M4 24h6M38 24h6M9.9 9.9l4.2 4.2M33.9 33.9l4.2 4.2M38.1 9.9l-4.2 4.2M14.1 33.9l-4.2 4.2"/></svg>',
+    moon: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 35.5A16 16 0 0 1 21.4 6.1 18 18 0 1 0 42 28.6 15.9 15.9 0 0 1 32 35.5Z" fill="currentColor" opacity="0.18"/></svg>'
+  };
+
+  function isCloudyCode(code) {
+    return [2, 3, 45, 48, 51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 71, 73, 75, 77, 80, 81, 82, 85, 86, 95, 96, 99].includes(Number(code));
+  }
+
+  function weatherText(code, isDay) {
+    if (isCloudyCode(code)) return isDay ? 'Nublado ahora' : 'Noche nublada';
+    return isDay ? 'Día despejado' : 'Noche despejada';
+  }
+
+  function renderWineWeather() {
+    const weather = document.getElementById('wineWeather');
+    const icon = document.getElementById('wineWeatherIcon');
+    const temp = document.getElementById('wineWeatherTemp');
+    const label = document.getElementById('wineWeatherLabel');
+    const place = document.getElementById('wineWeatherPlace');
+    if (!weather || !icon || !temp || !label || !place) return;
+
+    place.textContent = wine.weatherPlace || wine.origen;
+    icon.innerHTML = weatherIcons.sun;
+    temp.textContent = '--°';
+    label.textContent = 'Clima de origen';
+
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(wine.weatherLat)}&longitude=${encodeURIComponent(wine.weatherLon)}&current=temperature_2m,is_day,weather_code&timezone=auto`;
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) throw new Error('weather unavailable');
+        return response.json();
+      })
+      .then((data) => {
+        const current = data.current;
+        const isDay = Number(current.is_day) === 1;
+        temp.textContent = `${Math.round(current.temperature_2m)}°`;
+        label.textContent = weatherText(current.weather_code, isDay);
+        icon.innerHTML = isDay ? weatherIcons.sun : weatherIcons.moon;
+        weather.classList.toggle('is-cloudy', isCloudyCode(current.weather_code));
+      })
+      .catch(() => {
+        label.textContent = 'Clima no disponible';
+      });
+  }
+
+  document.title = `Valmoré - ${wine.title}`;
+  document.getElementById('wineMeta').textContent = wine.meta;
+  document.getElementById('wineTitle').textContent = wine.title;
+  document.getElementById('wineStatus').textContent = wine.status;
+  document.getElementById('wineDesc').textContent = wine.desc;
+  document.getElementById('wineMoment').textContent = wine.moment;
+  document.getElementById('winePersonality').textContent = wine.personality;
+  document.getElementById('wineBestFor').textContent = wine.bestFor;
+  document.getElementById('wineVarietal').textContent = wine.varietal;
+  document.getElementById('wineCosecha').textContent = wine.cosecha;
+  document.getElementById('wineOrigen').textContent = wine.origen;
+  document.getElementById('wineAlcohol').textContent = wine.alcohol;
+  document.getElementById('wineCrianza').textContent = wine.crianza;
+  document.getElementById('wineProduccion').textContent = wine.produccion;
+  document.getElementById('wineServicio').textContent = wine.servicio;
+  document.getElementById('wineMaridaje').textContent = wine.maridaje;
+  document.getElementById('wineVista').textContent = wine.vista;
+  document.getElementById('wineNariz').textContent = wine.nariz;
+  document.getElementById('wineBoca').textContent = wine.boca;
+  document.getElementById('wineImage').src = wine.image;
+  document.getElementById('wineImage').alt = `Botella ${wine.title}`;
+  renderWineWeather();
+</script>
+<script src="./i18n.js"></script>
+<script src="./theme.js"></script>
+</body>
+</html>
