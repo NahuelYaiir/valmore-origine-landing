@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experiencias Valmoré - En preparación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles/valmore-secondary.css">
+<script>(function(){try{var t=localStorage.getItem("valmore-theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches)t="light";if(t==="light")document.documentElement.classList.add("theme-light-boot");document.documentElement.dataset.theme=t||"dark";}catch(e){}})();</script>
+<script>(function(){try{var saved=localStorage.getItem("valmore-language");var nav=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone||"").toLowerCase();var localEs=tz.indexOf("buenos_aires")>=0||tz.indexOf("argentina")>=0;var lang=saved||(localEs?"es":nav.indexOf("zh")===0?"zh":nav.indexOf("en")===0?"en":"es");document.documentElement.dataset.language=lang;document.documentElement.lang=lang==="zh"?"zh-CN":lang;if(lang!=="es")document.documentElement.classList.add("i18n-pending");}catch(e){}})();</script>
+<link rel="stylesheet" href="./styles/theme.css">
+</head>
+<body>
+<script>(function(){try{var t=localStorage.getItem("valmore-theme")||document.documentElement.dataset.theme;if(t==="light")document.body.classList.add("theme-light");}catch(e){}})();</script>
+  <main class="page">
+    <a class="brand" href="./index.html">VALMORÉ</a>
+    <section class="panel">
+      <img class="vineyard" src="../public/images/vinedo-en-construccion.gif" alt="Viñedo animado al atardecer">
+      <div class="label">Experiencias web</div>
+      <h1>Experiencias Valmoré</h1>
+      <p>Estamos preparando nuevas formas de compartir una copa, una historia y una conversación desde casa.</p>
+      <div class="actions">
+        <a class="btn primary" href="./que-comemos-hoy.html">¿Qué comemos hoy?</a>
+        <a class="btn" href="./caso-valmore.html">Caso Valmorè 001</a>
+      </div>
+    </section>
+  </main>
+<script src="./i18n.js"></script>
+<script src="./theme.js"></script>
+</body>
+</html>
