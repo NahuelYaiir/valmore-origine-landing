@@ -1,18 +1,17 @@
-# Valmoré Origine Landing
+# Valmorè Web
 
-Landing estática de `Valmoré Origine` usada para la ficha técnica y presentación comercial del vino.
+Sitio estático de Valmorè preparado para publicación directa.
 
 ## Estructura
 
-- `index.html`: página principal
-- `gracias.html`: página de confirmación
-- `botella-hero.png` y variantes: assets visuales del producto
-- `remove_*.py` / `remove_bg.swift`: utilidades locales para tratamiento de imágenes
+- `index.html`: página principal.
+- `caso-valmore.html`, `catas.html`, `experiencias.html`, `origen.html`, `que-comemos-hoy.html` y `vino.html`: experiencias y páginas del sitio.
+- `styles/`: estilos compartidos.
+- `public/`: imágenes, iconos, audio y videos utilizados por la web.
+- `i18n.js` y `theme.js`: idioma y tema visual.
 
-## Deploy
+## Publicación
 
-La versión publicada fue usada en Netlify como landing independiente.
+No requiere instalación, compilación ni dependencias. Configurá el proveedor de hosting para publicar desde la raíz del repositorio.
 
-## Nota
-
-Esta carpeta está pensada como repo independiente de la landing, separada del CRM.
+El documento de entrada es `index.html`.

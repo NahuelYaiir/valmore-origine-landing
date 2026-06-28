@@ -1,58 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gracias | Valmoré</title>
-  <style>
-    :root {
-      --verde: #1a2e1e;
-      --dorado: #c9a84c;
-      --crema: #f5f0e8;
-    }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      background: var(--verde);
-      color: var(--crema);
-      font-family: Georgia, serif;
-      text-align: center;
-      padding: 32px;
-    }
-    .wrap {
-      max-width: 640px;
-    }
-    h1 {
-      font-size: clamp(36px, 5vw, 58px);
-      margin: 0 0 16px;
-      letter-spacing: 1px;
-    }
-    p {
-      font-size: 20px;
-      line-height: 1.6;
-      margin: 0 0 28px;
-      opacity: 0.9;
-    }
-    a {
-      display: inline-block;
-      padding: 14px 28px;
-      border: 1px solid var(--dorado);
-      color: var(--verde);
-      background: var(--dorado);
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-size: 12px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gracias | Valmoré</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles/valmore-secondary.css">
+<script>(function(){try{var t=localStorage.getItem("valmore-theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches)t="light";if(t==="light")document.documentElement.classList.add("theme-light-boot");document.documentElement.dataset.theme=t||"dark";}catch(e){}})();</script>
+<script>(function(){try{var saved=localStorage.getItem("valmore-language");var nav=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone||"").toLowerCase();var localEs=tz.indexOf("buenos_aires")>=0||tz.indexOf("argentina")>=0;var lang=saved||(localEs?"es":nav.indexOf("zh")===0?"zh":nav.indexOf("en")===0?"en":"es");document.documentElement.dataset.language=lang;document.documentElement.lang=lang==="zh"?"zh-CN":lang;if(lang!=="es")document.documentElement.classList.add("i18n-pending");}catch(e){}})();</script>
+<link rel="stylesheet" href="./styles/theme.css">
 </head>
 <body>
-  <div class="wrap">
-    <h1>Gracias por tu consulta</h1>
-    <p>Recibimos tu mensaje y vamos a responderte a la brevedad.</p>
-    <a href="/">Volver a Valmoré</a>
-  </div>
+<script>(function(){try{var t=localStorage.getItem("valmore-theme")||document.documentElement.dataset.theme;if(t==="light")document.body.classList.add("theme-light");}catch(e){}})();</script>
+  <main class="page">
+    <a class="brand" href="./index.html">VALMORÉ</a>
+    <section class="panel">
+      <div class="label">Mensaje recibido</div>
+      <h1>Gracias por tu consulta</h1>
+      <p>Recibimos tu mensaje y vamos a responderte a la brevedad para seguir pensando esa experiencia juntos.</p>
+      <div class="actions">
+        <a class="btn primary" href="./index.html">Volver a Valmoré</a>
+      </div>
+    </section>
+  </main>
+<script src="./i18n.js"></script>
+<script src="./theme.js"></script>
 </body>
 </html>

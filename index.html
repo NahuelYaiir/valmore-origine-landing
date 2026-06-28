@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valmoré Origine — Malbec 2023</title>
+<title>Valmoré Origine - Malbec 2023</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -21,6 +21,10 @@
   }
 
   html { scroll-behavior: smooth; }
+
+  section {
+    scroll-margin-top: 130px;
+  }
 
   body {
     background: var(--verde);
@@ -41,7 +45,7 @@
     opacity: 0.6;
   }
 
-  /* ─── HERO ─── */
+  /* HERO */
   .hero {
     min-height: 100vh;
     display: grid;
@@ -63,7 +67,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 80px 60px 80px 80px;
+    padding: 86px 56px 64px 68px;
     position: relative;
     z-index: 2;
   }
@@ -80,48 +84,100 @@
 
   .anno {
     font-family: 'Cinzel', serif;
-    font-size: 11px;
-    letter-spacing: 6px;
+    font-size: 10px;
+    letter-spacing: 5px;
     color: var(--dorado);
     text-transform: uppercase;
-    margin-bottom: 28px;
+    margin-bottom: 18px;
     opacity: 0;
     animation: fadeUp 1s 0.2s forwards;
   }
 
   .marca {
     font-family: 'Cinzel', serif;
-    font-size: clamp(52px, 6vw, 88px);
+    font-size: clamp(40px, 4.5vw, 58px);
     font-weight: 600;
-    letter-spacing: 8px;
+    letter-spacing: 4px;
     color: var(--crema);
-    line-height: 1;
-    margin-bottom: 6px;
+    line-height: 1.04;
+    margin-bottom: 8px;
+    max-width: 580px;
     opacity: 0;
     animation: fadeUp 1s 0.4s forwards;
   }
 
   .origine {
     font-family: 'Cinzel', serif;
-    font-size: clamp(14px, 1.6vw, 20px);
+    font-size: clamp(12px, 1.25vw, 16px);
     font-weight: 400;
-    letter-spacing: 14px;
+    letter-spacing: 10px;
     color: var(--dorado);
-    margin-bottom: 48px;
+    margin-bottom: 30px;
     opacity: 0;
     animation: fadeUp 1s 0.6s forwards;
   }
 
   .hero-desc {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(18px, 1.8vw, 22px);
+    font-size: clamp(17px, 1.45vw, 20px);
     font-style: italic;
-    line-height: 1.7;
+    line-height: 1.55;
     color: rgba(245,240,232,0.75);
-    max-width: 420px;
-    margin-bottom: 56px;
+    max-width: 390px;
+    margin-bottom: 34px;
     opacity: 0;
     animation: fadeUp 1s 0.8s forwards;
+  }
+
+  .hero-status {
+    display: inline-block;
+    align-self: flex-start;
+    margin-top: -22px;
+    margin-bottom: 28px;
+    color: rgba(201,168,76,0.86);
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2.6px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 1s 0.85s forwards;
+  }
+
+  .hero-status:empty {
+    display: none;
+  }
+
+  .hero-specs {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(70px, 1fr));
+    gap: 14px;
+    max-width: 500px;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 1s 0.9s forwards;
+  }
+
+  .hero-spec {
+    padding-top: 10px;
+    border-top: 1px solid rgba(201,168,76,0.24);
+  }
+
+  .hero-spec-label {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 7px;
+    letter-spacing: 2.1px;
+    color: rgba(201,168,76,0.78);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .hero-spec-value {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: rgba(245,240,232,0.84);
+    line-height: 1.18;
   }
 
   .cta-grupo {
@@ -133,8 +189,10 @@
   }
 
   .btn-primary {
+    position: relative;
+    overflow: hidden;
     display: inline-block;
-    padding: 16px 40px;
+    padding: 14px 34px;
     border: 1px solid var(--dorado);
     color: var(--verde);
     background: var(--dorado);
@@ -155,6 +213,7 @@
   }
 
   .btn-secondary {
+    position: relative;
     font-family: 'Cinzel', serif;
     font-size: 11px;
     letter-spacing: 3px;
@@ -174,36 +233,183 @@
     justify-content: center;
     position: relative;
     z-index: 2;
-    padding: 60px 40px;
+    padding: 54px 40px 42px;
+    min-width: 0;
+  }
+
+  .hero-carousel {
+    position: relative;
+    width: min(100%, 660px);
+    min-height: min(68vh, 560px);
+    display: grid;
+    place-items: center;
+  }
+
+  .vino-slide {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-items: center;
+    opacity: 0;
+    transform: translateX(24px);
+    pointer-events: none;
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  .vino-slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .vino-slide .botella-wrapper {
+    justify-self: center;
   }
 
   .botella-wrapper {
     position: relative;
+    width: min(38vw, 320px);
+    height: min(60vh, 480px);
+    display: grid;
+    place-items: center;
     opacity: 0;
     animation: fadeIn 1.4s 0.5s forwards;
   }
 
-  .botella-wrapper::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%);
-    border-radius: 50%;
-  }
-
   .botella-img {
-    height: min(72vh, 620px);
-    width: auto;
+    display: block;
+    width: min(38vw, 320px);
+    height: min(60vh, 480px);
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
     filter: drop-shadow(0 40px 80px rgba(0,0,0,0.7));
     position: relative;
     z-index: 2;
-    animation: float 6s ease-in-out infinite;
     border-radius: 0;
+  }
+
+  .hero-carousel .botella-img {
+    width: min(38vw, 320px);
+    height: min(60vh, 480px);
+  }
+
+  .weather-widget {
+    position: absolute;
+    right: clamp(10px, 3vw, 34px);
+    top: clamp(34px, 8vh, 78px);
+    z-index: 6;
+    width: 154px;
+    min-height: 112px;
+    padding: 16px 16px 14px;
+    border: 1px solid rgba(201,168,76,0.24);
+    border-radius: 8px;
+    background: rgba(6,20,14,0.56);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeIn 1s 1s forwards;
+  }
+
+  .weather-widget::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 76% 20%, rgba(201,168,76,0.16), transparent 52%);
+    pointer-events: none;
+  }
+
+  .weather-clouds {
+    position: absolute;
+    right: -20px;
+    top: 2px;
+    width: 94px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease;
+  }
+
+  .weather-widget.is-cloudy .weather-clouds {
+    opacity: 0.75;
+  }
+
+  .weather-top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .weather-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    color: var(--dorado);
+  }
+
+  .weather-icon svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .weather-temp {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 29px;
+    line-height: 1;
+    color: var(--crema);
+  }
+
+  .weather-label,
+  .weather-place {
+    position: relative;
+    z-index: 1;
+    display: block;
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+  }
+
+  .weather-label {
+    margin-top: 12px;
+    font-size: 8px;
+    letter-spacing: 2.2px;
+    color: rgba(201,168,76,0.82);
+  }
+
+  .weather-place {
+    margin-top: 6px;
+    font-size: 8px;
+    letter-spacing: 1.6px;
+    color: rgba(245,240,232,0.58);
+  }
+
+  .carousel-controls {
+    position: absolute;
+    left: 50%;
+    bottom: 12px;
+    z-index: 5;
+    display: flex;
+    gap: 10px;
+    transform: translateX(-50%);
+  }
+
+  .carousel-dot {
+    width: 34px;
+    height: 2px;
+    border: 0;
+    padding: 0;
+    background: rgba(245,240,232,0.22);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .carousel-dot.active {
+    background: var(--dorado);
+    transform: scaleX(1.2);
   }
 
   @keyframes float {
@@ -221,7 +427,7 @@
   .deco-c1 { width: 500px; height: 500px; top: -100px; right: -100px; }
   .deco-c2 { width: 300px; height: 300px; bottom: 50px; right: 100px; }
 
-  /* ─── DATOS TÉCNICOS ─── */
+  /* DATOS TÉCNICOS */
   .ficha {
     background: var(--crema-suave);
     color: var(--texto);
@@ -287,6 +493,8 @@
   }
 
   .ficha-item {
+    position: relative;
+    overflow: hidden;
     background: var(--crema-suave);
     padding: 36px 32px;
     transition: background 0.3s;
@@ -310,7 +518,7 @@
     line-height: 1.3;
   }
 
-  /* ─── CATA ─── */
+  /* CATA */
   .cata {
     background: var(--verde-medio);
     padding: 100px 80px;
@@ -352,6 +560,8 @@
   }
 
   .nota-item {
+    position: relative;
+    overflow: hidden;
     display: flex;
     align-items: flex-start;
     gap: 24px;
@@ -386,7 +596,7 @@
     line-height: 1.5;
   }
 
-  /* ─── VIÑEDO ─── */
+  /* VIÑEDO */
   .vinedo {
     background: var(--crema-suave);
     color: var(--texto);
@@ -400,6 +610,8 @@
   .vinedo-data { display: flex; flex-direction: column; gap: 0; }
 
   .vinedo-stat {
+    position: relative;
+    overflow: hidden;
     padding: 32px 0;
     border-bottom: 1px solid rgba(26,46,30,0.1);
     display: flex;
@@ -423,10 +635,113 @@
     text-align: right;
   }
 
-  /* ─── CONTACTO ─── */
+  .ficha,
+  .cata,
+  .vinedo {
+    display: none;
+  }
+
+  .vision-experiencia {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 14% 20%, rgba(201,168,76,0.12), transparent 32%),
+      linear-gradient(135deg, #102317 0%, #1a2e1e 54%, #0a180f 100%);
+    padding: 82px 72px;
+    border-top: 1px solid rgba(201,168,76,0.16);
+    border-bottom: 1px solid rgba(201,168,76,0.16);
+  }
+
+  .vision-experiencia::before {
+    content: '';
+    position: absolute;
+    inset: 24px;
+    border: 1px solid rgba(201,168,76,0.12);
+    pointer-events: none;
+  }
+
+  .vision-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 1120px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .vision-kicker {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--dorado);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .vision-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(34px, 4vw, 56px);
+    line-height: 1.02;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--crema);
+    max-width: 520px;
+  }
+
+  .vision-copy {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 1.5vw, 23px);
+    line-height: 1.55;
+    color: rgba(245,240,232,0.78);
+    font-style: italic;
+    max-width: 560px;
+    margin-top: 20px;
+  }
+
+  .vision-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .vision-card {
+    min-height: 176px;
+    padding: 24px 22px;
+    border: 1px solid rgba(201,168,76,0.2);
+    background: rgba(245,240,232,0.045);
+    backdrop-filter: blur(12px);
+  }
+
+  .vision-card span {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2.8px;
+    color: rgba(201,168,76,0.84);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .vision-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--crema);
+    margin-bottom: 10px;
+  }
+
+  .vision-card p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.66);
+  }
+
+  /* CONTACTO */
   .contacto {
     background: var(--verde);
-    padding: 120px 80px;
+    padding: 88px 72px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -462,20 +777,20 @@
 
   .contacto-titulo {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(36px, 5vw, 64px);
+    font-size: clamp(32px, 3.7vw, 48px);
     font-weight: 300;
     font-style: italic;
     color: var(--crema);
     margin-bottom: 16px;
-    line-height: 1.2;
+    line-height: 1.08;
   }
 
   .contacto-sub {
     font-family: 'Cinzel', serif;
-    font-size: 11px;
-    letter-spacing: 5px;
+    font-size: 10px;
+    letter-spacing: 4px;
     color: var(--dorado);
-    margin-bottom: 56px;
+    margin-bottom: 42px;
   }
 
   .form-row {
@@ -503,7 +818,7 @@
     -webkit-appearance: none;
   }
 
-  input::placeholder, textarea::placeholder { color: rgba(245,240,232,0.3); }
+  input::placeholder, textarea::placeholder { color: rgba(245,240,232,0.46); }
 
   input:focus, textarea:focus, select:focus {
     border-color: rgba(201,168,76,0.6);
@@ -514,15 +829,55 @@
 
   select option { background: var(--verde); color: var(--crema); }
 
-  .form-submit {
+  .contacto p {
+    color: rgba(245,240,232,0.72) !important;
+  }
+
+  .ficha-copy,
+  .origen-copy {
+    font-family: 'Cormorant Garamond', serif;
+    line-height: 1.85;
+    color: #5a4a3a;
+    font-style: italic;
+  }
+
+  .ficha-copy {
+    max-width: 700px;
+    font-size: 20px;
+  }
+
+  .origen-copy {
     margin-top: 8px;
-    padding: 18px 60px;
+    font-size: 19px;
+  }
+
+  .service-temp {
+    margin-top: 24px;
+    color: rgba(245,240,232,0.5);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+  }
+
+  .contacto-sub {
+    margin-bottom: 48px;
+    color: rgba(245,240,232,0.6);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-style: italic;
+  }
+
+  .form-submit {
+    position: relative;
+    overflow: hidden;
+    margin-top: 8px;
+    padding: 15px 48px;
     background: var(--dorado);
     color: var(--verde);
     border: none;
     font-family: 'Cinzel', serif;
-    font-size: 11px;
-    letter-spacing: 4px;
+    font-size: 10px;
+    letter-spacing: 3px;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.3s;
@@ -533,30 +888,154 @@
     box-shadow: 0 16px 40px rgba(201,168,76,0.3);
   }
 
-  /* ─── FOOTER ─── */
+  /* FOOTER */
   footer {
-    background: #111a13;
-    padding: 40px 80px;
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(201,168,76,0.11), transparent 28%),
+      linear-gradient(145deg, #07150d 0%, #111f15 52%, #07120b 100%);
+    padding: 64px 72px 34px;
+    border-top: 1px solid rgba(201,168,76,0.16);
+  }
+
+  footer::before {
+    content: '';
+    position: absolute;
+    right: -160px;
+    bottom: -220px;
+    width: 520px;
+    height: 520px;
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .footer-inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(260px, 1.3fr) repeat(3, minmax(150px, 0.8fr));
+    gap: 42px;
+    align-items: start;
+  }
+
+  .footer-bottom {
+    position: relative;
+    z-index: 1;
+    margin-top: 46px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(201,168,76,0.12);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-top: 1px solid rgba(201,168,76,0.1);
+    gap: 24px;
+    flex-wrap: wrap;
   }
 
   .footer-marca {
     font-family: 'Cinzel', serif;
-    font-size: 18px;
-    letter-spacing: 6px;
+    font-size: clamp(24px, 3vw, 38px);
+    letter-spacing: 8px;
     color: var(--dorado);
+    display: block;
+    margin-bottom: 18px;
+  }
+
+  .footer-tagline {
+    max-width: 390px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    line-height: 1.55;
+    color: rgba(245,240,232,0.72);
+    font-style: italic;
   }
 
   .footer-copy {
     font-size: 11px;
-    letter-spacing: 2px;
-    color: rgba(245,240,232,0.3);
+    letter-spacing: 1.8px;
+    color: rgba(245,240,232,0.38);
+    text-transform: uppercase;
   }
 
-  /* ─── ANIMACIONES ─── */
+  .footer-heading {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--dorado);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .footer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-link {
+    color: rgba(245,240,232,0.56);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.8px;
+    transition: color 0.3s, transform 0.3s;
+  }
+
+  .footer-link:hover {
+    color: var(--dorado);
+    transform: translateX(2px);
+  }
+
+  .footer-warning {
+    margin: 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    line-height: 1.5;
+    color: rgba(245,240,232,0.64);
+  }
+
+  .footer-legal-note {
+    margin-top: 12px;
+    font-size: 11px;
+    line-height: 1.6;
+    color: rgba(245,240,232,0.4);
+  }
+
+  .footer-seals {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .footer-vabn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(245,240,232,0.08);
+    border: 1px solid rgba(201,168,76,0.22);
+    transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+  }
+
+  .footer-vabn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(201,168,76,0.55);
+    background: rgba(245,240,232,0.12);
+  }
+
+  .footer-vabn img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* ANIMACIONES */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -565,6 +1044,15 @@
   @keyframes fadeIn {
     from { opacity: 0; }
     to   { opacity: 1; }
+  }
+
+  @keyframes wineInfoSwap {
+    from { opacity: 0.35; transform: translateY(10px); filter: blur(4px); }
+    to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  }
+
+  .wine-info-swap {
+    animation: wineInfoSwap 0.55s ease both;
   }
 
   .reveal {
@@ -577,47 +1065,192 @@
     transform: none;
   }
 
-  /* ─── NAV ─── */
-  nav {
+  /* NAV */
+  #nav {
     position: fixed;
-    top: 0; left: 0; right: 0;
+    top: 20px;
+    left: 14px;
+    right: 14px;
     z-index: 900;
-    padding: 24px 60px;
+    min-height: 78px;
+    padding: 0 24px 0 28px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    transition: background 0.4s, padding 0.4s;
+    gap: 22px;
+    background:
+      linear-gradient(90deg, rgba(3,22,15,0.97) 0%, rgba(4,18,13,0.91) 48%, rgba(8,24,16,0.86) 100%),
+      radial-gradient(circle at 88% 34%, rgba(201,168,76,0.1), transparent 18%),
+      url("./public/images/fondo de Menu.png");
+    background-size: cover;
+    background-position: center 42%;
+    border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 6px;
+    box-shadow: 0 14px 38px rgba(0,0,0,0.32);
+    overflow: visible;
+    transition: background 0.4s, min-height 0.4s, top 0.4s;
   }
-  nav.scrolled {
-    background: rgba(17,26,19,0.95);
+
+  #nav::before {
+    content: '';
+    position: absolute;
+    left: -130px;
+    top: -180px;
+    width: 420px;
+    height: 420px;
+    border: 1px solid rgba(201,168,76,0.17);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  #nav.scrolled {
+    top: 8px;
+    min-height: 70px;
+    background:
+      linear-gradient(90deg, rgba(3,22,15,0.98) 0%, rgba(6,20,14,0.94) 52%, rgba(8,24,16,0.9) 100%),
+      url("./public/images/fondo de Menu.png");
+    background-size: cover;
+    background-position: center 42%;
     backdrop-filter: blur(10px);
-    padding: 16px 60px;
-    border-bottom: 1px solid rgba(201,168,76,0.1);
+    border-color: rgba(201,168,76,0.16);
   }
 
   .nav-logo {
     font-family: 'Cinzel', serif;
-    font-size: 18px;
-    letter-spacing: 6px;
+    font-size: clamp(23px, 2vw, 30px);
+    letter-spacing: 7px;
     color: var(--dorado);
     text-decoration: none;
+    min-width: 240px;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 0 20px rgba(201,168,76,0.28);
   }
 
   .nav-links {
     display: flex;
-    gap: 40px;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(14px, 1.5vw, 24px);
     list-style: none;
+    flex: 1 1 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .nav-toggle {
+    display: none;
+    position: relative;
+    z-index: 3;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(201,168,76,0.42);
+    border-radius: 6px;
+    background: rgba(6,20,14,0.46);
+    color: var(--dorado);
+    cursor: pointer;
+  }
+
+  .nav-toggle span {
+    display: block;
+    width: 19px;
+    height: 1px;
+    margin: 6px auto;
+    background: currentColor;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  #nav.menu-open .nav-toggle span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  #nav.menu-open .nav-toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  #nav.menu-open .nav-toggle span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
   }
 
   .nav-links a {
     font-family: 'Cinzel', serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: rgba(245,240,232,0.7);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.4px;
+    color: rgba(245,240,232,0.86);
     text-decoration: none;
-    transition: color 0.3s;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: color 0.3s, text-shadow 0.3s;
   }
-  .nav-links a:hover { color: var(--dorado); }
+
+  .nav-links a:hover,
+  .nav-links a.active {
+    color: var(--crema);
+    text-shadow: 0 0 14px rgba(245,240,232,0.28);
+  }
+
+  .nav-dropdown {
+    position: relative;
+  }
+
+  .nav-dropdown::after {
+    content: '';
+    position: absolute;
+    left: -10px;
+    right: -10px;
+    top: 100%;
+    height: 18px;
+  }
+
+  .nav-dropdown-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-dropdown-trigger::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-right: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    transform: rotate(45deg) translateY(-2px);
+    opacity: 0.7;
+  }
+
+  .nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    min-width: 230px;
+    padding: 14px;
+    list-style: none;
+    background: rgba(6,20,14,0.96);
+    border: 1px solid rgba(201,168,76,0.18);
+    box-shadow: 0 24px 55px rgba(0,0,0,0.34);
+    backdrop-filter: blur(14px);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 10px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown:focus-within .nav-dropdown-menu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+  }
+
+  .nav-dropdown-menu a {
+    display: block;
+    padding: 12px 14px;
+    color: rgba(245,240,232,0.74);
+  }
+
+  .nav-dropdown-menu a:hover {
+    color: var(--dorado);
+  }
 
   /* Divisor dorado */
   .divisor {
@@ -628,47 +1261,332 @@
     opacity: 0.6;
   }
 
-  .contact-link {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: rgba(245,240,232,0.65);
-    font-family: 'Cinzel', serif;
-    font-size: 10px;
-    letter-spacing: 2px;
-    transition: color 0.3s;
+  .fill-word {
+    display: inline-block;
+    position: relative;
+    color: var(--word-color, rgba(201,168,76,0.18));
+    transform: translateY(var(--word-y, 22px)) scale(var(--word-scale, 0.98));
+    filter: blur(var(--word-blur, 7px));
+    opacity: var(--word-opacity, 0.18);
+    transition:
+      color 0.9s ease,
+      opacity 0.9s ease,
+      transform 0.9s ease,
+      filter 0.9s ease;
+    transition-delay: calc(var(--word-index, 0) * 115ms);
   }
-  .contact-link:hover { color: var(--dorado); }
-  .contact-link svg { opacity: 0.8; }
+
+  .text-fill.visible .fill-word,
+  .text-fill.fill-visible .fill-word {
+    --word-color: currentColor;
+    --word-y: 0;
+    --word-scale: 1;
+    --word-blur: 0;
+    --word-opacity: 1;
+  }
+
+  .ficha .fill-word,
+  .vinedo .fill-word {
+    --word-color: rgba(26,46,30,0.16);
+  }
+
+  .ficha .text-fill.visible .fill-word,
+  .ficha .text-fill.fill-visible .fill-word,
+  .vinedo .text-fill.visible .fill-word,
+  .vinedo .text-fill.fill-visible .fill-word {
+    --word-color: currentColor;
+  }
+
+  .hover-glow {
+    --mx: 50%;
+    --my: 50%;
+    position: relative;
+    isolation: isolate;
+  }
+
+  .hover-glow::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    opacity: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at var(--mx) var(--my), rgba(232,201,110,0.38), transparent 36%),
+      linear-gradient(135deg, rgba(201,168,76,0.18), transparent 58%);
+    transition: opacity 0.35s ease;
+  }
+
+  .hover-glow:hover::after {
+    opacity: 1;
+  }
+
+  .hover-lift {
+    transition:
+      transform 0.35s ease,
+      border-color 0.35s ease,
+      box-shadow 0.35s ease,
+      background 0.35s ease,
+      color 0.35s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 42px rgba(0,0,0,0.22), 0 0 38px rgba(201,168,76,0.22);
+  }
+
+  .nav-links a,
+  .btn-secondary,
+  footer a {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0 1px;
+    transition: color 0.3s ease, background-size 0.35s ease, text-shadow 0.35s ease;
+  }
+
+  .nav-links a:hover,
+  .btn-secondary:hover,
+  footer a:hover {
+    background-size: 100% 1px;
+    text-shadow: 0 0 16px rgba(201,168,76,0.28);
+  }
+
+  @media (max-width: 1180px) {
+    #nav {
+      min-height: 74px;
+      gap: 18px;
+      padding: 0 24px;
+    }
+    .nav-logo {
+      min-width: 205px;
+      font-size: 24px;
+      letter-spacing: 6px;
+    }
+    .nav-links {
+      gap: 14px 18px;
+      flex-wrap: nowrap;
+    }
+    .nav-links a {
+      font-size: 10px;
+    }
+  }
+
   /* RESPONSIVE */
   @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-right { padding: 20px 40px 60px; order: -1; min-height: 50vh; }
-    .hero-left { padding: 40px 40px 60px; }
+    .hero { grid-template-columns: 1fr; min-height: auto; padding-top: 205px; }
+    .hero-right { padding: 12px 28px 20px; order: -1; min-height: auto; }
+    .hero-left { padding: 20px 28px 44px; }
     .hero-left::before { display: none; }
-    .botella-img { height: 300px; }
-    .ficha, .cata, .vinedo, .contacto { padding: 60px 32px; }
+    .botella-wrapper,
+    .botella-img,
+    .hero-carousel .botella-img { width: 154px; height: 230px; }
+    .hero-carousel {
+      min-height: 390px;
+      width: 100%;
+    }
+    .vino-slide {
+      grid-template-columns: 1fr;
+      align-content: center;
+      text-align: center;
+    }
+    .carousel-controls {
+      bottom: 0;
+    }
+    .weather-widget {
+      right: 12px;
+      top: 16px;
+      width: 132px;
+      min-height: 96px;
+      padding: 13px;
+    }
+    .weather-temp { font-size: 24px; }
+    .weather-icon { width: 28px; height: 28px; }
+    .weather-icon svg { width: 25px; height: 25px; }
+    .ficha, .cata, .vinedo, .contacto, .vision-experiencia { padding: 54px 28px; }
+    .vision-experiencia::before { inset: 14px; }
+    .vision-inner { grid-template-columns: 1fr; gap: 34px; }
+    .vision-grid { grid-template-columns: 1fr; }
+    .vision-card { min-height: auto; padding: 22px 20px; }
     .ficha-grid { grid-template-columns: 1fr 1fr; }
     .cata-inner, .vinedo { grid-template-columns: 1fr; gap: 48px; }
     .form-row { grid-template-columns: 1fr; }
-    nav { padding: 20px 32px; }
-    nav.scrolled { padding: 14px 32px; }
-    footer { flex-direction: column; gap: 16px; padding: 32px; text-align: center; }
+    #nav {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      min-height: auto;
+      padding: 14px 16px;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background:
+        linear-gradient(145deg, rgba(3,22,15,0.97), rgba(12,32,21,0.9)),
+        url("./public/images/fondo de Menu.png");
+      background-size: cover;
+      background-position: center;
+    }
+    #nav.scrolled { min-height: auto; top: 12px; }
+    .nav-logo { min-width: 0; font-size: 21px; letter-spacing: 5px; }
+    .nav-toggle {
+      display: block;
+      flex: 0 0 auto;
+    }
+    .nav-links {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 8px);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 0;
+      width: auto;
+      padding: 10px;
+      background: rgba(6,20,14,0.98);
+      border: 1px solid rgba(201,168,76,0.18);
+      border-radius: 6px;
+      box-shadow: 0 24px 55px rgba(0,0,0,0.36);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    #nav.menu-open .nav-links {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+    .nav-links li { width: 100%; }
+    .nav-links a {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      padding: 14px 12px;
+      font-size: 10px;
+    }
+    .nav-dropdown::after { display: none; }
+    .nav-dropdown-menu {
+      position: static;
+      min-width: 100%;
+      margin: 0 0 8px;
+      padding: 0 0 0 12px;
+      opacity: 1;
+      pointer-events: auto;
+      transform: none;
+      display: none;
+      border: 0;
+      box-shadow: none;
+      background: transparent;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown:focus-within .nav-dropdown-menu {
+      display: block;
+    }
+    footer { padding: 48px 32px 30px; }
+    .footer-inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 34px;
+    }
+    .footer-brand-block {
+      grid-column: 1 / -1;
+    }
     .ficha::before { font-size: 100px; }
   }
+
+  @media (max-width: 520px) {
+    .hero { padding-top: 198px; }
+    .deco-circle { display: none; }
+    #nav { padding: 14px; }
+    .nav-logo { font-size: 20px; letter-spacing: 4px; }
+    .hero-left, .hero-right { width: 100%; max-width: 100%; }
+    .hero-left { padding: 18px 24px 42px; }
+    .hero-right { padding: 8px 24px 18px; min-height: auto; }
+    .botella-wrapper,
+    .botella-img,
+    .hero-carousel .botella-img { width: 144px; height: 215px; }
+    .hero-carousel {
+      min-height: 340px;
+    }
+    .marca { font-size: clamp(32px, 8.4vw, 39px); letter-spacing: 2.5px; }
+    .origine { letter-spacing: 6px; margin-bottom: 24px; }
+    .hero-desc { font-size: 16px; line-height: 1.55; margin-bottom: 28px; }
+    .hero-status { margin-top: -16px; margin-bottom: 24px; }
+    .hero-specs {
+      grid-template-columns: 1fr 1fr;
+      gap: 14px 18px;
+      margin-bottom: 28px;
+    }
+    .ficha-grid { grid-template-columns: 1fr; }
+    .vision-title { font-size: 34px; }
+    .vision-copy { font-size: 18px; }
+    .seccion-titulo { font-size: 34px; }
+    .nota-cata,
+    .nota-detalle-text,
+    .vinedo p {
+      font-size: 18px !important;
+    }
+    input, textarea, select {
+      font-size: 14px;
+      background: rgba(245,240,232,0.08);
+    }
+    footer {
+      padding: 34px 24px;
+    }
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    .footer-bottom {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .footer-marca {
+      letter-spacing: 5px;
+    }
+  }
 </style>
+<script>(function(){try{var t=localStorage.getItem("valmore-theme");if(!t&&window.matchMedia&&window.matchMedia("(prefers-color-scheme: light)").matches)t="light";if(t==="light")document.documentElement.classList.add("theme-light-boot");document.documentElement.dataset.theme=t||"dark";}catch(e){}})();</script>
+<script>(function(){try{var saved=localStorage.getItem("valmore-language");var nav=((navigator.languages&&navigator.languages[0])||navigator.language||"").toLowerCase();var tz=(Intl.DateTimeFormat().resolvedOptions().timeZone||"").toLowerCase();var localEs=tz.indexOf("buenos_aires")>=0||tz.indexOf("argentina")>=0;var lang=saved||(localEs?"es":nav.indexOf("zh")===0?"zh":nav.indexOf("en")===0?"en":"es");document.documentElement.dataset.language=lang;document.documentElement.lang=lang==="zh"?"zh-CN":lang;if(lang!=="es")document.documentElement.classList.add("i18n-pending");}catch(e){}})();</script>
+<link rel="stylesheet" href="./styles/theme.css">
 </head>
 <body>
+<script>(function(){try{var t=localStorage.getItem("valmore-theme")||document.documentElement.dataset.theme;if(t==="light")document.body.classList.add("theme-light");}catch(e){}})();</script>
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" class="nav-logo">VALMORÉ</a>
-  <ul class="nav-links">
-    <li><a href="#ficha">El Vino</a></li>
-    <li><a href="#cata">Cata</a></li>
-    <li><a href="#origen">Origen</a></li>
+  <a href="./index.html" class="nav-logo">VALMORÉ</a>
+  <button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNavLinks">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <ul class="nav-links" id="mainNavLinks">
+    <li class="nav-dropdown">
+      <a href="./experiencias.html" class="nav-dropdown-trigger">Experiencias</a>
+      <ul class="nav-dropdown-menu">
+        <li><a href="./que-comemos-hoy.html">¿Qué comemos hoy?</a></li>
+        <li><a href="./caso-valmore.html">Caso Valmorè 001</a></li>
+      </ul>
+    </li>
+    <li class="nav-dropdown">
+      <a href="./vino.html?vino=0" class="nav-dropdown-trigger">Vinos</a>
+      <ul class="nav-dropdown-menu">
+        <li><a href="./vino.html?vino=0">Valmoré Origine</a></li>
+        <li><a href="./vino.html?vino=1">Valmoré Alliance</a></li>
+        <li><a href="./vino.html?vino=2">Valmoré AEVUM</a></li>
+      </ul>
+    </li>
+    <li class="nav-dropdown">
+      <a href="./catas.html" class="nav-dropdown-trigger">Catas</a>
+      <ul class="nav-dropdown-menu">
+        <li><a href="./catas.html">Experiencia para equipos</a></li>
+      </ul>
+    </li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
 </nav>
@@ -679,20 +1597,108 @@
   <div class="deco-circle deco-c2"></div>
 
   <div class="hero-left">
-    <span class="anno">Valle de Uco · Mendoza · 2023</span>
-    <h1 class="marca">VALMORÉ</h1>
-    <p class="origine">Origine</p>
-    <p class="hero-desc">Un Malbec de cosecha manual que expresa la pureza del Valle de Uco: fruta viva, taninos sedosos y el tiempo justo en barricas de roble francés.</p>
+    <span class="anno" id="heroWineMeta">Hogar · Conversación · Experiencia</span>
+    <h1 class="marca text-fill" id="heroWineTitle" data-fill-text>Una noche para conectar</h1>
+    <p class="origine" id="heroWineLine">Origine</p>
+    <p class="hero-desc text-fill" id="heroWineDesc" data-fill-text>Una copa, una historia y una excusa elegante para apagar el ruido, sentarse cerca y dejar que la conversación empiece.</p>
+    <span class="hero-status" id="heroWineStatus"></span>
+    <div class="hero-specs" aria-label="Ficha técnica destacada">
+      <div class="hero-spec">
+        <span class="hero-spec-label">Cosecha</span>
+        <span class="hero-spec-value" id="heroSpecCosecha">2023</span>
+      </div>
+      <div class="hero-spec">
+        <span class="hero-spec-label">Alcohol</span>
+        <span class="hero-spec-value" id="heroSpecAlcohol">14.1%</span>
+      </div>
+      <div class="hero-spec">
+        <span class="hero-spec-label">Origen</span>
+        <span class="hero-spec-value" id="heroSpecOrigen">Valle de Uco</span>
+      </div>
+      <div class="hero-spec">
+        <span class="hero-spec-label">Crianza</span>
+        <span class="hero-spec-value" id="heroSpecCrianza">Roble francés</span>
+      </div>
+    </div>
     <div class="cta-grupo">
-      <a href="#contacto" class="btn-primary">Solicitar Muestra</a>
-      <a href="#ficha" class="btn-secondary">Ficha Técnica</a>
+      <a href="#contacto" class="btn-primary hover-glow hover-lift">Viví la experiencia</a>
+      <a href="./vino.html" class="btn-secondary" id="heroFichaLink">Ficha Técnica</a>
     </div>
   </div>
 
   <div class="hero-right">
-    <div class="botella-wrapper">
-      <!-- Placeholder elegante para la botella -->
-      <img class="botella-img" src="./botella-final-v4.png" alt="Valmoré Origine Malbec 2023">
+    <div class="hero-carousel" aria-label="Selección de vinos Valmoré">
+      <article class="vino-slide active" data-title="Una noche para conectar" data-meta="Hogar · Conversación · Experiencia" data-line="Origine Malbec" data-desc="Una copa, una historia y una excusa elegante para apagar el ruido, sentarse cerca y dejar que la conversación empiece." data-status="" data-cosecha="2023" data-alcohol="14.1%" data-origen="Valle de Uco" data-crianza="Roble francés" data-weather-place="Valle de Uco" data-weather-lat="-33.58" data-weather-lon="-69.02" data-cta-label="Ficha Técnica" data-cta-href="./vino.html?vino=0">
+        <div class="botella-wrapper">
+          <img class="botella-img" src="./public/images/Origine-carousel.png" alt="Valmoré Origine Malbec 2023">
+        </div>
+      </article>
+
+      <article class="vino-slide" data-title="Sobremesas que se alargan" data-meta="Mendoza · Malbec dulce" data-line="Alliance Malbec Dulce" data-desc="Fruta madura y final suave para postres simples, charlas largas y ese momento donde nadie quiere levantarse de la mesa." data-status="No disponible" data-cosecha="Próximamente" data-alcohol="Dulce" data-origen="Mendoza" data-crianza="Perfil joven" data-weather-place="Mendoza" data-weather-lat="-32.89" data-weather-lon="-68.85" data-cta-label="Ficha Técnica" data-cta-href="./vino.html?vino=1">
+        <div class="botella-wrapper">
+          <img class="botella-img" src="./public/images/ALLIANCE-carousel.png" alt="Valmoré Alliance Malbec dulce">
+        </div>
+      </article>
+
+      <article class="vino-slide" data-title="Cenas con carácter" data-meta="Mendoza · Cabernet Sauvignon" data-line="AEVUM Cabernet Sauvignon" data-desc="Un Cabernet profundo para carnes, quesos y conversaciones con más tiempo. La copa acompaña sin apurar la noche." data-status="No disponible" data-cosecha="Próximamente" data-alcohol="Cabernet" data-origen="Mendoza" data-crianza="Selección especial" data-weather-place="Mendoza" data-weather-lat="-32.89" data-weather-lon="-68.85" data-cta-label="Ficha Técnica" data-cta-href="./vino.html?vino=2">
+        <div class="botella-wrapper">
+          <img class="botella-img" src="./public/images/AEVUM-carousel.png" alt="Valmoré AEVUM Cabernet Sauvignon">
+        </div>
+      </article>
+
+      <article class="vino-slide" data-title="Bodegas que quieren jugar" data-meta="Experiencias colaborativas" data-line="Valmore" data-desc="¿Tenés una bodega o una idea para sumar? Buscamos etiquetas que quieran convertirse en juego, historia y encuentro." data-status="Convocatoria abierta" data-cosecha="Abierto" data-alcohol="Colaboración" data-origen="Argentina" data-crianza="Contacto" data-weather-place="Mendoza" data-weather-lat="-32.89" data-weather-lon="-68.85" data-cta-label="Contáctanos" data-cta-href="#contacto">
+        <div class="botella-wrapper">
+          <img class="botella-img" src="./public/images/Valmorex-carousel.png" alt="Valmore experiencias colaborativas">
+        </div>
+      </article>
+
+      <div class="weather-widget" id="heroWeather" aria-live="polite">
+        <img class="weather-clouds" src="./public/images/weather-clouds.gif" alt="">
+        <div class="weather-top">
+          <span class="weather-icon" id="heroWeatherIcon" aria-hidden="true"></span>
+          <span class="weather-temp" id="heroWeatherTemp">--°</span>
+        </div>
+        <span class="weather-label" id="heroWeatherLabel">Clima de origen</span>
+        <span class="weather-place" id="heroWeatherPlace">Valle de Uco</span>
+      </div>
+
+      <div class="carousel-controls" aria-label="Controles del carrusel">
+        <button class="carousel-dot active" type="button" aria-label="Ver vino 1"></button>
+        <button class="carousel-dot" type="button" aria-label="Ver vino 2"></button>
+        <button class="carousel-dot" type="button" aria-label="Ver vino 3"></button>
+        <button class="carousel-dot" type="button" aria-label="Ver vino 4"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISION DE EXPERIENCIA -->
+<section class="vision-experiencia" id="experiencia-valmore">
+  <div class="vision-inner">
+    <div>
+      <div class="vision-kicker reveal">No es solo una cata</div>
+      <h2 class="vision-title reveal text-fill" data-fill-text>Es una excusa para volver a mirarse a la cara.</h2>
+      <p class="vision-copy reveal text-fill" data-fill-text>
+        La copa acompaña. Lo importante es la mesa: una pregunta, una receta, un juego o una historia que abre conversación.
+      </p>
+    </div>
+
+    <div class="vision-grid reveal">
+      <article class="vision-card hover-glow hover-lift">
+        <span>Hogar</span>
+        <h3>Una noche lista</h3>
+        <p>Experiencias simples para vivir desde el celular o llevar a la Smart TV mientras se comparte una copa.</p>
+      </article>
+      <article class="vision-card hover-glow hover-lift">
+        <span>Vinculos</span>
+        <h3>Conversar mejor</h3>
+        <p>Actividades que ayudan a bajar el ruido, jugar, cocinar, descubrir y abrir temas que normalmente quedan pendientes.</p>
+      </article>
+      <article class="vision-card hover-glow hover-lift">
+        <span>Escala</span>
+        <h3>Comunidad viva</h3>
+        <p>Casos, catas, ruletas y futuras experiencias para equipos, bodegas invitadas y encuentros que puedan viajar.</p>
+      </article>
     </div>
   </div>
 </section>
@@ -700,30 +1706,30 @@
 <!-- FICHA TÉCNICA -->
 <section class="ficha" id="ficha">
   <div class="seccion-label reveal">Ficha Técnica</div>
-  <h2 class="seccion-titulo reveal">Un Malbec de <em>carácter singular</em></h2>
+  <h2 class="seccion-titulo reveal text-fill" data-fill-text>Un Malbec de <em>carácter singular</em></h2>
 
   <div class="ficha-grid reveal">
-    <div class="ficha-item">
+    <div class="ficha-item hover-glow hover-lift">
       <div class="ficha-key">Varietal</div>
       <div class="ficha-val">Malbec 100%</div>
     </div>
-    <div class="ficha-item">
+    <div class="ficha-item hover-glow hover-lift">
       <div class="ficha-key">Cosecha</div>
       <div class="ficha-val">2ª semana de marzo, 2023</div>
     </div>
-    <div class="ficha-item">
+    <div class="ficha-item hover-glow hover-lift">
       <div class="ficha-key">Viñedo</div>
       <div class="ficha-val">Valle de Uco, Mendoza</div>
     </div>
-    <div class="ficha-item">
+    <div class="ficha-item hover-glow hover-lift">
       <div class="ficha-key">Cosecha</div>
       <div class="ficha-val">Manual con tijeras, cajas de 15 kg</div>
     </div>
-    <div class="ficha-item">
+    <div class="ficha-item hover-glow hover-lift">
       <div class="ficha-key">Crianza</div>
       <div class="ficha-val">Roble francés, breve paso</div>
     </div>
-    <div class="ficha-item">
+    <div class="ficha-item hover-glow hover-lift">
       <div class="ficha-key">Alcohol</div>
       <div class="ficha-val">14.1% vol.</div>
     </div>
@@ -731,8 +1737,8 @@
 
   <div class="divisor reveal"></div>
 
-  <p class="reveal" style="font-family:'Cormorant Garamond',serif; font-size:20px; line-height:1.9; color:#5a4a3a; max-width:700px; font-style:italic;">
-    Las uvas ingresan al tanque de acero inoxidable bajo frío para una gran extracción de precursores de aromas y color. Fermentación a 24–26°C durante diez días, luego separada de sus hollejos para preservar la fruta. Un breve paso por barricas de roble francés aporta la complejidad justa.
+  <p class="ficha-copy reveal">
+    Las uvas ingresan al tanque de acero inoxidable bajo frío para una gran extracción de precursores de aromas y color. Fermentación a 24-26°C durante diez días, luego separada de sus hollejos para preservar la fruta. Un breve paso por barricas de roble francés aporta la complejidad justa.
   </p>
 </section>
 
@@ -740,34 +1746,34 @@
 <section class="cata" id="cata">
   <div class="cata-inner">
     <div class="cata-texto">
-      <div class="seccion-label reveal" style="color:var(--dorado)">Notas de Cata</div>
-      <h2 class="seccion-titulo reveal">La experiencia <em style="color:rgba(201,168,76,0.8)">en copa</em></h2>
-      <p class="nota-cata reveal">
+      <div class="seccion-label reveal">Notas de Cata</div>
+      <h2 class="seccion-titulo reveal text-fill" data-fill-text>La experiencia <em>en copa</em></h2>
+      <p class="nota-cata reveal text-fill" data-fill-text>
         Intenso color violáceo con destellos rojos brillantes que aportan vivacidad. Cada sorbo revela capas: la fruta, la flor, y la madera en perfecto equilibrio.
       </p>
-      <div class="divisor reveal" style="background:var(--dorado);"></div>
-      <p class="reveal" style="font-family:'Cinzel',serif; font-size:10px; letter-spacing:3px; color:rgba(245,240,232,0.5); margin-top:24px;">
-        TEMPERATURA DE SERVICIO: 14°C – 16°C
+      <div class="divisor reveal"></div>
+      <p class="service-temp reveal">
+        TEMPERATURA DE SERVICIO: 14°C - 16°C
       </p>
     </div>
 
     <div class="notas-sensorial">
-      <div class="nota-item reveal">
-        <div class="nota-icono">👁</div>
+      <div class="nota-item reveal hover-glow hover-lift">
+        <div class="nota-icono">Vista</div>
         <div>
           <div class="nota-detalle-label">Vista</div>
           <div class="nota-detalle-text">Color violáceo intenso con destellos rojos de gran vivacidad y limpieza.</div>
         </div>
       </div>
-      <div class="nota-item reveal">
-        <div class="nota-icono">🌸</div>
+      <div class="nota-item reveal hover-glow hover-lift">
+        <div class="nota-icono">Aroma</div>
         <div>
           <div class="nota-detalle-label">Nariz</div>
           <div class="nota-detalle-text">Ciruelas frescas, notas florales de violetas y un sutil toque de roble que aporta complejidad.</div>
         </div>
       </div>
-      <div class="nota-item reveal">
-        <div class="nota-icono">✦</div>
+      <div class="nota-item reveal hover-glow hover-lift">
+        <div class="nota-icono">Boca</div>
         <div>
           <div class="nota-detalle-label">Boca</div>
           <div class="nota-detalle-text">Taninos suaves y redondeados, volumen elegante y una agradable persistencia. Moderno y de gran frescura.</div>
@@ -781,34 +1787,34 @@
 <section class="vinedo" id="origen">
   <div>
     <div class="seccion-label reveal">Origen</div>
-    <h2 class="seccion-titulo reveal">Del <em>Valle de Uco</em><br>a su mesa</h2>
-    <p class="reveal" style="font-family:'Cormorant Garamond',serif; font-size:19px; line-height:1.8; color:#5a4a3a; font-style:italic; margin-top:8px;">
+    <h2 class="seccion-titulo reveal text-fill" data-fill-text>Del <em>Valle de Uco</em><br>a su mesa</h2>
+    <p class="origen-copy reveal">
       El Valle de Uco, en el corazón de Mendoza, es reconocido como uno de los terruños más prestigiosos del mundo para el Malbec. La altura, la amplitud térmica y los suelos pedregosos crean condiciones únicas para una fruta de expresión intensa y estructura refinada.
     </p>
   </div>
 
   <div class="vinedo-data reveal">
-    <div class="vinedo-stat">
+    <div class="vinedo-stat hover-glow">
       <span class="vs-label">Región</span>
       <span class="vs-val">Valle de Uco, Mendoza</span>
     </div>
-    <div class="vinedo-stat">
+    <div class="vinedo-stat hover-glow">
       <span class="vs-label">País</span>
       <span class="vs-val">Argentina</span>
     </div>
-    <div class="vinedo-stat">
-      <span class="vs-label">Bodega</span>
-      <span class="vs-val">Finca Abril</span>
+    <div class="vinedo-stat hover-glow">
+      <span class="vs-label">Marca</span>
+      <span class="vs-val">Valmoré</span>
     </div>
-    <div class="vinedo-stat">
+    <div class="vinedo-stat hover-glow">
       <span class="vs-label">Tipo</span>
       <span class="vs-val">Producción limitada</span>
     </div>
-    <div class="vinedo-stat">
+    <div class="vinedo-stat hover-glow">
       <span class="vs-label">Cosecha</span>
       <span class="vs-val">Manual · 2023</span>
     </div>
-    <div class="vinedo-stat">
+    <div class="vinedo-stat hover-glow">
       <span class="vs-label">Alcohol</span>
       <span class="vs-val">14.1% vol.</span>
     </div>
@@ -818,15 +1824,15 @@
 <!-- CONTACTO -->
 <section class="contacto" id="contacto">
   <div class="contacto-inner">
-    <h2 class="contacto-titulo reveal">Llevá Valmoré<br>a tu propuesta</h2>
-    <p class="reveal" style="font-family:'Cormorant Garamond',serif; font-size:18px; color:rgba(245,240,232,0.6); margin-bottom:48px; font-style:italic;">
-      Coordinamos degustaciones sin cargo y condiciones comerciales a medida para cada canal.
+    <h2 class="contacto-titulo reveal text-fill" data-fill-text>Armemos una noche<br> con historia</h2>
+    <p class="contacto-sub reveal">
+      Pedí una muestra, proponé una bodega o conversemos una experiencia para tu casa, tu equipo o tu comunidad.
     </p>
 
     <form
       name="contacto-valmore"
       method="POST"
-      action="/gracias.html"
+      action="./gracias.html"
       data-netlify="true"
       netlify-honeypot="bot-field"
     >
@@ -837,68 +1843,327 @@
 
       <div class="form-row reveal">
         <input type="text" name="nombre" placeholder="Nombre y apellido" required>
-        <input type="text" name="empresa" placeholder="Empresa / Establecimiento" required>
+        <input type="text" name="empresa" placeholder="Empresa / Grupo / Bodega">
       </div>
       <div class="form-row reveal">
         <input type="email" name="email" placeholder="Email de contacto" required>
         <input type="tel" name="telefono" placeholder="Teléfono / WhatsApp">
       </div>
       <div class="form-full reveal">
-        <select name="tipo_negocio" required>
-          <option value="" disabled selected>Tipo de negocio</option>
-          <option>Distribuidora</option>
-          <option>Hotel</option>
-          <option>Restaurante</option>
-          <option>Vinoteca</option>
-          <option>Importador</option>
-          <option>Otro</option>
+        <select name="tipo_consulta" id="contactIntent" required>
+          <option value="" disabled selected>Quiero consultar por</option>
+          <option value="cliente">Quiero comprar y vivir la experiencia en casa</option>
+          <option value="bodega">Tengo una bodega y quiero sumarme a Valmore</option>
+          <option value="experiencia">Quiero una experiencia para empresa o grupo</option>
         </select>
       </div>
       <div class="form-full reveal">
         <textarea
           name="mensaje"
-          placeholder="¿Cómo podemos ayudarte? Consultanos sobre pedidos mínimos, degustaciones o condiciones especiales."
+          id="contactMessage"
+          placeholder="Contanos qué querés vivir o proponer: una noche en casa, una dinámica para equipos, una bodega invitada o una alianza."
           required
         ></textarea>
       </div>
-      <button class="form-submit reveal" type="submit">
-        Enviar Consulta
+      <button class="form-submit reveal hover-glow hover-lift" type="submit">
+        Iniciar Conversación
       </button>
     </form>
 
-    <div class="reveal" style="margin-top:56px; display:flex; justify-content:center; gap:48px; flex-wrap:wrap; border-top:1px solid rgba(201,168,76,0.15); padding-top:48px;">
-      <a href="https://instagram.com/valmore_wines" target="_blank" class="contact-link">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
-        <span>@valmore_wines</span>
-      </a>
-      <a href="https://wa.me/541149462099" target="_blank" class="contact-link">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-        <span>11 4946-2099</span>
-      </a>
-      <a href="mailto:valmorewine@gmail.com" class="contact-link">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        <span>valmorewine@gmail.com</span>
-      </a>
-    </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <span class="footer-marca">VALMORÉ</span>
-  <span class="footer-copy">© 2025 Finca Abril · Valle de Uco, Mendoza · Argentina</span>
-  <span class="footer-copy" style="display:flex; gap:24px; align-items:center;">
-    <a href="https://instagram.com/valmore_wines" target="_blank" style="color:rgba(245,240,232,0.4); text-decoration:none; font-size:11px; letter-spacing:1px; transition:color 0.3s;" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='rgba(245,240,232,0.4)'">@valmore_wines</a>
-    <a href="https://wa.me/541149462099" target="_blank" style="color:rgba(245,240,232,0.4); text-decoration:none; font-size:11px; letter-spacing:1px; transition:color 0.3s;" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='rgba(245,240,232,0.4)'">11 4946-2099</a>
-    <a href="mailto:valmorewine@gmail.com" style="color:rgba(245,240,232,0.4); text-decoration:none; font-size:11px; letter-spacing:1px; transition:color 0.3s;" onmouseover="this.style.color='#c9a84c'" onmouseout="this.style.color='rgba(245,240,232,0.4)'">valmorewine@gmail.com</a>
-  </span>
+  <div class="footer-inner">
+    <div class="footer-brand-block">
+      <span class="footer-marca">VALMORÉ</span>
+      <p class="footer-tagline">Una copa, una historia y una excusa elegante para volver a conversar.</p>
+    </div>
+
+    <div>
+      <h3 class="footer-heading">Explorar</h3>
+      <div class="footer-list" role="navigation" aria-label="Navegación secundaria">
+        <a class="footer-link" href="./index.html">Home</a>
+        <a class="footer-link" href="./vino.html?vino=0">Vinos</a>
+        <a class="footer-link" href="./catas.html">Catas</a>
+        <a class="footer-link" href="#contacto">Contacto</a>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="footer-heading">Experiencias</h3>
+      <div class="footer-list">
+        <a class="footer-link" href="./que-comemos-hoy.html">¿Qué comemos hoy?</a>
+        <a class="footer-link" href="./caso-valmore.html">Caso Valmorè 001</a>
+        <a class="footer-link" href="./catas.html">Experiencia para equipos</a>
+        <a class="footer-link" href="#contacto">¿Querés sumar tu bodega?</a>
+      </div>
+    </div>
+
+    <div>
+      <h3 class="footer-heading">Contacto</h3>
+      <div class="footer-list">
+        <a class="footer-link" href="https://instagram.com/valmore_wines" target="_blank" rel="noopener">@valmore_wines</a>
+        <a class="footer-link" href="https://wa.me/541149462099" target="_blank" rel="noopener">WhatsApp · 11 4946-2099</a>
+        <a class="footer-link" href="mailto:valmorewine@gmail.com">valmorewine@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div>
+      <p class="footer-warning">Beber con moderación. Prohibida la venta de alcohol a menores de 18 años.</p>
+      <p class="footer-legal-note">Valmoré promueve experiencias responsables para mayores de edad.</p>
+    </div>
+    <div class="footer-seals" aria-label="Sellos y referencias legales">
+      <a class="footer-vabn" href="https://www.argentina.gob.ar/inv/consultas-inv/etiquetado-de-productos-vitivinicolas" target="_blank" rel="noopener" aria-label="Vino Argentino Bebida Nacional">
+        <img src="./public/icons/logo-vabn.png" alt="Vino Argentino Bebida Nacional">
+      </a>
+      <span class="footer-copy">© 2025 Valmoré · Argentina</span>
+    </div>
+  </div>
 </footer>
 
 <script>
   // Nav scroll
   const nav = document.getElementById('nav');
+  const navToggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelectorAll('.nav-links a');
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  if (navToggle) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('menu-open');
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+      navToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
+    });
+
+    navLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        nav.classList.remove('menu-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        navToggle.setAttribute('aria-label', 'Abrir menú');
+      });
+    });
+  }
+
+  // Hero wine carousel
+  const wineSlides = Array.from(document.querySelectorAll('.vino-slide'));
+  const wineDots = Array.from(document.querySelectorAll('.carousel-dot'));
+  const heroWineTitle = document.getElementById('heroWineTitle');
+  const heroWineMeta = document.getElementById('heroWineMeta');
+  const heroWineLine = document.getElementById('heroWineLine');
+  const heroWineDesc = document.getElementById('heroWineDesc');
+  const heroWineStatus = document.getElementById('heroWineStatus');
+  const heroSpecCosecha = document.getElementById('heroSpecCosecha');
+  const heroSpecAlcohol = document.getElementById('heroSpecAlcohol');
+  const heroSpecOrigen = document.getElementById('heroSpecOrigen');
+  const heroSpecCrianza = document.getElementById('heroSpecCrianza');
+  const heroFichaLink = document.getElementById('heroFichaLink');
+  const heroWeather = document.getElementById('heroWeather');
+  const heroWeatherIcon = document.getElementById('heroWeatherIcon');
+  const heroWeatherTemp = document.getElementById('heroWeatherTemp');
+  const heroWeatherLabel = document.getElementById('heroWeatherLabel');
+  const heroWeatherPlace = document.getElementById('heroWeatherPlace');
+  const weatherCache = new Map();
+  let currentWine = 0;
+  let wineTimer;
+
+  const weatherIcons = {
+    sun: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="24" cy="24" r="8" fill="currentColor" opacity="0.22"/><circle cx="24" cy="24" r="8"/><path d="M24 4v6M24 38v6M4 24h6M38 24h6M9.9 9.9l4.2 4.2M33.9 33.9l4.2 4.2M38.1 9.9l-4.2 4.2M14.1 33.9l-4.2 4.2"/></svg>',
+    moon: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M32 35.5A16 16 0 0 1 21.4 6.1 18 18 0 1 0 42 28.6 15.9 15.9 0 0 1 32 35.5Z" fill="currentColor" opacity="0.18"/></svg>'
+  };
+
+  function isCloudyCode(code) {
+    return [2, 3, 45, 48, 51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 71, 73, 75, 77, 80, 81, 82, 85, 86, 95, 96, 99].includes(Number(code));
+  }
+
+  function weatherText(code, isDay) {
+    if (isCloudyCode(code)) return isDay ? 'Nublado ahora' : 'Noche nublada';
+    return isDay ? 'Día despejado' : 'Noche despejada';
+  }
+
+  async function fetchWeather(lat, lon) {
+    const key = `${lat},${lon}`;
+    if (weatherCache.has(key)) return weatherCache.get(key);
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&current=temperature_2m,is_day,weather_code&timezone=auto`;
+    const weatherPromise = fetch(url)
+      .then((response) => {
+        if (!response.ok) throw new Error('weather unavailable');
+        return response.json();
+      })
+      .then((data) => data.current);
+    weatherCache.set(key, weatherPromise);
+    return weatherPromise;
+  }
+
+  function renderHeroWeather(slide, current) {
+    if (!heroWeather || !heroWeatherIcon || !heroWeatherTemp || !heroWeatherLabel || !heroWeatherPlace || !slide) return;
+    const place = slide.dataset.weatherPlace || slide.dataset.origen || 'Mendoza';
+    const lat = slide.dataset.weatherLat;
+    const lon = slide.dataset.weatherLon;
+
+    heroWeatherPlace.textContent = place;
+    heroWeatherTemp.textContent = '--°';
+    heroWeatherLabel.textContent = 'Clima de origen';
+    heroWeatherIcon.innerHTML = weatherIcons.sun;
+    heroWeather.classList.remove('is-cloudy');
+
+    if (!lat || !lon) return;
+    fetchWeather(lat, lon)
+      .then((weather) => {
+        if (current !== currentWine || !weather) return;
+        const temp = Math.round(weather.temperature_2m);
+        const isDay = Number(weather.is_day) === 1;
+        heroWeatherTemp.textContent = `${temp}°`;
+        heroWeatherLabel.textContent = weatherText(weather.weather_code, isDay);
+        heroWeatherIcon.innerHTML = isDay ? weatherIcons.sun : weatherIcons.moon;
+        heroWeather.classList.toggle('is-cloudy', isCloudyCode(weather.weather_code));
+      })
+      .catch(() => {
+        heroWeatherLabel.textContent = 'Clima no disponible';
+      });
+  }
+
+  function updateHeroWineInfo(slide) {
+    if (!slide) return;
+    heroWineTitle.textContent = slide.dataset.title;
+    heroWineMeta.textContent = slide.dataset.meta;
+    heroWineLine.textContent = slide.dataset.line;
+    heroWineDesc.textContent = slide.dataset.desc;
+    heroWineStatus.textContent = slide.dataset.status || '';
+    heroSpecCosecha.textContent = slide.dataset.cosecha;
+    heroSpecAlcohol.textContent = slide.dataset.alcohol;
+    heroSpecOrigen.textContent = slide.dataset.origen;
+    heroSpecCrianza.textContent = slide.dataset.crianza;
+
+    heroFichaLink.href = slide.dataset.ctaHref || `./vino.html?vino=${currentWine}`;
+    heroFichaLink.textContent = slide.dataset.ctaLabel || 'Ficha Técnica';
+    renderHeroWeather(slide, currentWine);
+
+    const animatedFields = [heroWineTitle, heroWineMeta, heroWineLine, heroWineDesc, heroWineStatus, document.querySelector('.hero-specs')];
+    animatedFields.forEach((el) => {
+      if (!el) return;
+      el.classList.remove('wine-info-swap');
+      void el.offsetWidth;
+      el.classList.add('wine-info-swap');
+    });
+  }
+
+  function showWine(index) {
+    if (!wineSlides.length) return;
+    currentWine = (index + wineSlides.length) % wineSlides.length;
+
+    wineSlides.forEach((slide, slideIndex) => {
+      slide.classList.toggle('active', slideIndex === currentWine);
+    });
+
+    wineDots.forEach((dot, dotIndex) => {
+      dot.classList.toggle('active', dotIndex === currentWine);
+    });
+
+    updateHeroWineInfo(wineSlides[currentWine]);
+  }
+
+  function startWineCarousel() {
+    window.clearInterval(wineTimer);
+    wineTimer = window.setInterval(() => {
+      showWine(currentWine + 1);
+    }, 6000);
+  }
+
+  wineDots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      showWine(index);
+      startWineCarousel();
+    });
+  });
+
+  showWine(0);
+  startWineCarousel();
+
+  const contactIntent = document.getElementById('contactIntent');
+  const contactMessage = document.getElementById('contactMessage');
+  const contactMessages = {
+    cliente: 'Hola, quiero comprar el vino y vivir la experiencia en casa. Me interesa saber cómo pedir una muestra o coordinar una noche Valmoré.',
+    bodega: 'Hola, me interesa lo que están haciendo. Tengo una bodega y quiero conversar para que Valmore participe en una curaduría o alianza con nuestra etiqueta.',
+    experiencia: 'Hola, tengo una empresa o grupo de trabajo y me gustaría conocer una experiencia para unir al equipo, abrir conversación y compartir un momento diferente.'
+  };
+
+  if (contactIntent && contactMessage) {
+    contactIntent.addEventListener('change', () => {
+      const suggestion = contactMessages[contactIntent.value];
+      if (!suggestion) return;
+      contactMessage.value = suggestion;
+    });
+  }
+
+  // Text fill effect
+  const fillTextElements = document.querySelectorAll('[data-fill-text]');
+  fillTextElements.forEach((el) => {
+    if (el.dataset.fillReady === 'true') return;
+    el.dataset.fillReady = 'true';
+
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        return node.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+
+    const textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+    let wordIndex = 0;
+    textNodes.forEach((node) => {
+      const fragment = document.createDocumentFragment();
+      node.nodeValue.split(/(\s+)/).forEach((part) => {
+        if (!part.trim()) {
+          fragment.appendChild(document.createTextNode(part));
+          return;
+        }
+
+        const span = document.createElement('span');
+        span.className = 'fill-word';
+        span.style.setProperty('--word-index', wordIndex);
+        span.textContent = part;
+        fragment.appendChild(span);
+        wordIndex += 1;
+      });
+      node.parentNode.replaceChild(fragment, node);
+    });
+  });
+
+  const fillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.classList.contains('marca') ? 260 : 120;
+        window.setTimeout(() => {
+          entry.target.classList.add('fill-visible');
+          entry.target.querySelectorAll('.fill-word').forEach((word) => {
+            word.style.setProperty('color', 'inherit', 'important');
+            word.style.setProperty('transform', 'translateY(0) scale(1)', 'important');
+            word.style.setProperty('filter', 'blur(0)', 'important');
+            word.style.setProperty('opacity', '1', 'important');
+          });
+        }, delay);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  fillTextElements.forEach(el => fillObserver.observe(el));
+
+  // Hover glow follows the pointer
+  document.querySelectorAll('.hover-glow').forEach((el) => {
+    el.addEventListener('pointermove', (event) => {
+      const rect = el.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 100;
+      const y = ((event.clientY - rect.top) / rect.height) * 100;
+      el.style.setProperty('--mx', `${x}%`);
+      el.style.setProperty('--my', `${y}%`);
+    });
   });
 
   // Reveal on scroll
@@ -914,5 +2179,7 @@
   reveals.forEach(el => observer.observe(el));
 
 </script>
+<script src="./i18n.js"></script>
+<script src="./theme.js"></script>
 </body>
 </html>

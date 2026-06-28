@@ -75,7 +75,7 @@ body.theme-light #nav,
 body.theme-light header {
   background:
     linear-gradient(90deg, rgba(255, 250, 241, 0.96), rgba(236, 225, 207, 0.9)),
-    url("../../public/images/fondo de Menu.png") !important;
+    url("../public/images/fondo de Menu.png") !important;
   background-size: cover !important;
   background-position: center 42% !important;
   border-color: rgba(167, 124, 36, 0.28) !important;
@@ -181,7 +181,7 @@ body.theme-light .nav-dropdown-menu {
   border-radius: 12px;
   background:
     linear-gradient(145deg, rgba(4, 18, 13, 0.98), rgba(13, 34, 22, 0.94)),
-    url("../../public/images/fondo de Menu.png");
+    url("../public/images/fondo de Menu.png");
   background-size: cover;
   background-position: center;
   box-shadow: 0 24px 58px rgba(0, 0, 0, 0.38);
@@ -238,7 +238,7 @@ body.theme-light .language-switcher.is-open .language-current {
 body.theme-light .language-menu {
   background:
     linear-gradient(145deg, rgba(255, 250, 241, 0.98), rgba(237, 226, 207, 0.95)),
-    url("../../public/images/fondo de Menu.png");
+    url("../public/images/fondo de Menu.png");
   background-size: cover;
   background-position: center 42%;
   border-color: rgba(167, 124, 36, 0.3);
@@ -559,7 +559,7 @@ body .topbar {
   border-radius: 999px;
   background:
     linear-gradient(90deg, rgba(3, 22, 15, 0.78), rgba(11, 31, 20, 0.58)),
-    url("../../public/images/fondo de Menu.png") !important;
+    url("../public/images/fondo de Menu.png") !important;
   background-size: cover !important;
   background-position: center !important;
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22) !important;
@@ -598,7 +598,7 @@ body .progress-pill {
 body.theme-light .topbar {
   background:
     linear-gradient(90deg, rgba(255, 250, 241, 0.96), rgba(235, 222, 201, 0.9)),
-    url("../../public/images/fondo de Menu.png") !important;
+    url("../public/images/fondo de Menu.png") !important;
   border-color: rgba(167, 124, 36, 0.28) !important;
   box-shadow: 0 16px 42px rgba(18, 47, 32, 0.1) !important;
 }
