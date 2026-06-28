@@ -1832,13 +1832,14 @@
     <form
       name="contacto-valmore"
       method="POST"
-      action="./gracias.html"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
+      action="https://formsubmit.co/nahuelgullifa@gmail.com"
     >
-      <input type="hidden" name="form-name" value="contacto-valmore">
+      <input type="hidden" name="_subject" value="Nuevo contacto desde Valmore">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_next" id="contacto-next" value="./gracias.html">
       <p style="display:none;">
-        <label>No completar este campo: <input name="bot-field"></label>
+        <label>No completar este campo: <input name="_honey"></label>
       </p>
 
       <div class="form-row reveal">
@@ -2099,6 +2100,11 @@
       if (!suggestion) return;
       contactMessage.value = suggestion;
     });
+  }
+
+  const contactoNext = document.getElementById('contacto-next');
+  if (contactoNext) {
+    contactoNext.value = new URL('gracias.html', window.location.href).href;
   }
 
   // Text fill effect
